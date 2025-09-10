@@ -1,0 +1,21 @@
+# === Unity ===
+# Ignore Unity generated files
+frontend_unity/Library/
+frontend_unity/Temp/
+frontend_unity/Obj/
+frontend_unity/Build/
+frontend_unity/Builds/
+frontend_unity/Logs/
+frontend_unity/UserSettings/
+frontend_unity/.vscode/
+
+# === Python/Django ===
+__pycache__/
+jumpio/.venv/
+*.pyc
+*.pyo
+*.pyd
+
+# === General ===
+*.idea/
+*.vscode/
