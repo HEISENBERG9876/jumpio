@@ -1,37 +1,73 @@
 using UnityEngine;
 using UnityEngine.Networking;
+using System;
 using System.Collections;
 
-[System.Serializable]
+[Serializable]
 public class TokenResponse {
     public string access;
     public string refresh;
 }
 
-[System.Serializable]
+[Serializable]
 public class LoginRequest {
     public string username;
     public string password;
 }
 
-[System.Serializable]
+[Serializable]
 public class RegisterRequest {
     public string username;
     public string email;
     public string password;
 }
 
-[System.Serializable]
+[Serializable]
 public class LevelRequest {
     public string level_data;
 }
 
 public class AuthManager : MonoBehaviour
 {
-    public UIManager uiManager;
+
+    private static AuthManager _instance;
+    public static AuthManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                GameObject go = new GameObject("AuthManager");
+                _instance = go.AddComponent<AuthManager>();
+                DontDestroyOnLoad(go);
+            }
+            return _instance;
+        }
+    }
+
+    public event Action OnLoginSuccess;
+    public event Action<string, string> OnLoginFailed;
+    public event Action OnRegisterSuccess;
+    public event Action<string, string> OnRegisterFailed;
 
     private string accessToken;
     private string refreshToken;
+
+    public bool IsLoggedIn => !string.IsNullOrEmpty(accessToken);
+    public string AccessToken => accessToken;
+
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void Login(string username, string password)
     {
@@ -54,13 +90,43 @@ public class AuthManager : MonoBehaviour
                 accessToken = tokens.access;
                 refreshToken = tokens.refresh;
 
-                uiManager.ShowMainMenu();
+                OnLoginSuccess?.Invoke();
+
             }
             else
             {
-                Debug.LogError("Login failed: " + www.error + " " + www.downloadHandler.text);
+                OnLoginFailed?.Invoke(www.error, www.downloadHandler.text);
             }
         }
+    }
+
+    public void RefreshAccessToken()
+    {
+        StartCoroutine(RefreshAccessTokenCoroutine());
+    }
+
+    public IEnumerator RefreshAccessTokenCoroutine()
+    {
+        var payload = new { refresh = refreshToken };
+
+        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/refresh", payload))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
+                accessToken = tokens.access;
+                Debug.Log("Access token refreshed successfully.");
+            }
+            else
+            {
+                accessToken = null;
+                refreshToken = null;
+                 Debug.LogWarning("Refresh token failed: " + www.error);
+            }
+        }
+        
     }
 
     public void Register(string username, string email, string password)
@@ -78,31 +144,12 @@ public class AuthManager : MonoBehaviour
 
             if (www.result == UnityWebRequest.Result.Success)
             {
-                Debug.Log("Register successful: " + www.downloadHandler.text);
+                OnRegisterSuccess?.Invoke();
                 Login(username, password);
             }
             else
             {
-                Debug.LogError("Register failed: " + www.error + " " + www.downloadHandler.text);
-            }
-        }
-    }
-
-    public IEnumerator CreateLevel(string levelData)
-    {
-        var payload = new LevelRequest { level_data = levelData };
-
-        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/levels/", payload, accessToken))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
-            {
-                Debug.Log("Level created: " + www.downloadHandler.text);
-            }
-            else
-            {
-                Debug.LogError("Create level failed: " + www.error + " " + www.downloadHandler.text);
+                OnRegisterFailed?.Invoke(www.error, www.downloadHandler.text);
             }
         }
     }

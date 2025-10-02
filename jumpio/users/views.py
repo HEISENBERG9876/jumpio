@@ -7,6 +7,7 @@ from rest_framework.permissions import AllowAny
 
 User = get_user_model()
 
+
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
@@ -26,5 +27,5 @@ class RegisterView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.create_user(username=username, email=email, password=password)
+        User.objects.create_user(username=username, email=email, password=password)
         return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
