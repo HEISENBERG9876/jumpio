@@ -74,6 +74,7 @@ public class AuthManager : MonoBehaviour
         StartCoroutine(LoginCoroutine(username, password));
     }
 
+    //TODO: delete coroutines and convert to Task, delete mono behaviour
     private IEnumerator LoginCoroutine(string username, string password)
     {
         var payload = new LoginRequest { username = username, password = password };

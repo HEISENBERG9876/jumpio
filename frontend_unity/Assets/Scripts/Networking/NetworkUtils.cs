@@ -18,4 +18,16 @@ public class NetworkUtils
         }
         return request;
     }
+
+    public static UnityWebRequest GetJson(string url, string authToken = null)
+    {
+        var request = UnityWebRequest.Get(url);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+        if (!string.IsNullOrEmpty(authToken))
+        {
+            request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        }
+        return request;
+    }
 }

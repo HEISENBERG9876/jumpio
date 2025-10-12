@@ -1,9 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class LevelCreator : MonoBehaviour
 {
     public ToolbarController toolbar;
+    public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
+
 
     void Update()
     {
@@ -13,8 +17,25 @@ public class LevelCreator : MonoBehaviour
         }
     }
 
+    void AddLevelData(Placeable selection, Vector3 SnappedPos)
+    {
+
+        var data = new PlacedObjectData
+        {
+            id = selection.id,
+            x = (int)SnappedPos[0],
+            y = (int)SnappedPos[1],
+            rotation = 0
+        };
+        currentLayout.Add(data);
+
+    }
+
     void PlaceObjectAtMouse()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
+    
         Placeable selection = toolbar.GetSelection();
         if (selection == null || selection.prefab == null)
         {
@@ -33,5 +54,9 @@ public class LevelCreator : MonoBehaviour
         );
 
         Instantiate(selection.prefab, snappedPos, Quaternion.identity);
+        AddLevelData(selection, snappedPos);
+
+        
+    Debug.Log($"Added to layout: {selection.id} at ({snappedPos.x}, {snappedPos.y})");
     }
 }
