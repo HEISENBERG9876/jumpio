@@ -15,10 +15,10 @@ public class LevelBrowser : MonoBehaviour
 
     private async void OnEnable()
     {
-        await LoadPage("http://localhost:8000/api/levels/");
+        await LoadPageAsync("http://localhost:8000/api/levels/");
     }
 
-    public async Task LoadPage(string url)
+    public async Task LoadPageAsync(string url)
     {
         try
         {
@@ -48,10 +48,10 @@ public class LevelBrowser : MonoBehaviour
     }
     public async void LoadPreviousPage()
     {
-        await LoadPage(prevUrl);
+        await LoadPageAsync(prevUrl);
     }
     public async void LoadNextPage()
     {
-        await LoadPage(nextUrl);
+        await LoadPageAsync(nextUrl);
     }
 }

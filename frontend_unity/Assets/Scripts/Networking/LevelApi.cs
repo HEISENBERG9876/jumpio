@@ -1,10 +1,8 @@
 using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections;
 using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using UnityEditor.PackageManager.Requests;
 
 public class LevelApi
 {
@@ -32,9 +30,6 @@ public class LevelApi
             layout = layout
         };
 
-        string debugJson = JsonUtility.ToJson(body, true);
-        Debug.Log("UPLOAD JSON:\n" + debugJson);
-
         using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/levels/", body, AuthManager.Instance.AccessToken))
         {
             var op = www.SendWebRequest();
@@ -48,7 +43,7 @@ public class LevelApi
             }
             else
             {
-                Debug.LogError("Error uploading level:" + www.downloadHandler.text);
+                Debug.LogError("[LevelApi] Error uploading level:" + www.downloadHandler.text);
                 throw new Exception(www.downloadHandler.text);
             }
         }
@@ -74,7 +69,7 @@ public class LevelApi
             else
             {
                 string body = www.downloadHandler.text;
-                throw new Exception("Request failed:" + www.downloadHandler.text);
+                throw new Exception("[LevelApi] Request failed:" + www.downloadHandler.text);
             }
         }
     }
@@ -96,8 +91,8 @@ public class LevelApi
             }
             else
             {
-                Debug.LogError("Error fetching levels: " + www.downloadHandler.text);
-                throw new Exception("Request failed:" + www.downloadHandler.text);
+                Debug.LogError("[LevelApi] Error fetching levels: " + www.downloadHandler.text);
+                throw new Exception("[LevelApi] Request failed:" + www.downloadHandler.text);
             }
         }
     }

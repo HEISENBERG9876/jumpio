@@ -35,19 +35,18 @@ public class AuthUIController : MonoBehaviour
         ShowMainMenu();
     }
 
-    private void HandleLoginFailed(string error, string text)
+    private void HandleLoginFailed(string msg)
     {
-        Debug.LogError("Login failed: " + error + " " + text);
+        Debug.LogWarning("[AuthUIController] Login failed" + msg);
     }
 
     private void HandleRegisterSuccess()
     {
-        //nothing for now- Registering succesfully automatically logs in, so that the main menu is being shown.
     }
 
-    private void HandleRegisterFailed(string error, string text)
+    private void HandleRegisterFailed(string msg)
     {
-        Debug.LogError("Register failed: " + error + " " + text);
+        Debug.LogWarning("[AuthUIController] Register failed: " + msg);
     }
 
     private void ShowLogin()

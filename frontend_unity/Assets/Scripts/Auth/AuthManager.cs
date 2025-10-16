@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 
 [Serializable]
 public class TokenResponse {
@@ -27,7 +28,7 @@ public class LevelRequest {
     public string level_data;
 }
 
-public class AuthManager : MonoBehaviour
+public class AuthManager
 {
 
     private static AuthManager _instance;
@@ -37,18 +38,16 @@ public class AuthManager : MonoBehaviour
         {
             if (_instance == null)
             {
-                GameObject go = new GameObject("AuthManager");
-                _instance = go.AddComponent<AuthManager>();
-                DontDestroyOnLoad(go);
+                _instance = new AuthManager();
             }
             return _instance;
         }
     }
 
     public event Action OnLoginSuccess;
-    public event Action<string, string> OnLoginFailed;
+    public event Action<string> OnLoginFailed;
     public event Action OnRegisterSuccess;
-    public event Action<string, string> OnRegisterFailed;
+    public event Action<string> OnRegisterFailed;
 
     private string accessToken;
     private string refreshToken;
@@ -56,102 +55,108 @@ public class AuthManager : MonoBehaviour
     public bool IsLoggedIn => !string.IsNullOrEmpty(accessToken);
     public string AccessToken => accessToken;
 
-    private void Awake()
+    public async Task LoginAsync(string username, string password)
     {
-        if (_instance == null)
+        try
         {
-            _instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else if (_instance != this)
-        {
-            Destroy(gameObject);
-        }
-    }
+            var payload = new LoginRequest { username = username, password = password };
 
-    public void Login(string username, string password)
-    {
-        StartCoroutine(LoginCoroutine(username, password));
-    }
-
-    //TODO: delete coroutines and convert to Task, delete mono behaviour
-    private IEnumerator LoginCoroutine(string username, string password)
-    {
-        var payload = new LoginRequest { username = username, password = password };
-
-        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/", payload))
-        {
-            yield return www.SendWebRequest();
-
-            if (www.result == UnityWebRequest.Result.Success)
+            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/", payload))
             {
-                Debug.Log("Login response: " + www.downloadHandler.text);
-                TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
+                var op = www.SendWebRequest();
 
-                accessToken = tokens.access;
-                refreshToken = tokens.refresh;
+                while (!op.isDone)
+                {
+                    await Task.Yield();
+                }
 
-                OnLoginSuccess?.Invoke();
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
 
+                    accessToken = tokens.access;
+                    refreshToken = tokens.refresh;
+
+                    OnLoginSuccess?.Invoke();
+                }
+                else
+                {
+                    string errorMessage = ("[AuthManager]" + www.downloadHandler.text + www.error).Trim();
+                    OnLoginFailed?.Invoke(errorMessage);
+                }
             }
-            else
-            {
-                OnLoginFailed?.Invoke(www.error, www.downloadHandler.text);
-            }
+        }
+        catch(Exception ex)
+        {
+            OnLoginFailed?.Invoke("[AuthManager]" + ex.Message);
         }
     }
 
-    public void RefreshAccessToken()
+    public async Task RefreshAccessTokenAsync()
     {
-        StartCoroutine(RefreshAccessTokenCoroutine());
-    }
-
-    public IEnumerator RefreshAccessTokenCoroutine()
-    {
-        var payload = new { refresh = refreshToken };
-
-        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/refresh", payload))
+        try
         {
-            yield return www.SendWebRequest();
+            var payload = new { refresh = refreshToken };
 
-            if (www.result == UnityWebRequest.Result.Success)
+            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/refresh", payload))
             {
-                TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
-                accessToken = tokens.access;
-                Debug.Log("Access token refreshed successfully.");
-            }
-            else
-            {
-                accessToken = null;
-                refreshToken = null;
-                 Debug.LogWarning("Refresh token failed: " + www.error);
+                var op = www.SendWebRequest();
+
+                while (!op.isDone)
+                {
+                    await Task.Yield();
+                }
+
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
+                    accessToken = tokens.access;
+                    Debug.Log("[AuthManager] Access token refreshed successfully.");
+                }
+                else
+                {
+                    accessToken = null;
+                    refreshToken = null;
+                    Debug.LogWarning("[AuthManager] Refresh token failed: " + www.error);
+                }
             }
         }
-        
-    }
-
-    public void Register(string username, string email, string password)
-    {
-        StartCoroutine(RegisterCoroutine(username, email, password));
-    }
-
-    private IEnumerator RegisterCoroutine(string username, string email, string password)
-    {
-        var payload = new RegisterRequest { username = username, email = email, password = password };
-
-        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/register/", payload))
+        catch(Exception ex)
         {
-            yield return www.SendWebRequest();
+            Debug.LogError("[AuthManager] Error refreshing access token" + ex);
+        }
+    }
 
-            if (www.result == UnityWebRequest.Result.Success)
+    public async Task RegisterAsync(string username, string email, string password)
+    {
+        try
+        {
+            var payload = new RegisterRequest { username = username, email = email, password = password };
+
+            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/register/", payload))
             {
-                OnRegisterSuccess?.Invoke();
-                Login(username, password);
+                var op = www.SendWebRequest();
+
+                while (!op.isDone)
+                {
+                    await Task.Yield();
+                }
+
+                if (www.result == UnityWebRequest.Result.Success)
+                {
+                    OnRegisterSuccess?.Invoke();
+                    await LoginAsync(username, password);
+                }
+                else
+                {
+                    string errorMessage = ("[AuthManager]" + www.downloadHandler.text + www.error).Trim();
+                    OnRegisterFailed?.Invoke(errorMessage);
+                }
             }
-            else
-            {
-                OnRegisterFailed?.Invoke(www.error, www.downloadHandler.text);
-            }
+        }
+        catch(Exception ex)
+        {
+            OnRegisterFailed?.Invoke("[AuthManager]" + ex.Message);
         }
     }
 }
