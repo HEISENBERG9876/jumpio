@@ -1,12 +1,13 @@
 using UnityEngine;
 using TMPro;
-using System.Threading.Tasks;
 
 public class RegisterUI : MonoBehaviour
 {
-    public TMP_InputField usernameInput;
-    public TMP_InputField emailInput;
-    public TMP_InputField passwordInput;
+    [SerializeField] private TMP_InputField usernameInput;
+    [SerializeField] private TMP_InputField emailInput;
+    [SerializeField] private TMP_InputField passwordInput;
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject loginPanel;
 
     public async void OnRegisterButtonClicked()
     {
@@ -14,6 +15,14 @@ public class RegisterUI : MonoBehaviour
         string email = emailInput.text;
         string password = passwordInput.text;
 
-        await AuthManager.Instance.RegisterAsync(username, email, password);
+
+        var res = await AuthManager.Instance.RegisterAsync(username, email, password);
+
+        if (res.Success)
+        {
+            mainMenuPanel.SetActive(true);
+            loginPanel.SetActive(false);
+        }
+        //TODO : Show error message. Also change the logic entirely, so Register and Login are separate.
     }
 }

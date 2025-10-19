@@ -276,52 +276,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 113793906}
   m_CullTransparentMesh: 1
---- !u!1 &246846648
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 246846650}
-  - component: {fileID: 246846649}
-  m_Layer: 0
-  m_Name: UIManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &246846649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246846648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a92dcf1b838a80449fa2f71a6264f64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  LoginPanel: {fileID: 664480529}
-  MainMenuPanel: {fileID: 1021706611}
---- !u!4 &246846650
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 246846648}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 587.4, y: 276.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &407713782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,7 +1054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &664480530
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1177,7 +1131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LoginUI
   usernameInput: {fileID: 1076674815}
   passwordInput: {fileID: 1567339804}
-  authManager: {fileID: 0}
+  mainMenuPanel: {fileID: 1021706611}
+  loginPanel: {fileID: 664480529}
 --- !u!114 &664480534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1148,52 @@ MonoBehaviour:
   usernameInput: {fileID: 1076674815}
   emailInput: {fileID: 1943488960}
   passwordInput: {fileID: 1567339804}
+  mainMenuPanel: {fileID: 1021706611}
+  loginPanel: {fileID: 664480529}
+--- !u!1 &708098660
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 708098662}
+  - component: {fileID: 708098661}
+  m_Layer: 0
+  m_Name: AuthManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &708098661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708098660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 367185e84fcb847468d342c0764849fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuthManager
+--- !u!4 &708098662
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708098660}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &948277874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1531,7 +1532,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1021706612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3326,5 +3327,5 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 407713783}
   - {fileID: 1108088550}
-  - {fileID: 246846650}
   - {fileID: 1569557033}
+  - {fileID: 708098662}

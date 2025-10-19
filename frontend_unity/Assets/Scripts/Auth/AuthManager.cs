@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.Networking;
 using System;
-using System.Collections;
-using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 
 [Serializable]
 public class TokenResponse {
@@ -28,7 +27,20 @@ public class LevelRequest {
     public string level_data;
 }
 
-public class AuthManager
+public class AuthResult
+{
+    public bool Success { get; }
+    public string Message { get; }
+    public long? HttpStatusCode { get; }
+    public AuthResult(bool success, string message = null, long? httpStatusCode = null)
+    {
+        Success = success;
+        Message = message;
+        HttpStatusCode = httpStatusCode;
+    }
+}
+
+public class AuthManager : MonoBehaviour
 {
 
     private static AuthManager _instance;
@@ -38,16 +50,28 @@ public class AuthManager
         {
             if (_instance == null)
             {
-                _instance = new AuthManager();
+                _instance = FindFirstObjectByType<AuthManager>();
+                if (_instance == null)
+                {
+                    Debug.LogError("[AuthManager] Instance not found.");
+                }
             }
             return _instance;
         }
     }
 
-    public event Action OnLoginSuccess;
-    public event Action<string> OnLoginFailed;
-    public event Action OnRegisterSuccess;
-    public event Action<string> OnRegisterFailed;
+    private void Awake()
+    {
+        if (_instance == null)
+        {
+            _instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else if (_instance != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     private string accessToken;
     private string refreshToken;
@@ -55,20 +79,16 @@ public class AuthManager
     public bool IsLoggedIn => !string.IsNullOrEmpty(accessToken);
     public string AccessToken => accessToken;
 
-    public async Task LoginAsync(string username, string password)
+    public async UniTask<AuthResult> LoginAsync(string username, string password)
     {
+        await UniTask.SwitchToMainThread();
         try
         {
             var payload = new LoginRequest { username = username, password = password };
 
             using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/", payload))
             {
-                var op = www.SendWebRequest();
-
-                while (!op.isDone)
-                {
-                    await Task.Yield();
-                }
+                await www.SendWebRequest().ToUniTask();
 
                 if (www.result == UnityWebRequest.Result.Success)
                 {
@@ -77,86 +97,88 @@ public class AuthManager
                     accessToken = tokens.access;
                     refreshToken = tokens.refresh;
 
-                    OnLoginSuccess?.Invoke();
+                    return new AuthResult(true, "Login successful", www.responseCode);
                 }
                 else
                 {
-                    string errorMessage = ("[AuthManager]" + www.downloadHandler.text + www.error).Trim();
-                    OnLoginFailed?.Invoke(errorMessage);
+                    return new AuthResult(false, "Login failed. Invalid login or password", www.responseCode);
                 }
             }
         }
         catch(Exception ex)
         {
-            OnLoginFailed?.Invoke("[AuthManager]" + ex.Message);
+            Debug.LogError("[AuthManager] Login exception" + ex);
+            return new AuthResult(false, "Unexpected error, login failed.");
         }
     }
 
-    public async Task RefreshAccessTokenAsync()
+    public async UniTask<AuthResult> RefreshAccessTokenAsync()
     {
+        await UniTask.SwitchToMainThread();
         try
         {
             var payload = new { refresh = refreshToken };
 
             using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/refresh", payload))
             {
-                var op = www.SendWebRequest();
-
-                while (!op.isDone)
-                {
-                    await Task.Yield();
-                }
+                await www.SendWebRequest().ToUniTask();
 
                 if (www.result == UnityWebRequest.Result.Success)
                 {
                     TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
                     accessToken = tokens.access;
-                    Debug.Log("[AuthManager] Access token refreshed successfully.");
+                    return new AuthResult(true, "Access token refreshed", www.responseCode);
                 }
                 else
                 {
                     accessToken = null;
                     refreshToken = null;
-                    Debug.LogWarning("[AuthManager] Refresh token failed: " + www.error);
+                    Debug.LogWarning("[AuthManager] Refresh token failed: " + www.responseCode + www.downloadHandler?.text + www.error);
+                    return new AuthResult(false, "Obtaining refresh token failed", www.responseCode);
                 }
             }
         }
         catch(Exception ex)
         {
             Debug.LogError("[AuthManager] Error refreshing access token" + ex);
+            return new AuthResult(false, "Unexpected error, refreshing access token failed.");
         }
     }
 
-    public async Task RegisterAsync(string username, string email, string password)
+    public async UniTask<AuthResult> RegisterAsync(string username, string email, string password)
     {
+        await UniTask.SwitchToMainThread();
         try
         {
             var payload = new RegisterRequest { username = username, email = email, password = password };
 
             using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/register/", payload))
             {
-                var op = www.SendWebRequest();
-
-                while (!op.isDone)
-                {
-                    await Task.Yield();
-                }
+                await www.SendWebRequest().ToUniTask();
 
                 if (www.result == UnityWebRequest.Result.Success)
                 {
-                    OnRegisterSuccess?.Invoke();
-                    await LoginAsync(username, password);
+
+                    var res = await LoginAsync(username, password);
+                    if (res.Success)
+                    {
+                        return new AuthResult(true, "Register succesful. Logged in", www.responseCode);
+                    }
+                    else
+                    {
+                        return new AuthResult(false, "Register succeeded, but login failed. " + res.Message, www.responseCode);
+                    }
                 }
                 else
                 {
-                    string errorMessage = ("[AuthManager]" + www.downloadHandler.text + www.error).Trim();
-                    OnRegisterFailed?.Invoke(errorMessage);
+                    return new AuthResult(false, "Register failed. " + www.downloadHandler.text, www.responseCode);
                 }
             }
         }
         catch(Exception ex)
         {
-            OnRegisterFailed?.Invoke("[AuthManager]" + ex.Message);
+            Debug.LogError("[AuthManager] Register exception" + ex);
+            return new AuthResult(false, "Unexpected error, register failed.");
         }
     }
 }

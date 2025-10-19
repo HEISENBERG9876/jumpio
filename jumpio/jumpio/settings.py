@@ -91,8 +91,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'jumpio_db',
-        'USER': 'myproject_user',
-        'PASSWORD': 'myproject_password',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'port': '5432',
     }

@@ -19,3 +19,7 @@ jumpio/.venv/
 # === General ===
 *.idea/
 *.vscode/
+
+# Visual Studio cache
+.vs/
+*.vsidx
