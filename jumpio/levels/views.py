@@ -1,4 +1,4 @@
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, parsers
 from .models import Level
 from .serializers import LevelSerializer
 
@@ -13,6 +13,7 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 class LevelViewSet(viewsets.ModelViewSet):
     queryset = Level.objects.select_related("user").order_by("-date_created")
     serializer_class = LevelSerializer
+    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
     filterset_fields = ["user", "difficulty"]
 

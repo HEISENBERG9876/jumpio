@@ -1,6 +1,7 @@
+using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking; 
-using System.Text;
 
 public class NetworkUtils
 {
@@ -28,6 +29,29 @@ public class NetworkUtils
         {
             request.SetRequestHeader("Authorization", "Bearer " + authToken);
         }
+        return request;
+    }
+
+    public static UnityWebRequest PostMultipart(
+        string url,
+        string authToken,
+        IEnumerable<(string key, string value)> formFields,
+        IEnumerable<(string fieldName, byte[] fileData, string fileName, string mimeType)> files)
+    {
+        var form = new WWWForm();
+
+        foreach (var (key, value) in formFields)
+            form.AddField(key, value);
+
+        foreach (var file in files)
+            form.AddBinaryData(file.fieldName, file.fileData, file.fileName, file.mimeType);
+
+        var request = UnityWebRequest.Post(url, form);
+        request.downloadHandler = new DownloadHandlerBuffer();
+
+        if (!string.IsNullOrEmpty(authToken))
+            request.SetRequestHeader("Authorization", "Bearer " + authToken);
+
         return request;
     }
 }

@@ -12,10 +12,30 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 
+import os
+from dotenv import load_dotenv
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+load_dotenv()
+
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": os.getenv("AWS_ACCESS_KEY_ID"),
+            "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
+            "region_name": os.getenv("AWS_S3_REGION_NAME"),
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -26,7 +46,6 @@ SECRET_KEY = 'django-insecure-u(&z8pasdu+xfb*ff_*ddp61_16p0k+8jb_q=b4%qfyj1if+q!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -41,6 +60,7 @@ INSTALLED_APPS = [
     'django_filters',
     'users',
     'levels',
+    'storages',
 ]
 
 REST_FRAMEWORK = {
@@ -117,7 +137,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

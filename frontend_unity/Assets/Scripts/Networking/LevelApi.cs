@@ -1,8 +1,9 @@
-using UnityEngine;
-using UnityEngine.Networking;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using UnityEngine;
+using UnityEngine.Networking;
 
 public class LevelApiResult
 {
@@ -43,26 +44,42 @@ public class LevelApi
         }
     }
     private LevelApi() { }
-    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedObjectData> layout)
+
+    //TODO multipart form data for file uploads
+    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedObjectData> layout, Texture2D? previewImage = null)
     {
         await UniTask.SwitchToMainThread();
 
-        var body = new LevelPostBody
+        var fields = new List<(string, string)>
         {
-            title = title,
-            difficulty = difficulty,
-            timer = timer,
-            layout = layout
+            ("title", title),
+            ("difficulty", difficulty),
+            ("timer", timer.ToString())
         };
 
-        using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/levels/", body, AuthManager.Instance.AccessToken))
+        var wrapper = new LayoutWrapper { layout = layout };
+        string layoutJson = JsonUtility.ToJson(wrapper);
+        byte[] layoutBytes = Encoding.UTF8.GetBytes(layoutJson);
+
+        var files = new List<(string, byte[], string, string)>
+        {
+            ("layout_file", layoutBytes, "layout.json", "application/json")
+        };
+
+        if (previewImage != null)
+        {
+            byte[] imageBytes = previewImage.EncodeToPNG();
+            files.Add(("preview_image", imageBytes, "preview.png", "image/png"));
+        }
+
+
+        using (UnityWebRequest www = NetworkUtils.PostMultipart("http://localhost:8000/api/levels/", AuthManager.Instance.AccessToken, fields, files.ToArray()))
         {
             await www.SendWebRequest().ToUniTask();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("[LevelApi] Level uploaded: " + www.downloadHandler.text);
-                return new LevelApiResult(true, "Level uploaded successfully", www.responseCode);
             }
             else
             {
@@ -72,6 +89,7 @@ public class LevelApi
         }
     }
 
+    //TODO
     public async UniTask<LevelApiResult<LevelDataResponse>> DownloadLevelAsync(int id)
     {
         await UniTask.SwitchToMainThread();

@@ -1,0 +1,16 @@
+{
+  "Thisistest": {
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the test"
+      },
+      "value": {
+        "type": "number",
+        "description": "Value associated with the test"
+      }
+    },
+    "required": [ "name", "value" ]
+  }"
+}

@@ -14,10 +14,7 @@ public class PlacedObjectData
 
 
 [System.Serializable]
-public class LevelPostBody
+public class LayoutWrapper
 {
-    public string title;
-    public string difficulty; //easy/medium/hard
-    public int timer = 120;
     public List<PlacedObjectData> layout;
 }
