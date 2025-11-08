@@ -573,9 +573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ToolbarController
   buttonContainer: {fileID: 1065549303}
   buttonPrefab: {fileID: 277660353203290123, guid: f84af59f58e2d9740a0d37f012610c65, type: 3}
-  placeables:
-  - {fileID: 11400000, guid: 7b48b18b87e96554d98be04dfb5c2956, type: 2}
-  - {fileID: 11400000, guid: ee25e3ad762ae8145b07f267febec1ae, type: 2}
+  database: {fileID: 11400000, guid: 60628dd712a694846af1d7f791fe6c04, type: 2}
 --- !u!224 &358348191
 RectTransform:
   m_ObjectHideFlags: 0

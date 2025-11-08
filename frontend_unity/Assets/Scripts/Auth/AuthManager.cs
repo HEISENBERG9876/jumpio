@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using Cysharp.Threading.Tasks;
+using System.Net;
 
 [Serializable]
 public class TokenResponse {
@@ -79,6 +80,8 @@ public class AuthManager : MonoBehaviour
     public bool IsLoggedIn => !string.IsNullOrEmpty(accessToken);
     public string AccessToken => accessToken;
 
+    [SerializeField] private Settings settings;
+
     public async UniTask<AuthResult> LoginAsync(string username, string password)
     {
         await UniTask.SwitchToMainThread();
@@ -86,7 +89,7 @@ public class AuthManager : MonoBehaviour
         {
             var payload = new LoginRequest { username = username, password = password };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/", payload))
+            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/", payload))
             {
                 await www.SendWebRequest().ToUniTask();
 
@@ -119,7 +122,7 @@ public class AuthManager : MonoBehaviour
         {
             var payload = new { refresh = refreshToken };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/token/refresh", payload))
+            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/refresh", payload))
             {
                 await www.SendWebRequest().ToUniTask();
 
@@ -152,7 +155,7 @@ public class AuthManager : MonoBehaviour
         {
             var payload = new RegisterRequest { username = username, email = email, password = password };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson("http://localhost:8000/api/users/register/", payload))
+            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "register/", payload))
             {
                 await www.SendWebRequest().ToUniTask();
 

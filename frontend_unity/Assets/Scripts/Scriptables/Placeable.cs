@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-[CreateAssetMenu(menuName = "LevelCreator/Placeable")]
+[CreateAssetMenu(menuName = "Scriptable Objects/Placeable")]
 public class Placeable : ScriptableObject
 {
     public string id;

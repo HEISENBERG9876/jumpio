@@ -11,10 +11,3 @@ public class PlacedObjectData
     public int rotation = 0;
     public string metadataJson;
 }
-
-
-[System.Serializable]
-public class LayoutWrapper
-{
-    public List<PlacedObjectData> layout;
-}

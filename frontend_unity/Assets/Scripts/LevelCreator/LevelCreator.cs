@@ -48,15 +48,12 @@ public class LevelCreator : MonoBehaviour
         worldPos.z = 0f;
 
         Vector3 snappedPos = new Vector3(
-            Mathf.Round(worldPos.x / cellSize) * cellSize,
-            Mathf.Round(worldPos.y / cellSize) * cellSize,
+            Mathf.Floor(worldPos.x / cellSize) * cellSize + cellSize * 0.5f,
+            Mathf.Floor(worldPos.y / cellSize) * cellSize + cellSize * 0.5f,
             0f
         );
 
         Instantiate(selection.prefab, snappedPos, Quaternion.identity);
         AddLevelData(selection, snappedPos);
-
-        
-    Debug.Log($"Added to layout: {selection.id} at ({snappedPos.x}, {snappedPos.y})");
     }
 }

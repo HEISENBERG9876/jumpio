@@ -11,7 +11,9 @@ public class ToolbarController : MonoBehaviour
     public Button buttonPrefab;
 
     [Header("Placeables")]
-    public List<Placeable> placeables;
+    public PlaceableDatabase database;
+
+    private List<Placeable> placeables => database.placeables;
     private Placeable currentSelection;
     private List<Button> buttons = new List<Button>();
 

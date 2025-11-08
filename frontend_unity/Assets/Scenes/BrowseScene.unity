@@ -643,6 +643,7 @@ MonoBehaviour:
   levelItemPrefab: {fileID: 5164986715808846632, guid: d5cc5373a604ca24c81733ee9a67d619, type: 3}
   prevButton: {fileID: 1592999797}
   nextButton: {fileID: 1813295342}
+  settings: {fileID: 11400000, guid: b9bcbddef1f06e746b5b43119295d9b2, type: 2}
 --- !u!114 &967298593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1053,8 +1054,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1185710070}
   m_HandleRect: {fileID: 1185710069}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9999999
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

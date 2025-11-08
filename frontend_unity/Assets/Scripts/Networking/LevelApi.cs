@@ -28,6 +28,13 @@ public class LevelApiResult<T> : LevelApiResult
     }
 }
 
+
+[System.Serializable]
+public class LayoutWrapper
+{
+    public List<PlacedObjectData> layout;
+}
+
 public class LevelApi
 {
     private static LevelApi _instance;
@@ -43,10 +50,14 @@ public class LevelApi
 
         }
     }
-    private LevelApi() { }
+    private LevelApi() {
+        settings = Resources.Load<Settings>("Settings");
+    }
+
+    private Settings settings;
 
     //TODO multipart form data for file uploads
-    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedObjectData> layout, Texture2D? previewImage = null)
+    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedObjectData> layout, Texture2D previewImage = null)
     {
         await UniTask.SwitchToMainThread();
 
@@ -73,13 +84,14 @@ public class LevelApi
         }
 
 
-        using (UnityWebRequest www = NetworkUtils.PostMultipart("http://localhost:8000/api/levels/", AuthManager.Instance.AccessToken, fields, files.ToArray()))
+        using (UnityWebRequest www = NetworkUtils.PostMultipart(settings.baseLevelUrl, AuthManager.Instance.AccessToken, fields, files.ToArray()))
         {
             await www.SendWebRequest().ToUniTask();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("[LevelApi] Level uploaded: " + www.downloadHandler.text);
+                return new LevelApiResult(true, "Level uploaded successfully", www.responseCode);
             }
             else
             {
@@ -89,31 +101,31 @@ public class LevelApi
         }
     }
 
-    //TODO
-    public async UniTask<LevelApiResult<LevelDataResponse>> DownloadLevelAsync(int id)
+
+    public async UniTask<LevelApiResult<List<PlacedObjectData>>> DownloadLevelLayoutAsync(string url)
     {
         await UniTask.SwitchToMainThread();
 
-        string url = $"http://localhost:8000/api/levels/{id}";
-
-        using (var www = NetworkUtils.GetJson(url, AuthManager.Instance.AccessToken))
+        //no token, since downloading directly from S3
+        using (var www = NetworkUtils.GetJson(url))
         {
             await www.SendWebRequest().ToUniTask();
 
             if (www.result == UnityWebRequest.Result.Success)
             {
+                var wrapper = JsonUtility.FromJson<LayoutWrapper>(www.downloadHandler.text);
                 Debug.Log("[LevelApi] Level downloaded: " + www.downloadHandler.text);
-                return new LevelApiResult<LevelDataResponse>(true, "Level downloaded successfully", www.responseCode, JsonUtility.FromJson<LevelDataResponse>(www.downloadHandler.text));
+                return new LevelApiResult<List<PlacedObjectData>>(true, "Level downloaded successfully", www.responseCode, wrapper.layout);
             }
             else
             {
                 Debug.LogError("[LevelApi] Request failed:" + www.downloadHandler.text);
-                return new LevelApiResult<LevelDataResponse>(false, "Failed to download level: " + www.downloadHandler.text, www.responseCode);
+                return new LevelApiResult<List<PlacedObjectData>>(false, "Failed to download level: " + www.downloadHandler.text, www.responseCode);
             }
         }
     }
 
-    public async UniTask<LevelApiResult<PaginatedLevelsResponse>> GetLevelsPageAsync(string url = "http://localhost:8000/api/levels/")
+    public async UniTask<LevelApiResult<PaginatedLevelsResponse>> GetLevelsPageAsync(string url)
     {
         await UniTask.SwitchToMainThread();
 

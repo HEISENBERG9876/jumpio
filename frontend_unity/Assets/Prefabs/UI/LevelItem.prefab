@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a20b71860759b147a38835fc21bda77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelItemUI
+  runtimeLevelData: {fileID: 11400000, guid: 3fe3712f36328014fb59acabba57c42d, type: 2}
   titleText: {fileID: 7422467082716354362}
   difficultyText: {fileID: 5774105205852203673}
   timerText: {fileID: 6221805200736535439}
