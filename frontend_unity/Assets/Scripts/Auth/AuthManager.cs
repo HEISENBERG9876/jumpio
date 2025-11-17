@@ -184,4 +184,10 @@ public class AuthManager : MonoBehaviour
             return new AuthResult(false, "Unexpected error, register failed.");
         }
     }
+
+    public void Logout()
+    {
+        accessToken = null;
+        refreshToken = null;
+    }
 }

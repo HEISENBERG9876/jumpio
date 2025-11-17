@@ -5,9 +5,6 @@ public class LoginUI : MonoBehaviour
 {
     [SerializeField] private TMP_InputField usernameInput;
     [SerializeField] private TMP_InputField passwordInput;
-    [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private GameObject loginPanel;
-
     public async void OnLoginButtonClicked()
     {
         string username = usernameInput.text;
@@ -17,8 +14,7 @@ public class LoginUI : MonoBehaviour
 
         if(res.Success)
         {
-            mainMenuPanel.SetActive(true);
-            loginPanel.SetActive(false);
+            UIManager.Instance.ShowMainMenuPanel();
         }
     }
 }

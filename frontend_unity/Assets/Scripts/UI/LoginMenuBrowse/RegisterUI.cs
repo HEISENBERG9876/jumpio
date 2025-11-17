@@ -6,8 +6,6 @@ public class RegisterUI : MonoBehaviour
     [SerializeField] private TMP_InputField usernameInput;
     [SerializeField] private TMP_InputField emailInput;
     [SerializeField] private TMP_InputField passwordInput;
-    [SerializeField] private GameObject mainMenuPanel;
-    [SerializeField] private GameObject loginPanel;
 
     public async void OnRegisterButtonClicked()
     {
@@ -20,8 +18,7 @@ public class RegisterUI : MonoBehaviour
 
         if (res.Success)
         {
-            mainMenuPanel.SetActive(true);
-            loginPanel.SetActive(false);
+            UIManager.Instance.ShowMainMenuPanel();
         }
         //TODO : Show error message. Also change the logic entirely, so Register and Login are separate.
     }

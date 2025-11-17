@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    //TODO get rid of old input system in other files
     public void Move(InputAction.CallbackContext context)
     {
         horizontalMovement = context.ReadValue<Vector2>().x;

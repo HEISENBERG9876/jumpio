@@ -65,7 +65,6 @@
     <Compile Include="Assets\Scripts\Networking\LevelApiModels.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
-    <Compile Include="Assets\Scripts\UI\LoginUI.cs" />
     <Compile Include="Assets\Scripts\LevelCreator\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Scripts\Scriptables\RuntimeLevelData.cs" />
@@ -75,7 +74,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Scripts\Scriptables\PlaceableDatabase.cs" />
-    <Compile Include="Assets\Scripts\UI\LevelItemUI.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\LogoutUI.cs" />
     <Compile Include="Assets\Scripts\Auth\AuthManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Level\LevelSpawner.cs" />
@@ -101,22 +100,26 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\UIManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\BrowseLevelsUI.cs" />
     <Compile Include="Assets\Scripts\Gameplay\Player\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\LoginUI.cs" />
     <Compile Include="Assets\Scripts\Scriptables\Placeable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
-    <Compile Include="Assets\Scripts\UI\RegisterUI.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\CreateLevelUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\RegisterUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
     <Compile Include="Assets\Scripts\LevelCreator\LevelData.cs" />
+    <Compile Include="Assets\Scripts\UI\LevelCreator\SaveLevelUI.cs" />
     <Compile Include="Assets\Scripts\LevelBrowser\LevelBrowser.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
-    <Compile Include="Assets\Scripts\SceneLoader.cs" />
-    <Compile Include="Assets\Scripts\UI\SaveLevelUI.cs" />
+    <Compile Include="Assets\Scripts\UI\LoginMenuBrowse\LevelItemUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
