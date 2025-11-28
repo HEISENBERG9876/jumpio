@@ -1,6 +1,6 @@
 using UnityEngine;
 
-
+//TODO auto generate ID, take icon from prefab
 [CreateAssetMenu(menuName = "Scriptable Objects/Placeable")]
 public class Placeable : ScriptableObject
 {

@@ -24,10 +24,6 @@ public class ToolbarController : MonoBehaviour
         {
             SelectPlaceable(placeables[0]);
         }
-
-        Debug.Log("buttonContainer: " + buttonContainer);
-        Debug.Log("buttonPrefab: " + buttonPrefab);
-        Debug.Log("placeables count: " + placeables.Count);
     }
 
     private void BuildToolbar()

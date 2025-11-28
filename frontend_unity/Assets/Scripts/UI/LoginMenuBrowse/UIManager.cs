@@ -1,4 +1,5 @@
 using UnityEngine;
+using Cysharp.Threading.Tasks;
 
 public class UIManager : MonoBehaviour
 {
@@ -6,13 +7,25 @@ public class UIManager : MonoBehaviour
 
     public GameObject LoginPanel;
     public GameObject MainMenuPanel;
-    public GameObject BrowseMenuPanel;
+    public GameObject BrowseMenuPanel; 
 
     private void Awake() => Instance = this;
 
-    private void Start()
+    private async void Start()
     {
-        ShowLoginPanel();
+        if(MenuReturnState.ReturnToBrowser)
+        {
+            MenuReturnState.ReturnToBrowser = false;
+            await ShowBrowsePanel();
+        }
+        else if (AuthManager.Instance.IsLoggedIn)
+        {
+            ShowMainMenuPanel();
+        }
+        else
+        {
+            ShowLoginPanel();
+        }
     }
 
     public void ShowLoginPanel()
@@ -29,10 +42,13 @@ public class UIManager : MonoBehaviour
         BrowseMenuPanel.SetActive(false);
     }
 
-    public void ShowBrowsePanel()
+    public async UniTask ShowBrowsePanel()
     {
         LoginPanel.SetActive(false);
         MainMenuPanel.SetActive(false);
         BrowseMenuPanel.SetActive(true);
+
+        var browser = BrowseMenuPanel.GetComponentInChildren<LevelBrowser>();
+        await browser.LoadPageAsync(browser.Settings.baseLevelUrl);
     }
 }

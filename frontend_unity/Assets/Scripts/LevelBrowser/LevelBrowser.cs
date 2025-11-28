@@ -11,16 +11,12 @@ public class LevelBrowser : MonoBehaviour
     public Button nextButton;
 
     [SerializeField] private Settings settings;
+    public Settings Settings => settings;
 
     private string prevUrl;
     private string nextUrl;
 
-    private async void OnEnable()
-    {
-        await LoadPageAsync(settings.baseLevelUrl);
-    }
-
-    //TODO app needs a base URL so I don't have to hardcode it. Also async void can be avoided. Also pooling for destroying game objects.
+    //TODO pooling for destroying game objects.
     public async UniTask LoadPageAsync(string url)
     {
         try

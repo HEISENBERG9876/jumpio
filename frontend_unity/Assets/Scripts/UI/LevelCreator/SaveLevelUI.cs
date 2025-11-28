@@ -8,6 +8,18 @@ public class SaveLevelUI : MonoBehaviour
     public TMP_Dropdown difficultyDropdown;
     public TMP_InputField timerInput;
     public LevelCreator levelCreator;
+    public GameObject SaveLevelFormPanel;
+
+
+    public void OnSaveFormOpenClicked()
+    {
+        SaveLevelFormPanel.SetActive(true);
+    }
+
+    public void OnCancelButtonClicked()
+    {
+        SaveLevelFormPanel.SetActive(false);
+    }
 
     public async void OnSaveButtonClicked()
     {

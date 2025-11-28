@@ -128,6 +128,7 @@ public class LevelApi
     public async UniTask<LevelApiResult<PaginatedLevelsResponse>> GetLevelsPageAsync(string url)
     {
         await UniTask.SwitchToMainThread();
+        Debug.Log("[LevelApi] Token: " + AuthManager.Instance.AccessToken);
 
         using (var www = NetworkUtils.GetJson(url, AuthManager.Instance.AccessToken))
         {

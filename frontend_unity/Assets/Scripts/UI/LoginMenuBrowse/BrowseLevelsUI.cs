@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
 
 public class BrowseLevelsUI : MonoBehaviour
 {
-    public void OnBrowseLevelsButtonClicked()
+    public LevelBrowser levelBrowser;
+    public async void OnBrowseLevelsButtonClicked()
     {
-        UIManager.Instance.ShowBrowsePanel();
+        await UIManager.Instance.ShowBrowsePanel();
     }
 }
