@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a7081c6e916a324baf003fab6d1ed3a, type: 3}
-  m_Name: DirtWithGrass
+  m_Name: Dirt
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
-  id: 3
-  icon: {fileID: 7932798033344189819, guid: 66ff734627ec9c349ba53035301318b7, type: 3}
-  prefab: {fileID: 5073234399106352506, guid: 609c551ed15068c4098c24ad50a2874a, type: 3}
+  id: Dirt
+  icon: {fileID: 5910164403571872235, guid: a846e109a1f7af545b97840b79013f85, type: 3}
+  prefab: {fileID: 5073234399106352506, guid: 52932e1cb03a263418d02d386e40dcca, type: 3}

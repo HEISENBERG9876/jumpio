@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 4306351815918696136}
   - component: {fileID: 5032550573862313745}
   - component: {fileID: 5552596297351847989}
-  - component: {fileID: 6884425156622683271}
   - component: {fileID: 4999102795938807576}
   - component: {fileID: 3385244854421760223}
+  - component: {fileID: 6884425156622683271}
+  - component: {fileID: 4981549109742056088}
+  - component: {fileID: 971193365134396956}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -225,30 +227,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6884425156622683271
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 623170397772086724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42514563ba592cd4f929437959afea25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  rb: {fileID: 5032550573862313745}
-  moveSpeed: 6
-  jumpForce: 15
-  baseGravity: 2.5
-  baseFallGravity: 7
-  shortJumpGravity: 7
-  maxFallSpeed: 10
-  groundCheckPos: {fileID: 5372166959003326448}
-  groundCheckSize: {x: 1.01, y: 0.05}
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!61 &4999102795938807576
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -331,6 +309,66 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.39
+--- !u!114 &6884425156622683271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623170397772086724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42514563ba592cd4f929437959afea25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  rb: {fileID: 5032550573862313745}
+  animator: {fileID: 971193365134396956}
+  moveSpeed: 6
+  jumpForce: 15
+  baseGravity: 2.5
+  baseFallGravity: 7
+  shortJumpGravity: 7
+  maxFallSpeed: 10
+  maxCoyoteTime: 0.1
+  groundCheckPos: {fileID: 5372166959003326448}
+  groundCheckSize: {x: 0.72, y: 0.05}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &4981549109742056088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623170397772086724}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0460c8c6a91644f9c75c76d37b3379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+--- !u!95 &971193365134396956
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623170397772086724}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f8f89946757d02049993bc1004687d47, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3341733268468460877
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,7 +394,7 @@ Transform:
   m_GameObject: {fileID: 3341733268468460877}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.4, z: 0}
+  m_LocalPosition: {x: -0, y: -0.38, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour
             return;
         }
         Instance = this;
+
+        Mode.IsEditorMode = false;
+
+
     }
 
     public enum GameState

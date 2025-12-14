@@ -9,6 +9,7 @@ public class Placeable : ScriptableObject
     public string id;
     public Sprite icon;
     public GameObject prefab;
+    public float offsetY;
 
 #if UNITY_EDITOR
     private void OnValidate()

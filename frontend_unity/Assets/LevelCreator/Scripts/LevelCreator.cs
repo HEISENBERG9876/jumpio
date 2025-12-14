@@ -8,6 +8,12 @@ public class LevelCreator : MonoBehaviour
     public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
 
+    private void Awake()
+    {
+        Mode.IsEditorMode = true;
+        Debug.Log("Game mode from Level Creator:" + Mode.IsEditorMode.ToString());
+    }
+
 
     void Update()
     {
@@ -52,6 +58,8 @@ public class LevelCreator : MonoBehaviour
             Mathf.Floor(worldPos.y / cellSize) * cellSize + cellSize * 0.5f,
             0f
         );
+
+        snappedPos.y += selection.offsetY;
 
         Instantiate(selection.prefab, snappedPos, Quaternion.identity);
         AddLevelData(selection, snappedPos);

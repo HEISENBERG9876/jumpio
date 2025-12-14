@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//TODO should be part of controller
 public class PlayerSpawner : MonoBehaviour
 {
     public GameObject playerPrefab;

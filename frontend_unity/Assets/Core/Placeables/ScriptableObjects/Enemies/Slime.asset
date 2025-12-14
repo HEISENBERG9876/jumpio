@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a7081c6e916a324baf003fab6d1ed3a, type: 3}
-  m_Name: Platform
+  m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
-  id: 2
-  icon: {fileID: -1905038777724749881, guid: 7a04524e44bc5bc4f99379920b2657a1, type: 3}
-  prefab: {fileID: 4548716657968844424, guid: 8c0bf3eea87c8764489b5e078abbc30f, type: 3}
+  id: Slime
+  icon: {fileID: -5806569824348050239, guid: e91b68ede1623904386deb6e7d52c218, type: 3}
+  prefab: {fileID: 4888987707114273052, guid: 6086b14b9ca6c91489149774551e68a9, type: 3}
+  offsetY: -0.25
