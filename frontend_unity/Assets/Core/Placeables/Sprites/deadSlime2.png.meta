@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fb7a13cf536f17e46b911e0658cc4a6f
+guid: 2cad30fa80a83ee4f9479c3b64d59421
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7766138646619079479
-    second: slimeDead_0
+      213: 1108677862507052017
+    second: deadSlime2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,12 +46,12 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 59
+  spritePixelsToUnits: 50
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: slimeDead_0
+      name: deadSlime2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 59
-        height: 12
+        width: 50
+        height: 14
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 733c92cc3fdd6cb60800000000000000
-      internalID: 7766138646619079479
+      spriteID: 1fb721554a0d26f00800000000000000
+      internalID: 1108677862507052017
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 7f7e0a1a334d1ad4aacdb15e04bc8bc3
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      slimeDead_0: 7766138646619079479
+      deadSlime2_0: 1108677862507052017
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

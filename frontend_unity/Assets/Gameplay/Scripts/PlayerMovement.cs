@@ -81,7 +81,10 @@ public class PlayerMovement : MonoBehaviour
         else if (context.canceled)
         {
             isJumpCancelled = true;
-            animator.SetTrigger("jump");
+            if(rb.linearVelocityY > 0f)
+            {
+                animator.SetTrigger("jump");
+            }
         }
     }
 

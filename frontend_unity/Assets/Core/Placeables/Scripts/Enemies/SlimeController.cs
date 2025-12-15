@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 
 public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
 {
@@ -13,6 +14,7 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
     private bool movingLeft = true;
 
     public Animator animator;
+    private bool isDead = false;
 
     void OnEnable()
     {
@@ -31,7 +33,7 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
 
     void FixedUpdate()
     {
-        if (Mode.IsEditorMode)
+        if (Mode.IsEditorMode ||  isDead)
         {
             return;
         }
@@ -52,13 +54,22 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
         if (collision.contacts[0].normal.y > 0.5f)
         {
             Debug.Log("Slime stomped!");
-            Die();
+            isDead = true;
+            StopCollidingAndMoving();
+            animator.SetTrigger("Die");
         }
         else
         {
             Debug.Log("Player hit slime from the side, taking damage");
             DealDamage(player);
         }
+    }
+
+    private void StopCollidingAndMoving()
+    {
+        GetComponent<Collider2D>().enabled = false;
+        rb.simulated = false;
+        rb.linearVelocity = Vector2.zero;
     }
 
     public void DealDamage(PlayerController player)
@@ -75,7 +86,7 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
         return;
     }
 
-    private void Die()
+    public void OnDeathAnimationEnd()
     {
         Debug.Log("Slime died!");
         Destroy(gameObject);
