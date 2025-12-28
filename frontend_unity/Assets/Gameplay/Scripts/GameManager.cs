@@ -1,23 +1,13 @@
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
-        Instance = this;
-
         Mode.IsEditorMode = false;
-
-
     }
 
     public enum GameState
@@ -40,16 +30,33 @@ public class GameManager : MonoBehaviour
 
     private async void Start()
     {
-        await StartGame();
+        //TODO change load mode depending on where the game is started from
+        await StartGame(LevelLoadMode.ForceDownload);
     }
 
-    public async UniTask StartGame()
+    private void OnEnable()
+    {
+        FinishFlag.Reached += EndGame;
+    }
+
+    private void OnDisable()
+    {
+        FinishFlag.Reached -= EndGame;
+    }
+
+    public async UniTask StartGame(LevelLoadMode levelLoadMode)
     {
         Debug.Log("Game Started");
-        await levelSpawner.SpawnLevelFromUrlAsync(runtimeLevelData.layoutUrl);
+        List<PlacedObjectData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
+        levelSpawner.SpawnLevelFromList(layout);
         player = playerSpawner.SpawnPlayer(settings.playerSpawnPosition, Quaternion.identity);
         virtualCamera.Follow = player.transform;
 
+    }
+
+    public void EndGame()
+    {
+        Debug.Log("Game Ended - You Win!");
     }
 
 

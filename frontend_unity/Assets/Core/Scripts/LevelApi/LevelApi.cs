@@ -106,7 +106,6 @@ public class LevelApi
     {
         await UniTask.SwitchToMainThread();
 
-        //no token, since downloading directly from S3
         using (var www = NetworkUtils.GetJson(url))
         {
             await www.SendWebRequest().ToUniTask();

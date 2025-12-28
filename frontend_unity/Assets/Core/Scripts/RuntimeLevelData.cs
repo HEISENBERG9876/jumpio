@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-//TODO change to static class?
 [CreateAssetMenu(fileName = "RuntimeLevelData", menuName = "Scriptable Objects/RuntimeLevelData")]
 public class RuntimeLevelData : ScriptableObject
 {
@@ -17,5 +16,6 @@ public class RuntimeLevelData : ScriptableObject
         difficulty = "";
         timer = 0;
         layoutUrl = "";
+        cachedLayout?.Clear();
     }
 }

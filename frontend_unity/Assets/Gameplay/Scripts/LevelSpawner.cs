@@ -7,36 +7,17 @@ public class LevelSpawner : MonoBehaviour
     [Header("References")]
     public PlaceableDatabase database;
 
-    [SerializeField] private RuntimeLevelData runtimeLevelData;
-
-    public async UniTask SpawnLevelFromUrlAsync(string url)
-    {
-        if(runtimeLevelData.cachedLayout != null && runtimeLevelData.cachedLayout.Count > 0)
-        {
-            Debug.Log($"[LevelSpawner] Using cached layout");
-            SpawnLevelFromList(runtimeLevelData.cachedLayout);
-            return;
-        }
-
-        var result = await LevelApi.Instance.DownloadLevelLayoutAsync(url);
-
-        if (result.Success && result.Data != null)
-        {
-            runtimeLevelData.cachedLayout = result.Data;
-            Debug.Log($"[LevelSpawner] Successfully downloaded layout with {result.Data.Count} objects");
-            SpawnLevelFromList(result.Data);
-        }
-        else
-        {
-            Debug.LogError($"[LevelSpawner] Failed to load layout: {result.Message}");
-        }
-    }
-
     public void SpawnLevelFromList(List<PlacedObjectData> layout)
     {
         if (database == null || database.placeables == null)
         {
             Debug.LogError("[LevelSpawner] Placeable database not assigned or empty.");
+            return;
+        }
+
+        if(layout == null || layout.Count == 0)
+        {
+            Debug.LogWarning("[LevelSpawner] Layout is null or empty. No objects to spawn.");
             return;
         }
 
