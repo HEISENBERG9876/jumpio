@@ -2,14 +2,10 @@ using UnityEngine;
 using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    void Awake()
-    {
-        Mode.IsEditorMode = false;
-    }
-
     public enum GameState
     {
         Loading,
@@ -19,45 +15,104 @@ public class GameManager : MonoBehaviour
         Lost
     }
 
-    //TODO allow saving custom player spawn position in settings
+    //TODO allow saving custom player spawn position in settings OR make player a placeable
     [Header("References")]
     public CinemachineCamera virtualCamera;
     public LevelSpawner levelSpawner;
     public PlayerSpawner playerSpawner;
-    [SerializeField] private RuntimeLevelData runtimeLevelData;
+    public Timer timer;
+    [SerializeField] RuntimeLevelData runtimeLevelData;
     private GameObject player;
-    [SerializeField] private Settings settings;
+    private PlayerController playerController;
+    [SerializeField] Settings settings;
+    [SerializeField] GameplayUI gameplayUI;
+    private GameState currentState;
 
     private async void Start()
     {
-        //TODO change load mode depending on where the game is started from
         await StartGame(LevelLoadMode.ForceDownload);
     }
 
     private void OnEnable()
     {
-        FinishFlag.Reached += EndGame;
+        FinishFlag.Reached += OnWin;
+        timer.TimerEnded += OnLose;
     }
 
     private void OnDisable()
     {
-        FinishFlag.Reached -= EndGame;
+        FinishFlag.Reached -= OnWin;
+        timer.TimerEnded -= OnLose;
+
+        if (playerController != null)
+        {
+            playerController.Died -= OnLose;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Playing)
+            {
+                Time.timeScale = 0f;
+                gameplayUI.ShowPausePanel();
+                currentState = GameState.Paused;
+            }
+            else if (currentState == GameState.Paused)
+            {
+                Time.timeScale = 1f;
+                gameplayUI.HideAllPanels();
+                currentState = GameState.Playing;
+            }
+        }
     }
 
     public async UniTask StartGame(LevelLoadMode levelLoadMode)
     {
-        Debug.Log("Game Started");
+        gameplayUI.HideAllPanels();
+        currentState = GameState.Loading;
+
         List<PlacedObjectData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
+        timer.StartTimer(runtimeLevelData.timer);
         levelSpawner.SpawnLevelFromList(layout);
         player = playerSpawner.SpawnPlayer(settings.playerSpawnPosition, Quaternion.identity);
+        playerController = player.GetComponent<PlayerController>();
+        playerController.Died += OnLose;
         virtualCamera.Follow = player.transform;
 
+        currentState= GameState.Playing;
+
     }
 
-    public void EndGame()
+    public void OnWin()
     {
-        Debug.Log("Game Ended - You Win!");
+        Time.timeScale = 0f;
+        timer.StopTimer();
+        gameplayUI.ShowWonPanel();
+        currentState= GameState.Won;
     }
 
+    public void OnLose()
+    {
+        Time.timeScale = 0f;
+        timer.StopTimer();
+        gameplayUI.showLostPanel();
+        currentState= GameState.Lost;
+    }
+
+    public void ReturnToBrowser()
+    {
+        Time.timeScale = 1f;
+        MenuReturnState.ReturnToBrowser = true;
+        SceneManager.LoadScene("LoginMenuBrowseScene");
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 
 }

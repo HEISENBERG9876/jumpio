@@ -29,6 +29,7 @@ public class LevelSpawner : MonoBehaviour
                 Vector3 position = new Vector3(obj.x, obj.y, 0);
                 Quaternion rotation = Quaternion.Euler(0, 0, obj.rotation);
                 Instantiate(placeable.prefab, position, rotation);
+                Debug.Log($"[LevelSpawner] Spawned object ID: {obj.id} at position: {position} with rotation: {obj.rotation}");
             }
             else
             {

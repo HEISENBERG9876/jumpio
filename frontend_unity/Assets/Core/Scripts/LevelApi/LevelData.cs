@@ -4,8 +4,8 @@ using System.Collections.Generic;
 public class PlacedObjectData
 {
     public string id;
-    public int x;
-    public int y;
+    public float x;
+    public float y;
     public int width = 1;
     public int height = 1;
     public int rotation = 0;

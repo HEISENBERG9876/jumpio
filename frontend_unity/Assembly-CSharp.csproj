@@ -62,11 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
+    <Compile Include="Assets\Placeables\FinishFlag\FinishFlag.cs" />
+    <Compile Include="Assets\Placeables\Cannon\BulletController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Gameplay\Scripts\GameManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Login\Scripts\UI\LoginUI.cs" />
+    <Compile Include="Assets\Placeables\Spike\SpikeController.cs" />
     <Compile Include="Assets\Placeables\Scripts\Placeable.cs" />
+    <Compile Include="Assets\Gameplay\Scripts\EditorModeToggle.cs" />
     <Compile Include="Assets\Placeables\Scripts\Interfaces\IStompable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
     <Compile Include="Assets\Login\Scripts\UI\LogoutUI.cs" />
@@ -76,13 +80,13 @@
     <Compile Include="Assets\Core\Scripts\RuntimeLevelData.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\LevelBrowser.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\UI\LevelItemUI.cs" />
+    <Compile Include="Assets\Gameplay\Scripts\UI\GameplayUI.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\MenuReturnState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Placeables\Scripts\Enemies\SlimeController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Placeables\Scripts\PlaceableDatabase.cs" />
     <Compile Include="Assets\Placeables\Scripts\Interfaces\IKnockBacker.cs" />
@@ -103,6 +107,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ChatController.cs" />
+    <Compile Include="Assets\Gameplay\Scripts\Timer.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\LevelCreator.cs" />
     <Compile Include="Assets\Core\Scripts\Settings.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
@@ -111,7 +116,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApiModels.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
-    <Compile Include="Assets\Placeables\Scripts\Other\FinishFlag.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelLoader.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
@@ -125,11 +129,12 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\Placeables\Slime\SlimeController.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\ToolbarController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerMovement.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelData.cs" />
-    <Compile Include="Assets\Core\Scripts\Mode.cs" />
+    <Compile Include="Assets\Placeables\Cannon\CannonTwoSidesController.cs" />
     <Compile Include="Assets\Core\UI\Scripts\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>

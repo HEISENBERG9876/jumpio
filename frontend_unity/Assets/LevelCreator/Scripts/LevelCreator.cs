@@ -8,13 +8,6 @@ public class LevelCreator : MonoBehaviour
     public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
 
-    private void Awake()
-    {
-        Mode.IsEditorMode = true;
-        Debug.Log("Game mode from Level Creator:" + Mode.IsEditorMode.ToString());
-    }
-
-
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
@@ -29,8 +22,8 @@ public class LevelCreator : MonoBehaviour
         var data = new PlacedObjectData
         {
             id = selection.id,
-            x = (int)SnappedPos[0],
-            y = (int)SnappedPos[1],
+            x = SnappedPos[0],
+            y = SnappedPos[1],
             rotation = 0
         };
         currentLayout.Add(data);
@@ -61,7 +54,17 @@ public class LevelCreator : MonoBehaviour
 
         snappedPos.y += selection.offsetY;
 
-        Instantiate(selection.prefab, snappedPos, Quaternion.identity);
+        Debug.Log($"Placing object at {snappedPos}");
+
+        var go = Instantiate(selection.prefab, snappedPos, Quaternion.identity);
+
+        Debug.Log("Real snapped pos: " + go.transform.position);
+
+        foreach (var toggle in go.GetComponentsInChildren<EditorModeToggle>(true))
+        {
+            toggle.Apply(true);
+        }
+
         AddLevelData(selection, snappedPos);
     }
 }
