@@ -89,7 +89,7 @@ public class LevelCreator : MonoBehaviour
         });
 
         lastActionCell = cell;
-        AddLevelData(selection, snappedPos);
+        currentLayout.Add(placedWithCell[cell].placedObjectData);
     }
 
     
@@ -134,21 +134,6 @@ public class LevelCreator : MonoBehaviour
         float x = cellPos.x * cellSize + cellSize * 0.5f;
         float y = cellPos.y * cellSize + cellSize * 0.5f;
         return new Vector3(x, y, 0f);
-    }
-
-
-    void AddLevelData(Placeable selection, Vector3 SnappedPos)
-    {
-
-        var data = new PlacedObjectData
-        {
-            id = selection.id,
-            x = SnappedPos.x,
-            y = SnappedPos.y,
-            rotation = 0
-        };
-        currentLayout.Add(data);
-
     }
 
 
