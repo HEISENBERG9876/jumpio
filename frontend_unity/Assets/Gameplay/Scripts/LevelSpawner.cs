@@ -21,19 +21,19 @@ public class LevelSpawner : MonoBehaviour
             return;
         }
 
-        foreach (var obj in layout)
+        foreach (PlacedObjectData placedObjectData in layout)
         {
-            var placeable = database.placeables.Find(p => p.id == obj.id);
+            Placeable placeable = database.placeables.Find(p => p.id == placedObjectData.id);
             if (placeable != null && placeable.prefab != null)
             {
-                Vector3 position = new Vector3(obj.x, obj.y, 0);
-                Quaternion rotation = Quaternion.Euler(0, 0, obj.rotation);
+                Vector3 position = new Vector3(placedObjectData.x + 0.5f, placedObjectData.y + 0.5f, 0f);
+                Quaternion rotation = Quaternion.Euler(0, 0, placedObjectData.rotation);
                 Instantiate(placeable.prefab, position, rotation);
-                Debug.Log($"[LevelSpawner] Spawned object ID: {obj.id} at position: {position} with rotation: {obj.rotation}");
+                Debug.Log($"[LevelSpawner] Spawned object ID: {placedObjectData.id} at position: {position} with rotation: {placedObjectData.rotation}");
             }
             else
             {
-                Debug.LogWarning($"[LevelSpawner] Unknown or missing prefab for object ID: {obj.id}");
+                Debug.LogWarning($"[LevelSpawner] Unknown or missing prefab for object ID: {placedObjectData.id}");
             }
         }
     }

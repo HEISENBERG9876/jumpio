@@ -10,7 +10,7 @@ public class LevelCreator : MonoBehaviour
 {
     public PlaceableDatabase placeableDatabase;
     public ToolbarController toolbar;
-    public List<PlacedObjectData> currentLayout = new();
+    //public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
     public bool deleteMode = false;
     private Vector2Int lastActionCell = new Vector2Int(int.MinValue, int.MinValue);
@@ -129,13 +129,12 @@ public class LevelCreator : MonoBehaviour
         PlacedRecord placedRecord = new PlacedRecord(go, new PlacedObjectData
         {
             id = placeable.id,
-            x = worldCellCenterPos.x,
-            y = worldCellCenterPos.y,
+            x = cell.x,
+            y = cell.y,
             rotation = 0
         });
 
         placedWithCell[cell] = placedRecord;
-        currentLayout.Add(placedWithCell[cell].placedObjectData);
     }
 
 
@@ -156,7 +155,6 @@ public class LevelCreator : MonoBehaviour
         PlacedRecord placedRecord = new PlacedRecord(go, placedData);
 
         placedWithCell[cell] = placedRecord;
-        currentLayout.Add(placedWithCell[cell].placedObjectData);
     }
 
 
@@ -175,7 +173,6 @@ public class LevelCreator : MonoBehaviour
         if (placedWithCell.TryGetValue(cell, out PlacedRecord record))
         {
             Destroy(record.gameObject);
-            currentLayout.Remove(record.placedObjectData);
             placedWithCell.Remove(cell);
             Debug.Log($"Deleted object at cell {cell}");
         }
@@ -221,6 +218,7 @@ public class LevelCreator : MonoBehaviour
 
 
     //Grid
+    //cellsize is 1, so dividing/multiplying not really needed
     private Vector2Int WorldToCell(Vector3 worldPos)
     {
         int x = Mathf.FloorToInt(worldPos.x / cellSize);
@@ -229,10 +227,21 @@ public class LevelCreator : MonoBehaviour
     }
 
 
-    private Vector3 CellToWorldCenter(Vector2Int cellPos)
+    public Vector3 CellToWorldCenter(Vector2Int cellPos)
     {
         float x = cellPos.x * cellSize + cellSize * 0.5f;
         float y = cellPos.y * cellSize + cellSize * 0.5f;
         return new Vector3(x, y, 0f);
+    }
+
+    //Layout export
+    public List<PlacedObjectData> GetCurrentLayout()
+    {
+        List<PlacedObjectData> layout = new List<PlacedObjectData>();
+        foreach (var record in placedWithCell.Values)
+        {
+            layout.Add(record.placedObjectData);
+        }
+        return layout;
     }
 }

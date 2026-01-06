@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Unity.Cinemachine;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -56,15 +57,11 @@ public class GameManager : MonoBehaviour
         {
             if (currentState == GameState.Playing)
             {
-                Time.timeScale = 0f;
-                gameplayUI.ShowPausePanel();
-                currentState = GameState.Paused;
+                Pause();
             }
             else if (currentState == GameState.Paused)
             {
-                Time.timeScale = 1f;
-                gameplayUI.HideAllPanels();
-                currentState = GameState.Playing;
+                Resume();
             }
         }
     }
@@ -107,6 +104,20 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         MenuReturnState.ReturnToBrowser = true;
         SceneManager.LoadScene("LoginMenuBrowseScene");
+    }
+
+    public void Pause()
+    {
+        Time.timeScale = 0f;
+        gameplayUI.ShowPausePanel();
+        currentState = GameState.Paused;
+    }
+
+    public void Resume()
+    {
+        Time.timeScale = 1f;
+        gameplayUI.HideAllPanels();
+        currentState = GameState.Playing;
     }
 
     public void Restart()

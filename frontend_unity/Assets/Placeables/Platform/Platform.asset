@@ -15,3 +15,4 @@ MonoBehaviour:
   id: Platform
   icon: {fileID: -1905038777724749881, guid: 7a04524e44bc5bc4f99379920b2657a1, type: 3}
   prefab: {fileID: 4548716657968844424, guid: 8c0bf3eea87c8764489b5e078abbc30f, type: 3}
+  offsetY: 0.25

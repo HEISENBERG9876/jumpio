@@ -26,7 +26,7 @@ public class SaveLevelUI : MonoBehaviour
         string title = titleInput.text;
         string difficulty = difficultyDropdown.options[difficultyDropdown.value].text;
         int timer = int.Parse(timerInput.text);
-        List<PlacedObjectData> layout = levelCreator.currentLayout;
+        List<PlacedObjectData> layout = levelCreator.GetCurrentLayout();
 
         await LevelApi.Instance.UploadLevelAsync(title, difficulty, timer, layout);
     }
