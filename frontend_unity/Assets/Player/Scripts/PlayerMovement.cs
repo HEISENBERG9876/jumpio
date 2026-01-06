@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Runtime.CompilerServices;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement")]
     public float moveSpeed = 6f;
     private float horizontalMovement;
+    private float groundVelocityX = 0f;
 
     [Header("Jumping")]
     public float jumpForce = 15f;
@@ -38,13 +40,13 @@ public class PlayerMovement : MonoBehaviour
         }
 
         animator.SetFloat("yVelocity", rb.linearVelocityY);
-        animator.SetFloat("magnitude", rb.linearVelocity.magnitude);
+        animator.SetFloat("magnitude", Mathf.Abs(horizontalMovement));
 
-        if (rb.linearVelocityX < 0f)
+        if (horizontalMovement < 0f)
         {
             FlipLeft();
         }
-        else if (rb.linearVelocityX > 0f)
+        else if (horizontalMovement > 0f)
         {
             FlipRight();
         }
@@ -53,9 +55,35 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.linearVelocityX = horizontalMovement * moveSpeed;
+        rb.linearVelocityX = CalculateDesiredVelocityX();
         Gravity();
 
+    }
+
+    private float CalculateDesiredVelocityX()
+    {
+        //possible feels better?
+        //float result = 0;
+        //if (IsGrounded())
+        //{
+        //    if(horizontalMovement != 0f)
+        //    {
+        //        result = horizontalMovement * moveSpeed;
+        //    }
+        //    else
+        //    {
+        //        result = groundVelocityX;
+        //    }
+        //}
+        //else
+        //{
+        //    result = horizontalMovement * moveSpeed;
+        //}
+        //return result;
+        float platformVelocityX = IsGrounded() ? groundVelocityX : 0f;
+        float desiredWorldX = platformVelocityX + horizontalMovement * moveSpeed;
+
+        return Mathf.Clamp(desiredWorldX, -moveSpeed * 1.2f, moveSpeed * 1.2f);
     }
 
     //TODO get rid of old input system in other files
@@ -109,9 +137,28 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //also calculates ground velocity when on moving platforms
     private bool IsGrounded()
     {
-        return Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
+        Collider2D hit = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
+        if(hit == null)
+        {
+            groundVelocityX = 0f;
+            return false;
+        }
+
+        Rigidbody2D groundRb = hit.attachedRigidbody;
+
+        if(groundRb != null)
+        {
+            groundVelocityX = groundRb.linearVelocityX;
+        }
+        else
+        {
+            groundVelocityX = 0f;
+        }
+
+        return true;
     }
 
     private bool CanJump()
