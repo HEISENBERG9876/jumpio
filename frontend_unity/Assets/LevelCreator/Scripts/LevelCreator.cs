@@ -14,20 +14,110 @@ public class PlacedRecord
     }
 }
 
+public interface ICreatorCommand
+{
+    void Execute(LevelCreator levelCreator);
+    void Undo(LevelCreator levelCreator);
+}
+
+public class PlaceCommand : ICreatorCommand
+{
+    private Vector2Int cell;
+    private Placeable placeable;
+    //private PlacedRecord placedRecord;
+    public PlaceCommand(Vector2Int cell, Placeable placeable)
+    {
+        this.cell = cell;
+        this.placeable = placeable;
+    }
+    public void Execute(LevelCreator levelCreator)
+    {
+        levelCreator.PlaceAtCell(cell, placeable);
+    }
+    public void Undo(LevelCreator levelCreator)
+    {
+        levelCreator.DeleteAtCell(cell);
+    }
+}
+
+public class DeleteCommand : ICreatorCommand
+{
+    private Vector2Int cell;
+    private Placeable deletedPlaceable;
+    private PlacedRecord deletedRecord;
+    public DeleteCommand(Vector2Int cell)
+    {
+        this.cell = cell;
+    }
+
+    public void Execute(LevelCreator levelCreator)
+    {
+        deletedRecord = levelCreator.GetRecord(cell);
+
+        if (deletedRecord == null)
+        {
+            return;
+        }
+
+        deletedPlaceable = levelCreator.GetPlaceableById(deletedRecord.placedObjectData.id);
+        levelCreator.DeleteAtCell(cell);
+    }
+
+    public void Undo(LevelCreator levelCreator)
+    {
+        if (deletedRecord == null)
+        {
+            return;
+        }
+        PlacedObjectData deletedData = deletedRecord.placedObjectData;
+        levelCreator.PlaceAtCell(cell, deletedPlaceable, deletedData);
+    }
+}
+
 //minimum allowable height to place objects should be -11.5
 //maximum allowable height should be 9.5
+//TODO current layout is redundant
 public class LevelCreator : MonoBehaviour
 {
+    public PlaceableDatabase placeableDatabase;
     public ToolbarController toolbar;
     public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
     public bool deleteMode = false;
     private Vector2Int lastActionCell = new Vector2Int(int.MinValue, int.MinValue);
     private Dictionary<Vector2Int, PlacedRecord> placedWithCell = new();
+    private Stack<ICreatorCommand> undoStack = new();
+    private Stack<ICreatorCommand> redoStack = new();
+    public float undoRedoMaxTimer = 0.15f;
+    private float undoRedoTimer = 0f;
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.X))
+        undoRedoTimer += Time.deltaTime;
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            if (undoRedoTimer >= undoRedoMaxTimer)
+            {
+                Undo();
+                undoRedoTimer = 0f;
+            }
+        }
+        else if (Input.GetKey(KeyCode.Y))
+        {
+            if (undoRedoTimer >= undoRedoMaxTimer)
+            {
+                Redo();
+                undoRedoTimer = 0f;
+            }
+        }
+        else
+        {
+            undoRedoTimer = undoRedoMaxTimer;
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.X))
         {
             deleteMode = !deleteMode;
             Debug.Log($"Delete mode: {deleteMode}");
@@ -35,79 +125,124 @@ public class LevelCreator : MonoBehaviour
 
         if (Input.GetMouseButton(0))
         {
-            if(deleteMode)
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            Vector3 mousePos = Input.mousePosition;
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+            Vector2Int cell = WorldToCell(worldPos);
+
+            if (cell == lastActionCell)
             {
-                DeleteObjectAtMouse();
                 return;
             }
-            PlaceObjectAtMouse();
+
+            lastActionCell = cell;
+
+            if (deleteMode)
+            {
+                TryDeleteCommand(cell);
+                return;
+            }
+
+            TryPlaceCommand(cell);
         }
 
-        if(Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))
         {
             lastActionCell = new Vector2Int(int.MinValue, int.MinValue);
         }
     }
 
-    void PlaceObjectAtMouse()
+    private void TryPlaceCommand(Vector2Int cell)
     {
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            return;
+        Placeable selectedPlaceable = toolbar.GetSelection();
 
-        Placeable selection = toolbar.GetSelection();
-        if (selection == null || selection.prefab == null)
+        if (selectedPlaceable == null || selectedPlaceable.prefab == null)
         {
             Debug.Log("No placeable selected.");
             return;
         }
 
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector2Int cell = WorldToCell(worldPos);
-        if (cell == lastActionCell || placedWithCell.ContainsKey(cell))
+        if (placedWithCell.ContainsKey(cell))
         {
             return;
         }
-        Vector3 snappedPos = CellToWorldCenter(cell);
-        snappedPos.y += selection.offsetY;
 
-        Debug.Log($"Placing object at {snappedPos}");
+        ExecuteCommand(new PlaceCommand(cell, selectedPlaceable));
+    }
 
-        var go = Instantiate(selection.prefab, snappedPos, Quaternion.identity);
+    private void TryDeleteCommand(Vector2Int cell)
+    {
+        if (!placedWithCell.ContainsKey(cell))
+        {
+            return;
+        }
+
+        ExecuteCommand(new DeleteCommand(cell));
+    }
+
+
+    public void PlaceAtCell(Vector2Int cell, Placeable placeable)
+    {
+        Vector3 worldCellCenterPos = CellToWorldCenter(cell);
+        worldCellCenterPos.y += placeable.offsetY;
+
+        Debug.Log($"Placing object at {worldCellCenterPos}");
+
+        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity);
 
         foreach (var toggle in go.GetComponentsInChildren<EditorModeToggle>(true))
         {
             toggle.Apply(true);
         }
 
-        placedWithCell[cell] = new PlacedRecord(go, new PlacedObjectData
+        PlacedRecord placedRecord = new PlacedRecord(go, new PlacedObjectData
         {
-            id = selection.id,
-            x = snappedPos.x,
-            y = snappedPos.y,
+            id = placeable.id,
+            x = worldCellCenterPos.x,
+            y = worldCellCenterPos.y,
             rotation = 0
         });
 
-        lastActionCell = cell;
+        placedWithCell[cell] = placedRecord;
         currentLayout.Add(placedWithCell[cell].placedObjectData);
     }
 
-    
-    void DeleteObjectAtMouse()
+
+    public void PlaceAtCell(Vector2Int cell, Placeable placeable, PlacedObjectData placedData)
     {
-        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            return;
+        Vector3 worldCellCenterPos = CellToWorldCenter(cell);
+        worldCellCenterPos.y += placeable.offsetY;
 
+        Debug.Log($"Placing object at {worldCellCenterPos}");
 
-        Vector3 mousePos = Input.mousePosition;
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-        Vector2Int cell = WorldToCell(worldPos);
+        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity);
 
-        if(cell == lastActionCell)
+        foreach (var toggle in go.GetComponentsInChildren<EditorModeToggle>(true))
         {
-            return;
+            toggle.Apply(true);
         }
 
+        PlacedRecord placedRecord = new PlacedRecord(go, placedData);
+
+        placedWithCell[cell] = placedRecord;
+        currentLayout.Add(placedWithCell[cell].placedObjectData);
+    }
+
+
+    public Placeable GetPlaceableById(string id)
+    {
+        foreach (var p in placeableDatabase.placeables)
+            if (p != null && p.id == id)
+                return p;
+
+        return null;
+    }
+
+
+    public void DeleteAtCell(Vector2Int cell)
+    {
         if (placedWithCell.TryGetValue(cell, out PlacedRecord record))
         {
             Destroy(record.gameObject);
@@ -115,12 +250,47 @@ public class LevelCreator : MonoBehaviour
             placedWithCell.Remove(cell);
             Debug.Log($"Deleted object at cell {cell}");
         }
+    }
+    //Undo/Redo
+    public void Undo()
+    {
+        if(undoStack.Count > 0)
+        {
+            var command = undoStack.Pop();
+            command.Undo(this);
+            redoStack.Push(command);
+        }
+    }
 
-        lastActionCell = cell;
+    public void Redo()
+    {
+        if(redoStack.Count > 0)
+        {
+            var command = redoStack.Pop();
+            command.Execute(this);
+            undoStack.Push(command);
+        }
+    }
 
+    private void ExecuteCommand(ICreatorCommand command)
+    {
+        command.Execute(this);
+        undoStack.Push(command);
+        redoStack.Clear();
+    }
+
+    public PlacedRecord GetRecord(Vector2Int cell)
+    {
+        if (placedWithCell.TryGetValue(cell, out PlacedRecord record))
+        {
+            return record;
+        }
+        return null;
     }
 
 
+
+    //Grid
     private Vector2Int WorldToCell(Vector3 worldPos)
     {
         int x = Mathf.FloorToInt(worldPos.x / cellSize);
@@ -135,6 +305,4 @@ public class LevelCreator : MonoBehaviour
         float y = cellPos.y * cellSize + cellSize * 0.5f;
         return new Vector3(x, y, 0f);
     }
-
-
 }

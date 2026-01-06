@@ -767,7 +767,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 267083157}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 793051021}
+        m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
+        m_MethodName: Undo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &267083157
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2145,9 +2157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 348ffda8fad57bf44b9d58fe32ed0356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelCreator
+  placeableDatabase: {fileID: 11400000, guid: 60628dd712a694846af1d7f791fe6c04, type: 2}
   toolbar: {fileID: 358348190}
   currentLayout: []
   cellSize: 1
+  deleteMode: 0
+  undoRedoMaxTimer: 0.2
 --- !u!4 &793051022
 Transform:
   m_ObjectHideFlags: 0
@@ -3231,7 +3246,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1232701053}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 793051021}
+        m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
+        m_MethodName: Redo
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1232701053
 MonoBehaviour:
   m_ObjectHideFlags: 0
