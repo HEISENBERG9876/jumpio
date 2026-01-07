@@ -7,7 +7,7 @@ public class LevelSpawner : MonoBehaviour
     [Header("References")]
     public PlaceableDatabase database;
 
-    public void SpawnLevelFromList(List<PlacedObjectData> layout)
+    public void SpawnLevelFromList(List<PlacedPlaceableData> layout)
     {
         if (database == null || database.placeables == null)
         {
@@ -21,7 +21,7 @@ public class LevelSpawner : MonoBehaviour
             return;
         }
 
-        foreach (PlacedObjectData placedObjectData in layout)
+        foreach (PlacedPlaceableData placedObjectData in layout)
         {
             Placeable placeable = database.placeables.Find(p => p.id == placedObjectData.id);
             if (placeable != null && placeable.prefab != null)

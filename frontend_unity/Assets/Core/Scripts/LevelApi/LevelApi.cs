@@ -32,7 +32,7 @@ public class LevelApiResult<T> : LevelApiResult
 [System.Serializable]
 public class LayoutWrapper
 {
-    public List<PlacedObjectData> layout;
+    public List<PlacedPlaceableData> layout;
 }
 
 public class LevelApi
@@ -57,7 +57,7 @@ public class LevelApi
     private Settings settings;
 
     //TODO multipart form data for file uploads
-    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedObjectData> layout, Texture2D previewImage = null)
+    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedPlaceableData> layout, Texture2D previewImage = null)
     {
         await UniTask.SwitchToMainThread();
 
@@ -102,7 +102,7 @@ public class LevelApi
     }
 
 
-    public async UniTask<LevelApiResult<List<PlacedObjectData>>> DownloadLevelLayoutAsync(string url)
+    public async UniTask<LevelApiResult<List<PlacedPlaceableData>>> DownloadLevelLayoutAsync(string url)
     {
         await UniTask.SwitchToMainThread();
 
@@ -114,12 +114,12 @@ public class LevelApi
             {
                 var wrapper = JsonUtility.FromJson<LayoutWrapper>(www.downloadHandler.text);
                 Debug.Log("[LevelApi] Level downloaded: " + www.downloadHandler.text);
-                return new LevelApiResult<List<PlacedObjectData>>(true, "Level downloaded successfully", www.responseCode, wrapper.layout);
+                return new LevelApiResult<List<PlacedPlaceableData>>(true, "Level downloaded successfully", www.responseCode, wrapper.layout);
             }
             else
             {
                 Debug.LogError("[LevelApi] Request failed:" + www.downloadHandler.text);
-                return new LevelApiResult<List<PlacedObjectData>>(false, "Failed to download level: " + www.downloadHandler.text, www.responseCode);
+                return new LevelApiResult<List<PlacedPlaceableData>>(false, "Failed to download level: " + www.downloadHandler.text, www.responseCode);
             }
         }
     }

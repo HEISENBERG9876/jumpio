@@ -3,12 +3,12 @@ using UnityEngine;
 public class PlacedRecord
 {
     public GameObject gameObject;
-    public PlacedObjectData placedObjectData;
+    public PlacedPlaceableData placedPlaceableData;
 
-    public PlacedRecord(GameObject gameObject, PlacedObjectData placedObjectData)
+    public PlacedRecord(GameObject gameObject, PlacedPlaceableData placedObjectData)
     {
         this.gameObject = gameObject;
-        this.placedObjectData = placedObjectData;
+        this.placedPlaceableData = placedObjectData;
     }
 }
 
@@ -57,7 +57,7 @@ public class DeleteCommand : ICreatorCommand
             return;
         }
 
-        deletedPlaceable = levelCreator.GetPlaceableById(deletedRecord.placedObjectData.id);
+        deletedPlaceable = levelCreator.GetPlaceableById(deletedRecord.placedPlaceableData.id);
         levelCreator.DeleteAtCell(cell);
     }
 
@@ -67,7 +67,7 @@ public class DeleteCommand : ICreatorCommand
         {
             return;
         }
-        PlacedObjectData deletedData = deletedRecord.placedObjectData;
+        PlacedPlaceableData deletedData = deletedRecord.placedPlaceableData;
         levelCreator.PlaceAtCell(cell, deletedPlaceable, deletedData);
     }
 }

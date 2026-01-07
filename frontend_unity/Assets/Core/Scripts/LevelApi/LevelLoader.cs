@@ -10,7 +10,7 @@ public enum LevelLoadMode
 
 public class LevelLoader
 {
-    public async UniTask<List<PlacedObjectData>> GetLayout(string url, LevelLoadMode levelLoadMode, RuntimeLevelData runtimeLevelData)
+    public async UniTask<List<PlacedPlaceableData>> GetLayout(string url, LevelLoadMode levelLoadMode, RuntimeLevelData runtimeLevelData)
     {
         if(levelLoadMode == LevelLoadMode.UseCacheIfAvailable)
         {

@@ -5,12 +5,10 @@ using UnityEngine.EventSystems;
 //minimum allowable height to place objects should be -11.5
 //maximum allowable height should be 9.5
 //Width between -86.5 and 86.5
-//TODO current layout is redundant
 public class LevelCreator : MonoBehaviour
 {
     public PlaceableDatabase placeableDatabase;
     public ToolbarController toolbar;
-    //public List<PlacedObjectData> currentLayout = new();
     public float cellSize = 1f;
     public bool deleteMode = false;
     private Vector2Int lastActionCell = new Vector2Int(int.MinValue, int.MinValue);
@@ -55,7 +53,9 @@ public class LevelCreator : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
                 return;
+            }
 
             Vector3 mousePos = Input.mousePosition;
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
@@ -126,7 +126,7 @@ public class LevelCreator : MonoBehaviour
             toggle.Apply(true);
         }
 
-        PlacedRecord placedRecord = new PlacedRecord(go, new PlacedObjectData
+        PlacedRecord placedRecord = new PlacedRecord(go, new PlacedPlaceableData
         {
             id = placeable.id,
             x = cell.x,
@@ -138,7 +138,7 @@ public class LevelCreator : MonoBehaviour
     }
 
 
-    public void PlaceAtCell(Vector2Int cell, Placeable placeable, PlacedObjectData placedData)
+    public void PlaceAtCell(Vector2Int cell, Placeable placeable, PlacedPlaceableData placedData)
     {
         Vector3 worldCellCenterPos = CellToWorldCenter(cell);
         worldCellCenterPos.y += placeable.offsetY;
@@ -162,7 +162,9 @@ public class LevelCreator : MonoBehaviour
     {
         foreach (var p in placeableDatabase.placeables)
             if (p != null && p.id == id)
+            {
                 return p;
+            }
 
         return null;
     }
@@ -181,7 +183,7 @@ public class LevelCreator : MonoBehaviour
     //Undo/Redo
     public void Undo()
     {
-        if(undoStack.Count > 0)
+        if (undoStack.Count > 0)
         {
             var command = undoStack.Pop();
             command.Undo(this);
@@ -191,7 +193,7 @@ public class LevelCreator : MonoBehaviour
 
     public void Redo()
     {
-        if(redoStack.Count > 0)
+        if (redoStack.Count > 0)
         {
             var command = redoStack.Pop();
             command.Execute(this);
@@ -212,6 +214,7 @@ public class LevelCreator : MonoBehaviour
         {
             return record;
         }
+
         return null;
     }
 
@@ -223,6 +226,7 @@ public class LevelCreator : MonoBehaviour
     {
         int x = Mathf.FloorToInt(worldPos.x / cellSize);
         int y = Mathf.FloorToInt(worldPos.y / cellSize);
+
         return new Vector2Int(x, y);
     }
 
@@ -231,17 +235,99 @@ public class LevelCreator : MonoBehaviour
     {
         float x = cellPos.x * cellSize + cellSize * 0.5f;
         float y = cellPos.y * cellSize + cellSize * 0.5f;
+
         return new Vector3(x, y, 0f);
     }
 
     //Layout export
-    public List<PlacedObjectData> GetCurrentLayout()
+    public List<PlacedPlaceableData> GetCurrentLayout()
     {
-        List<PlacedObjectData> layout = new List<PlacedObjectData>();
-        foreach (var record in placedWithCell.Values)
+        List<PlacedPlaceableData> layout = new List<PlacedPlaceableData>();
+
+        foreach (PlacedRecord record in placedWithCell.Values)
         {
-            layout.Add(record.placedObjectData);
+            layout.Add(record.placedPlaceableData);
         }
+
         return layout;
     }
+
+    //generation
+    //TODO maybe PlacedPlaceableData and LevelChunk should store Vector2Int instead of x,y for consistency. Also change to int in PlacedPlaceableData and other places with cells
+    public void CreateChunkFromPlacablesInScene()
+    {
+#if UNITY_EDITOR
+        if(placedWithCell.Count == 0)
+        {
+            Debug.LogWarning("Chunks must not be empty");
+            return;
+        }
+
+        Vector2Int min = new(int.MaxValue, int.MaxValue); //min x and min y
+        Vector2Int max = new(int.MinValue, int.MinValue);
+
+        foreach (Vector2Int cell in placedWithCell.Keys)
+        {
+            if (cell.x < min.x)
+            {
+                min.x = cell.x;
+            }
+            if (cell.y < min.y)
+            {
+                min.y = cell.y;
+            }
+            if (cell.x > max.x)
+            {
+                max.x = cell.x;
+            }
+            if (cell.y > max.y)
+            {
+                max.y = cell.y;
+            }
+        }
+
+        int chunkWidth = max.x - min.x + 1;
+        int chunkHeight = max.y - min.y + 1;
+
+        var chunkPlaceables = new List<PlacedPlaceableData>();
+
+        foreach (var keyValue in placedWithCell)
+        {
+            Vector2Int cell = keyValue.Key;
+            PlacedPlaceableData data = keyValue.Value.placedPlaceableData;
+
+            chunkPlaceables.Add(new PlacedPlaceableData
+            {
+                id = data.id,
+                x = cell.x - min.x,
+                y = cell.y - min.y,
+                rotation = data.rotation
+            });
+        }
+
+        string path = UnityEditor.EditorUtility.SaveFilePanelInProject(
+            "Save Level  Chunk",
+            "NewChunk",
+            "asset",
+            "Select where to save the chunk"
+        );
+
+        if (string.IsNullOrEmpty(path))
+        {
+            return;
+        }
+
+        var chunk = ScriptableObject.CreateInstance<LevelChunk>();
+        chunk.width = chunkWidth;
+        chunk.height = chunkHeight;
+        chunk.placeables = chunkPlaceables;
+
+        UnityEditor.AssetDatabase.CreateAsset(chunk, path);
+        UnityEditor.EditorUtility.SetDirty(chunk);
+        UnityEditor.AssetDatabase.SaveAssets();
+        UnityEditor.AssetDatabase.Refresh();
+        Debug.Log("Saved chunk");
+#endif
+    }
+
 }

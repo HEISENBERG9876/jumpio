@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
 
-        List<PlacedObjectData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
+        List<PlacedPlaceableData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
         timer.StartTimer(runtimeLevelData.timer);
         levelSpawner.SpawnLevelFromList(layout);
         player = playerSpawner.SpawnPlayer(settings.playerSpawnPosition, Quaternion.identity);

@@ -8,7 +8,7 @@ public class RuntimeLevelData : ScriptableObject
     public string difficulty;
     public int timer;
     public string layoutUrl;
-    [HideInInspector] public List<PlacedObjectData> cachedLayout;
+    [HideInInspector] public List<PlacedPlaceableData> cachedLayout;
 
     public void Clear()
     {
