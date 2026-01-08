@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+
 [CreateAssetMenu(menuName = "Scriptable Objects/Placeable")]
 public class Placeable : ScriptableObject
 {
@@ -10,6 +11,7 @@ public class Placeable : ScriptableObject
     public Sprite icon;
     public GameObject prefab;
     public float offsetY;
+    public bool editorOnly = false;
 
 #if UNITY_EDITOR
     private void OnValidate()

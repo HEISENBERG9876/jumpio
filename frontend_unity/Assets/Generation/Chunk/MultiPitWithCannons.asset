@@ -1,0 +1,255 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c24f38d545e114da142eb388bde587, type: 3}
+  m_Name: MultiPitWithCannons
+  m_EditorClassIdentifier: Assembly-CSharp::LevelChunk
+  width: 25
+  height: 5
+  entranceCell: {x: 0, y: 2}
+  exitCell: {x: 24, y: 2}
+  placedPlaceablesLocal:
+  - id: DirtWithGrass
+    worldX: 13
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 16
+    worldY: 1
+    rotation: 0
+  - id: CannonTwoSided
+    worldX: 16
+    worldY: 2
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 19
+    worldY: 2
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 17
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 18
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 19
+    worldY: 1
+    rotation: 0
+  - id: CannonTwoSided
+    worldX: 17
+    worldY: 3
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 19
+    worldY: 3
+    rotation: 0
+  - id: CannonTwoSided
+    worldX: 18
+    worldY: 4
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 18
+    worldY: 3
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 12
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 9
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 8
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 5
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 2
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 18
+    worldY: 2
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 17
+    worldY: 2
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 3
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 19
+    worldY: 4
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 24
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 1
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 4
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 1
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 0
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 4
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 5
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 6
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 7
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 8
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 9
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 10
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 11
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 12
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 13
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 14
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 15
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 16
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 0
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 24
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 23
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 22
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 21
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 20
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 19
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 18
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 17
+    worldY: 0
+    rotation: 0
+  - id: Spike
+    worldX: 23
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 22
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 21
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 20
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 15
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 14
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 11
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 10
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 7
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 6
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 3
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 2
+    worldY: 1
+    rotation: 0

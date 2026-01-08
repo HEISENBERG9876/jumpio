@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c24f38d545e114da142eb388bde587, type: 3}
+  m_Name: Spikes
+  m_EditorClassIdentifier: Assembly-CSharp::LevelChunk
+  width: 15
+  height: 2
+  entranceCell: {x: 0, y: 1}
+  exitCell: {x: 14, y: 1}
+  placedPlaceablesLocal:
+  - id: DirtWithGrass
+    worldX: 1
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 2
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 3
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 4
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 5
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 6
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 7
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 8
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 9
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 10
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 11
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 12
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 13
+    worldY: 0
+    rotation: 0
+  - id: Spike
+    worldX: 1
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 4
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 7
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 10
+    worldY: 1
+    rotation: 0
+  - id: Spike
+    worldX: 13
+    worldY: 1
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 0
+    worldY: 0
+    rotation: 0
+  - id: DirtWithGrass
+    worldX: 14
+    worldY: 0
+    rotation: 0

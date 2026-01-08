@@ -77,6 +77,7 @@
     <Compile Include="Assets\Login\Scripts\UI\RegisterUI.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\SaveLevelUI.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\CreateLevelUI.cs" />
+    <Compile Include="Assets\Generation\Scripts\ChunkDatabase.cs" />
     <Compile Include="Assets\Core\Scripts\RuntimeLevelData.cs" />
     <Compile Include="Assets\Generation\Scripts\LevelChunk.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\LevelBrowser.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Placeables\Platform\PlatformController.cs" />
-    <Compile Include="Assets\Core\Scripts\LevelApi\PlacedPlaceableData.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Placeables\Scripts\PlaceableDatabase.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerSpawner.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\ReturnToMenuFromLevelCreatorUI.cs" />
+    <Compile Include="Assets\LevelCreator\Scripts\PlacedPlaceableData.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />

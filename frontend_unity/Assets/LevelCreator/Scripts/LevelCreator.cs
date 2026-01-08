@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -17,6 +18,11 @@ public class LevelCreator : MonoBehaviour
     private Stack<ICreatorCommand> redoStack = new();
     public float undoRedoMaxTimer = 0.15f;
     private float undoRedoTimer = 0f;
+    //generation
+    private string entryMarkerId = "EntryMarker";
+    private string exitMarkerId = "ExitMarker";
+    private Vector2Int generationOriginCell = Vector2Int.zero; //during generation this will be the position where the next chunk will be placed. Also x + 1
+    public ChunkDatabase chunkDatabase;
 
     void Update()
     {
@@ -138,7 +144,7 @@ public class LevelCreator : MonoBehaviour
     }
 
 
-    public void PlaceAtCell(Vector2Int cell, Placeable placeable, PlacedPlaceableData placedData)
+    public void PlaceAtCell(Vector2Int cell, Placeable placeable, PlacedPlaceableData placedData) //placeable parameter not needed
     {
         Vector3 worldCellCenterPos = CellToWorldCenter(cell);
         worldCellCenterPos.y += placeable.offsetY;
@@ -254,6 +260,8 @@ public class LevelCreator : MonoBehaviour
 
     //generation
     //TODO maybe PlacedPlaceableData and LevelChunk should store Vector2Int instead of x,y for consistency. Also change to int in PlacedPlaceableData and other places with cells
+    //chunk width and height probably useless
+    
     public void CreateChunkFromPlacablesInScene()
     {
 #if UNITY_EDITOR
@@ -263,7 +271,8 @@ public class LevelCreator : MonoBehaviour
             return;
         }
 
-        Vector2Int min = new(int.MaxValue, int.MaxValue); //min x and min y
+        //min and max coordinates used to determine chunk size and make chunk cells start from (0, 0)- useful for later placement in levels
+        Vector2Int min = new(int.MaxValue, int.MaxValue);
         Vector2Int max = new(int.MinValue, int.MinValue);
 
         foreach (Vector2Int cell in placedWithCell.Keys)
@@ -288,23 +297,51 @@ public class LevelCreator : MonoBehaviour
 
         int chunkWidth = max.x - min.x + 1;
         int chunkHeight = max.y - min.y + 1;
+        Vector2Int entranceCell = Vector2Int.zero;
+        Vector2Int exitCell = Vector2Int.zero;
+        int entryMarkerCount = 0; // exactly 1 of entry and exit markers to be valid
+        int exitMarkerCount = 0;
 
         var chunkPlaceables = new List<PlacedPlaceableData>();
 
+        //making cells in chunk use local coordinates starting from (0,0). Also finding entry and exit cells
         foreach (var keyValue in placedWithCell)
         {
             Vector2Int cell = keyValue.Key;
             PlacedPlaceableData data = keyValue.Value.placedPlaceableData;
 
+            int localX = cell.x - min.x;
+            int localY = cell.y - min.y;
+
+            if(IsEntryMarker(data))
+            {
+                entryMarkerCount++;
+                entranceCell = new Vector2Int(localX, localY);
+                continue;
+            }
+            if(IsExitMarker(data))
+            {
+                exitMarkerCount++;
+                exitCell = new Vector2Int(localX, localY);
+                continue;
+            }
+
             chunkPlaceables.Add(new PlacedPlaceableData
             {
                 id = data.id,
-                x = cell.x - min.x,
-                y = cell.y - min.y,
+                x = localX,
+                y = localY,
                 rotation = data.rotation
             });
         }
 
+        if(entryMarkerCount != 1 || exitMarkerCount != 1)
+        {
+            Debug.LogWarning("Chunks must have exactly one entry and one exit marker.");
+            return;
+        }
+
+        //saving chunk as asset
         string path = UnityEditor.EditorUtility.SaveFilePanelInProject(
             "Save Level  Chunk",
             "NewChunk",
@@ -320,7 +357,9 @@ public class LevelCreator : MonoBehaviour
         var chunk = ScriptableObject.CreateInstance<LevelChunk>();
         chunk.width = chunkWidth;
         chunk.height = chunkHeight;
-        chunk.placeables = chunkPlaceables;
+        chunk.placedPlaceablesLocal = chunkPlaceables;
+        chunk.entranceCell = entranceCell;
+        chunk.exitCell = exitCell;
 
         UnityEditor.AssetDatabase.CreateAsset(chunk, path);
         UnityEditor.EditorUtility.SetDirty(chunk);
@@ -330,4 +369,48 @@ public class LevelCreator : MonoBehaviour
 #endif
     }
 
+    private bool IsEntryMarker(PlacedPlaceableData data)
+    {
+        return data.id == entryMarkerId;
+    }
+
+    private bool IsExitMarker(PlacedPlaceableData data)
+    {
+        return data.id == exitMarkerId;
+    }
+
+    public void PlaceChunk(LevelChunk chunk, Vector2Int startCell)
+    {
+        ExecuteCommand(new PlaceChunkCommand(startCell, chunk));
+    }
+
+    public void PlaceNextChunk()
+    {
+        ExecuteCommand(new PlaceChunkCommand(generationOriginCell, GetRandomChunk()));
+    }
+
+    public LevelChunk GetRandomChunk()
+    {
+        return chunkDatabase.chunks[Random.Range(0, chunkDatabase.chunks.Count)];
+    }
+
+
+    public void GenerateLevel() //places one chunk for now
+    {
+        int chunksToPlace = 10;
+        for(int i = 0; i < chunksToPlace; i++)
+        {
+            PlaceNextChunk();
+        }
+    }
+
+    public Vector2Int GetGenerationOriginCell()
+    {
+        return generationOriginCell;
+    }
+
+    public void SetGenerationOriginCell(Vector2Int cell)
+    {
+        generationOriginCell = cell;
+    }
 }

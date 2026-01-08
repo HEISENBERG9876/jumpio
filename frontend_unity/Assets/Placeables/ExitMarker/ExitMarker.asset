@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9a7081c6e916a324baf003fab6d1ed3a, type: 3}
-  m_Name: Platform
+  m_Name: ExitMarker
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
-  id: Platform
-  icon: {fileID: -1905038777724749881, guid: 7a04524e44bc5bc4f99379920b2657a1, type: 3}
-  prefab: {fileID: 4548716657968844424, guid: 8c0bf3eea87c8764489b5e078abbc30f, type: 3}
-  offsetY: -0.25
-  editorOnly: 0
+  id: ExitMarker
+  icon: {fileID: 1588743211373512513, guid: 683760083199e3d4987163ecf35258d9, type: 3}
+  prefab: {fileID: 219382842153046086, guid: 8fc4fca068e09c9469e88357fcececa9, type: 3}
+  offsetY: 0
+  editorOnly: 1

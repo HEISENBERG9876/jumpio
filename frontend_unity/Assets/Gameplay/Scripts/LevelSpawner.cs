@@ -26,7 +26,7 @@ public class LevelSpawner : MonoBehaviour
             Placeable placeable = database.placeables.Find(p => p.id == placedObjectData.id);
             if (placeable != null && placeable.prefab != null)
             {
-                Vector3 position = new Vector3(placedObjectData.x + 0.5f, placedObjectData.y + 0.5f, 0f);
+                Vector3 position = new Vector3(placedObjectData.x + 0.5f, placedObjectData.y + 0.5f + placeable.offsetY, 0f); //better to save cell size somewhere else than hard code
                 Quaternion rotation = Quaternion.Euler(0, 0, placedObjectData.rotation);
                 Instantiate(placeable.prefab, position, rotation);
                 Debug.Log($"[LevelSpawner] Spawned object ID: {placedObjectData.id} at position: {position} with rotation: {placedObjectData.rotation}");

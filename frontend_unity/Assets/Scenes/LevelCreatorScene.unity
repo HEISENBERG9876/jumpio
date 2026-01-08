@@ -1046,8 +1046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a2c5a3efa6bf34b9dea9afd2f5c369, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
-  moveSpeed: 10
-  zoomSpeed: 5
+  moveSpeed: 30
+  zoomSpeed: 7
   minZoom: 2
   maxZoom: 20
 --- !u!1 &386843345
@@ -2163,6 +2163,7 @@ MonoBehaviour:
   cellSize: 1
   deleteMode: 0
   undoRedoMaxTimer: 0.2
+  chunkDatabase: {fileID: 11400000, guid: c6225a9a5f1d98744955bb88cd5f5e85, type: 2}
 --- !u!4 &793051022
 Transform:
   m_ObjectHideFlags: 0
@@ -3085,7 +3086,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Create stamp
+  m_text: Create chunk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3178,7 +3179,7 @@ GameObject:
   - component: {fileID: 1177946347}
   - component: {fileID: 1177946346}
   m_Layer: 5
-  m_Name: CreateStamp
+  m_Name: ChunkButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3262,7 +3263,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 793051021}
         m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
-        m_MethodName: CreateStampAutoFromAllPlaced
+        m_MethodName: CreateChunkFromPlacablesInScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4337,7 +4338,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1770792373}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 793051021}
+        m_TargetAssemblyTypeName: LevelCreator, Assembly-CSharp
+        m_MethodName: PlaceNextChunk
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1770792373
 MonoBehaviour:
   m_ObjectHideFlags: 0

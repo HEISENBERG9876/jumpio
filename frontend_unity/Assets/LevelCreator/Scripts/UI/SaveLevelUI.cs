@@ -24,7 +24,7 @@ public class SaveLevelUI : MonoBehaviour
     public async void OnSaveButtonClicked()
     {
         string title = titleInput.text;
-        string difficulty = difficultyDropdown.options[difficultyDropdown.value].text;
+        string difficulty = difficultyDropdown.options[difficultyDropdown.value].text; //TODO automatic. And proably better as int
         int timer = int.Parse(timerInput.text);
         List<PlacedPlaceableData> layout = levelCreator.GetCurrentLayout();
 

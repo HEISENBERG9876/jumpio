@@ -30,6 +30,12 @@ public class ToolbarController : MonoBehaviour
     {
         foreach (Placeable p in placeables)
         {
+#if !UNITY_EDITOR
+            if (p.editorOnly)
+            {
+                continue;
+            }
+#endif
             var button = Instantiate(buttonPrefab, buttonContainer);
             button.image.sprite = p.icon;
             button.onClick.AddListener(() => SelectPlaceable(p));
