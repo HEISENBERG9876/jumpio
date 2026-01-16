@@ -24,6 +24,10 @@ public class PlaceCommand : ICreatorCommand
 {
     private Vector2Int cell;
     private Placeable placeable;
+
+    private Vector2Int originBefore;
+    private Vector2Int originAfter;
+
     //private PlacedRecord placedRecord;
     public PlaceCommand(Vector2Int cell, Placeable placeable)
     {
@@ -32,14 +36,22 @@ public class PlaceCommand : ICreatorCommand
     }
     public void Execute(LevelCreator levelCreator)
     {
+        originBefore = levelCreator.GetGenerationOriginCell();
+
         levelCreator.PlaceAtCell(cell, placeable);
+
+        originAfter = cell + Vector2Int.right + Vector2Int.up;
+        levelCreator.SetGenerationOriginCell(originAfter);
     }
     public void Undo(LevelCreator levelCreator)
     {
         levelCreator.DeleteAtCell(cell);
+        levelCreator.SetGenerationOriginCell(originBefore);
     }
 }
 
+
+//TODO generation origin is not restored properly with delete- not a big issue, since we can change origin manually by placing an object
 public class DeleteCommand : ICreatorCommand
 {
     private Vector2Int cell;
@@ -120,7 +132,8 @@ public class PlaceChunkCommand : ICreatorCommand
         for(int i = placedCells.Count - 1; i >= 0; i--)
         {
             levelCreator.DeleteAtCell(placedCells[i]);
-            levelCreator.SetGenerationOriginCell(originCellBefore);
         }
+
+        levelCreator.SetGenerationOriginCell(originCellBefore);
     }
 }

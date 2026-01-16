@@ -1,14 +1,17 @@
-using System;
 using UnityEngine;
 
 public class FinishFlag : MonoBehaviour
 {
-    public static event Action Reached;
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        if (!other.CompareTag("Player")) return;
+
+        if (other.TryGetComponent<PlayerController>(out var playerController))
         {
-            Reached?.Invoke();
+            playerController.Finish();
         }
+
+        if (other.TryGetComponent<PlayerAgent>(out var agent))
+            agent.Win();
     }
 }

@@ -67,6 +67,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\Gameplay\Scripts\GameManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
+    <Compile Include="Assets\Placeables\Cannon\CannonController.cs" />
     <Compile Include="Assets\Login\Scripts\UI\LoginUI.cs" />
     <Compile Include="Assets\Placeables\Spike\SpikeController.cs" />
     <Compile Include="Assets\Placeables\Scripts\Placeable.cs" />
@@ -86,8 +87,10 @@
     <Compile Include="Assets\LevelBrowser\Scripts\MenuReturnState.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
+    <Compile Include="Assets\Training\DemoCameraFollow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
+    <Compile Include="Assets\Training\PlayerAgent.cs" />
     <Compile Include="Assets\Placeables\Platform\PlatformController.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
@@ -102,11 +105,14 @@
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApi.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\UI\BrowseLevelsUI.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\NetworkUtils.cs" />
+    <Compile Include="Assets\Core\Other\KillPlane\KillPlane.cs" />
+    <Compile Include="Assets\Generation\Scripts\LevelGenerator.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\LevelCreatorCommands.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Gameplay\Scripts\LevelSpawner.cs" />
     <Compile Include="Assets\Placeables\Scripts\Interfaces\IDamageDealer.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeA.cs" />
+    <Compile Include="Assets\Training\ArenaManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01_UGUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SimpleScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
@@ -122,6 +128,7 @@
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApiModels.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Training\ArenaEpisodeController.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelLoader.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
@@ -139,7 +146,6 @@
     <Compile Include="Assets\LevelCreator\Scripts\ToolbarController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\Placeables\Cannon\CannonTwoSidesController.cs" />
     <Compile Include="Assets\Core\UI\Scripts\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -654,12 +660,20 @@
       <HintPath>C:\Program Files\Unity\Hub\Editor\6000.2.1f1\Editor\Data\Managed\UnityEngine\UnityEditor.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.IO.Abstractions">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@592fae96fab2\Plugins\System.IO.Abstractions.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Collections.LowLevel.ILSupport">
       <HintPath>Library\PackageCache\com.unity.collections@d49facba0036\Unity.Collections.LowLevel.ILSupport\Unity.Collections.LowLevel.ILSupport.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>Library\PackageCache\com.unity.ext.nunit@031a54704bff\net40\unity-custom\nunit.framework.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Google.Protobuf_Packed">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@592fae96fab2\Plugins\Google.Protobuf_Packed.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.IO.Hashing">
@@ -670,8 +684,16 @@
       <HintPath>Library\PackageCache\com.unity.visualscripting@6279e2b7c485\Runtime\VisualScripting.Flow\Dependencies\NCalc\Unity.VisualScripting.Antlr3.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Grpc.Core">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@592fae96fab2\Plugins\ProtoBuffer\Grpc.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.Cecil">
       <HintPath>Library\PackageCache\com.unity.nuget.mono-cecil@d78732e851eb\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.IO.Abstractions.TestingHelpers">
+      <HintPath>Library\PackageCache\com.unity.ml-agents@592fae96fab2\Plugins\System.IO.Abstractions.TestingHelpers.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe">
@@ -1170,6 +1192,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.2D.Common.Path.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.ML-Agents.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.ML-Agents.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.2D.Sprite.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Sprite.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1184,6 +1210,10 @@
     </Reference>
     <Reference Include="PsdPlugin">
       <HintPath>Library\ScriptAssemblies\PsdPlugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.ML-Agents.CommunicatorObjects">
+      <HintPath>Library\ScriptAssemblies\Unity.ML-Agents.CommunicatorObjects.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.IK.Runtime">
@@ -1204,6 +1234,10 @@
     </Reference>
     <Reference Include="Unity.Splines.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Splines.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.ML-Agents.Input">
+      <HintPath>Library\ScriptAssemblies\Unity.ML-Agents.Input.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.2D.Common.Editor">
@@ -1246,6 +1280,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.InferenceEngine.ONNX.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.InferenceEngine.ONNX.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.2D.Aseprite.Common">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Aseprite.Common.dll</HintPath>
       <Private>False</Private>
@@ -1258,6 +1296,10 @@
       <HintPath>Library\ScriptAssemblies\Unity.Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.InferenceEngine.MacBLAS">
+      <HintPath>Library\ScriptAssemblies\Unity.InferenceEngine.MacBLAS.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.Rider.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Rider.Editor.dll</HintPath>
       <Private>False</Private>
@@ -1268,6 +1310,10 @@
     </Reference>
     <Reference Include="Unity.2D.Psdimporter.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.Psdimporter.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InferenceEngine.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.InferenceEngine.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.VisualScripting.Flow">
@@ -1358,12 +1404,20 @@
       <HintPath>Library\ScriptAssemblies\Unity.Multiplayer.Center.Editor.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.ML-Agents.Editor.Input">
+      <HintPath>Library\ScriptAssemblies\Unity.ML-Agents.Editor.Input.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Unity.VisualScripting.State">
       <HintPath>Library\ScriptAssemblies\Unity.VisualScripting.State.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UniTask.Linq">
       <HintPath>Library\ScriptAssemblies\UniTask.Linq.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.ML-Agents">
+      <HintPath>Library\ScriptAssemblies\Unity.ML-Agents.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Collections.Editor">
@@ -1380,6 +1434,10 @@
     </Reference>
     <Reference Include="Unity.2D.SpriteShape.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.SpriteShape.Editor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InferenceEngine.iOSBLAS">
+      <HintPath>Library\ScriptAssemblies\Unity.InferenceEngine.iOSBLAS.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.InputSystem">
@@ -1400,6 +1458,10 @@
     </Reference>
     <Reference Include="UniTask">
       <HintPath>Library\ScriptAssemblies\UniTask.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Unity.InferenceEngine">
+      <HintPath>Library\ScriptAssemblies\Unity.InferenceEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

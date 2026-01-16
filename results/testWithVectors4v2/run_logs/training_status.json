@@ -1,0 +1,65 @@
+{
+    "MoveToFinishLine": {
+        "checkpoints": [
+            {
+                "steps": 499985,
+                "file_path": "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-499985.onnx",
+                "reward": 1.556101183170703,
+                "creation_time": 1768572993.2312005,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-499985.pt"
+                ]
+            },
+            {
+                "steps": 999979,
+                "file_path": "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-999979.onnx",
+                "reward": 1.760791637607523,
+                "creation_time": 1768573562.0108566,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-999979.pt"
+                ]
+            },
+            {
+                "steps": 1499966,
+                "file_path": "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-1499966.onnx",
+                "reward": 1.731639916698138,
+                "creation_time": 1768574124.2718697,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-1499966.pt"
+                ]
+            },
+            {
+                "steps": 1999980,
+                "file_path": "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-1999980.onnx",
+                "reward": 1.7896896538989884,
+                "creation_time": 1768574677.3292186,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-1999980.pt"
+                ]
+            },
+            {
+                "steps": 2000044,
+                "file_path": "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-2000044.onnx",
+                "reward": 1.7896896538989884,
+                "creation_time": 1768574677.3812077,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-2000044.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2000044,
+            "file_path": "results\\testWithVectors4v2\\MoveToFinishLine.onnx",
+            "reward": 1.7896896538989884,
+            "creation_time": 1768574677.3812077,
+            "auxillary_file_paths": [
+                "results\\testWithVectors4v2\\MoveToFinishLine\\MoveToFinishLine-2000044.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.7.0+cu128"
+    }
+}

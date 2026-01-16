@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IDamageDealer
+public interface IKillsPlayer
 {
-    void DealDamage(PlayerController player);
+    void KillPlayer(PlayerController player);
 }

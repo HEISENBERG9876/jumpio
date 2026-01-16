@@ -15,12 +15,12 @@ TagManager:
   - Ground
   - Player
   - Enemy
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - StompableEnemyTop
+  - MovingPlatform
+  - Spike
+  - Bullet
+  - StandableEnemyTop
+  - FinishFlag
   - 
   - 
   - 

@@ -25,3 +25,7 @@ jumpio/.venv/
 *.vsidx
 
 .env
+
+# venvs
+venv-django/
+venv-mlagents1/

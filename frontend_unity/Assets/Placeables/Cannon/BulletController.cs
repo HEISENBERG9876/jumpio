@@ -1,12 +1,17 @@
 using UnityEngine;
 
-public class BulletController : MonoBehaviour, IDamageDealer
+public class BulletController : MonoBehaviour, IKillsPlayer
 {
-    public void DealDamage(PlayerController player)
+    public void KillPlayer(PlayerController player)
     {
-        Debug.Log("Bullet dealing damage to player");
-        player.TakeDamage(100);
+        Debug.Log("Bullet killed player");
+        player.Die();
         Destroy(gameObject);
+    }
+
+    private void Start()
+    {
+        Destroy(gameObject, 10f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -4,41 +4,43 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action Died;
-    private int health = 100;
+    public event Action Finished;
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.TryGetComponent<IStompable>(out var stompable))
+        IStompable stompable = collision.collider.GetComponentInParent<IStompable>();
+        if (stompable != null)
         {
             stompable.OnStomped(this, collision);
+            return;
         }
 
-        else if(collision.gameObject.TryGetComponent<IDamageDealer>(out var damageDealer))
+        IKillsPlayer killer = collision.collider.GetComponentInParent<IKillsPlayer>();
+        if (killer != null)
         {
-            damageDealer.DealDamage(this);
+            killer.KillPlayer(this);
+            return;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.TryGetComponent<IDamageDealer>(out var damageDealer))
+        IKillsPlayer killer = other.GetComponentInParent<IKillsPlayer>();
+        if (killer != null)
         {
-            damageDealer.DealDamage(this);
+            killer.KillPlayer(this);
         }
     }
 
-    public void TakeDamage(int amount)
-    {
-        health -= amount;
-        if(health <= 0)
-        {
-            Die();
-        }
-            Debug.Log($"Player took {amount} damage.");
-    }
-
-    private void Die()
+    public void Die()
     {
         Died?.Invoke();
         Debug.Log("Player died!");
+    }
+
+    public void Finish()
+    {
+        Finished?.Invoke();
+        Debug.Log("Player finished!");
     }
 }

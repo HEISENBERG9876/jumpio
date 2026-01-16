@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using Google.Protobuf.WellKnownTypes;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,17 +21,25 @@ public class PlayerMovement : MonoBehaviour
     public float baseFallGravity = 7f;
     public float shortJumpGravity = 7f;
     public float maxFallSpeed = 10f;
-    private float coyoteTime = 0f; //time after leaving ground where jump is still possible
+    private float coyoteTime = 0f;
     public float maxCoyoteTime = 0.1f;
 
-    [Header("GroundCheck")]
-    public Transform groundCheckPos;
-    public Vector2 groundCheckSize = new Vector2(0.5f, 0.1f);
-    public LayerMask groundLayer;
+    [Header("StandableCheck")]
+    public Transform standablePosCheck;
+    public Vector2 standableCheckSize = new Vector2(0.5f, 0.1f);
+    public LayerMask standableMask;
+
+    [Header("ML")]
+    private bool agentJumpHeld = false;
+    public bool IsGroundedPublic { get; private set; }
+    public float CoyoteTime01
+    {
+        get { return Mathf.Clamp01(coyoteTime / maxCoyoteTime); }
+    }
 
     private void Update()
-    {
-        if (IsGrounded())
+    { 
+        if (IsGroundedPublic)
         {
             coyoteTime = maxCoyoteTime;
         }
@@ -39,7 +48,13 @@ public class PlayerMovement : MonoBehaviour
             coyoteTime -= Time.deltaTime;
         }
 
-        animator.SetFloat("yVelocity", rb.linearVelocityY);
+        float animVelocityY = rb.linearVelocityY;
+
+        //to get rid of an animation bug
+        if (IsGroundedPublic && Mathf.Abs(animVelocityY) < 2f)
+            animVelocityY = 0f;
+
+        animator.SetFloat("yVelocity", animVelocityY);
         animator.SetFloat("magnitude", Mathf.Abs(horizontalMovement));
 
         if (horizontalMovement < 0f)
@@ -55,32 +70,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        IsGroundedPublic = IsOnStandable();
         rb.linearVelocityX = CalculateDesiredVelocityX();
         Gravity();
+        Debug.Log($"Velocity: {rb.linearVelocity}");
 
     }
 
     private float CalculateDesiredVelocityX()
     {
-        //possible feels better?
-        //float result = 0;
-        //if (IsGrounded())
-        //{
-        //    if(horizontalMovement != 0f)
-        //    {
-        //        result = horizontalMovement * moveSpeed;
-        //    }
-        //    else
-        //    {
-        //        result = groundVelocityX;
-        //    }
-        //}
-        //else
-        //{
-        //    result = horizontalMovement * moveSpeed;
-        //}
-        //return result;
-        float platformVelocityX = IsGrounded() ? groundVelocityX : 0f;
+        float platformVelocityX = IsGroundedPublic ? groundVelocityX : 0f;
         float desiredWorldX = platformVelocityX + horizontalMovement * moveSpeed;
 
         return Mathf.Clamp(desiredWorldX, -moveSpeed * 1.2f, moveSpeed * 1.2f);
@@ -118,19 +117,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Gravity()
     {
-        //normal jump
-        if(rb.linearVelocityY < 0f && !isJumpCancelled)
+        if (rb.linearVelocityY > 0f)
+        {
+            rb.gravityScale = isJumpCancelled ? shortJumpGravity : baseGravity;
+        }
+        else if (rb.linearVelocityY < 0f)
         {
             rb.gravityScale = baseFallGravity;
             rb.linearVelocityY = Mathf.Max(rb.linearVelocityY, -maxFallSpeed);
         }
-        //short jump
-        else if (isJumpCancelled)
-        {
-            rb.gravityScale = shortJumpGravity;
-            rb.linearVelocityY = Mathf.Max(rb.linearVelocityY, -maxFallSpeed);
-        }
-        //default gravity- walking, standing,  falling etc.
         else
         {
             rb.gravityScale = baseGravity;
@@ -138,9 +133,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //also calculates ground velocity when on moving platforms
-    private bool IsGrounded()
+    private bool IsOnStandable()
     {
-        Collider2D hit = Physics2D.OverlapBox(groundCheckPos.position, groundCheckSize, 0f, groundLayer);
+        Collider2D hit = Physics2D.OverlapBox(standablePosCheck.position, standableCheckSize, 0f, standableMask);
         if(hit == null)
         {
             groundVelocityX = 0f;
@@ -184,7 +179,39 @@ public class PlayerMovement : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(groundCheckPos.position, groundCheckSize);
+        Gizmos.DrawWireCube(standablePosCheck.position, standableCheckSize);
+    }
+
+    //ML agents
+    public void SetMove(float x)
+    {
+        horizontalMovement = Mathf.Clamp(x, -1f, 1f);
+    }
+
+    private void JumpPressed()
+    {
+        if (CanJump())
+        {
+            isJumpCancelled = false;
+            rb.linearVelocityY = jumpForce;
+            coyoteTime = 0f;
+            if (animator) animator.SetTrigger("jump");
+        }
+    }
+
+    public void SetJumpHeld(bool held)
+    {
+        if (held && !agentJumpHeld)
+        {
+            JumpPressed();
+        }
+
+        if (!held && agentJumpHeld && rb.linearVelocityY > 0f)
+        {
+            isJumpCancelled = true;
+        }
+
+        agentJumpHeld = held;
     }
 
 

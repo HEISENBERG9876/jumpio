@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.InputSystem.Processors;
 
-public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
+public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
 {
     public float speed = 1f;
     public Transform groundCheck;
     public Transform wallCheck;
-    public LayerMask groundLayer;
+    public LayerMask groundMask;
     public float groundCheckDistance = 0.2f;
     public float wallCheckDistance = 0.1f;
 
@@ -22,10 +22,12 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
         if (!IsGroundAhead())
         {
             Flip();
+            Debug.Log("Slime reached edge and flipped");
         }
 
         if (IsWallHit()) { 
             Flip();
+            Debug.Log("Slime hit wall and flipped");
         }
     }
 
@@ -39,27 +41,29 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
         }
         else
         {
-            Debug.Log("Player hit slime from the side, taking damage");
-            DealDamage(player);
+            KillPlayer(player);
         }
     }
 
     private void StopCollidingAndMoving()
     {
-        GetComponent<Collider2D>().enabled = false;
+        foreach (var c in GetComponentsInChildren<Collider2D>())
+        {
+            c.enabled = false;
+        }
         rb.simulated = false;
         rb.linearVelocity = Vector2.zero;
     }
 
-    public void DealDamage(PlayerController player)
+    public void KillPlayer(PlayerController player)
     {
-        Debug.Log("Slime dealing damage to player");
-        player.TakeDamage(100);
+        Debug.Log("Slime killed player");
+        player.Die();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy")){
+        if (collision.gameObject.CompareTag("Enemy")){ //todo can be changed to layer
             Flip();
         }
         return;
@@ -73,13 +77,13 @@ public class SlimeController : MonoBehaviour, IStompable, IDamageDealer
 
     private bool IsGroundAhead()
     {
-        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundLayer);
+        return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundMask);
     }
 
     private bool IsWallHit()
     {
         Vector2 direction = movingLeft ? Vector2.left : Vector2.right;
-        return Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundLayer);
+        return Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundMask);
     }
 
     private void Flip()

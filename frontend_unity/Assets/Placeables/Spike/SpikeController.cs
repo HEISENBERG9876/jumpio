@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class SpikeController : MonoBehaviour, IDamageDealer
+public class SpikeController : MonoBehaviour, IKillsPlayer
 {
-   public void DealDamage(PlayerController player)
+   public void KillPlayer(PlayerController player)
    {
-       Debug.Log("Spike dealing damage to player");
-       player.TakeDamage(100);
+       Debug.Log("Spike killed player");
+       player.Die();
     }
 }

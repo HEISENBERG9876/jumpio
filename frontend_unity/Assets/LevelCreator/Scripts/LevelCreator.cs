@@ -19,7 +19,7 @@ public class LevelCreator : MonoBehaviour
     public float undoRedoMaxTimer = 0.15f;
     private float undoRedoTimer = 0f;
     //generation
-    private string entryMarkerId = "EntryMarker";
+    private string entryMarkerId = "EntryMarker"; //better to not hardcode
     private string exitMarkerId = "ExitMarker";
     private Vector2Int generationOriginCell = Vector2Int.zero; //during generation this will be the position where the next chunk will be placed. Also x + 1
     public ChunkDatabase chunkDatabase;
@@ -355,8 +355,6 @@ public class LevelCreator : MonoBehaviour
         }
 
         var chunk = ScriptableObject.CreateInstance<LevelChunk>();
-        chunk.width = chunkWidth;
-        chunk.height = chunkHeight;
         chunk.placedPlaceablesLocal = chunkPlaceables;
         chunk.entranceCell = entranceCell;
         chunk.exitCell = exitCell;
@@ -392,16 +390,6 @@ public class LevelCreator : MonoBehaviour
     public LevelChunk GetRandomChunk()
     {
         return chunkDatabase.chunks[Random.Range(0, chunkDatabase.chunks.Count)];
-    }
-
-
-    public void GenerateLevel() //places one chunk for now
-    {
-        int chunksToPlace = 10;
-        for(int i = 0; i < chunksToPlace; i++)
-        {
-            PlaceNextChunk();
-        }
     }
 
     public Vector2Int GetGenerationOriginCell()

@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a7081c6e916a324baf003fab6d1ed3a, type: 3}
+  m_Name: SpawnMarker
+  m_EditorClassIdentifier: Assembly-CSharp::Placeable
+  id: SpawnMarker
+  icon: {fileID: 7453933652727564871, guid: 683760083199e3d4987163ecf35258d9, type: 3}
+  prefab: {fileID: 4139858858211098329, guid: ec907f9c77b851241bda59a358021f60, type: 3}
+  offsetY: 0
+  editorOnly: 0

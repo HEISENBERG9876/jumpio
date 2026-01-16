@@ -1,0 +1,63 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1768501190",
+        "python_version": "3.10.11 (tags/v3.10.11:7d4cc5a, Apr  5 2023, 00:38:17) [MSC v.1929 64 bit (AMD64)]",
+        "command_line_arguments": "D:\\inz\\jumpio\\venv-mlagents1\\Scripts\\mlagents-learn frontend_unity\\configs\\ppo_demo.yaml --run-id=demo1",
+        "mlagents_version": "1.1.0",
+        "mlagents_envs_version": "1.1.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.7.0+cu128",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1768501198"
+    },
+    "total": 7.645137599998634,
+    "count": 1,
+    "self": 0.005643899998176494,
+    "children": {
+        "run_training.setup": {
+            "total": 0.07214690000000701,
+            "count": 1,
+            "self": 0.07214690000000701
+        },
+        "TrainerController.start_learning": {
+            "total": 7.5673468000004505,
+            "count": 1,
+            "self": 8.969999908003956e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 7.564460900000995,
+                    "count": 1,
+                    "self": 7.564382400001705,
+                    "children": {
+                        "demo_to_buffer": {
+                            "total": 7.849999929021578e-05,
+                            "count": 1,
+                            "self": 8.600000001024455e-06,
+                            "children": {
+                                "load_demonstration": {
+                                    "total": 6.989999928919133e-05,
+                                    "count": 1,
+                                    "self": 6.989999928919133e-05
+                                }
+                            }
+                        }
+                    }
+                },
+                "TrainerController._save_models": {
+                    "total": 0.002796200000375393,
+                    "count": 1,
+                    "self": 0.00013760000183538068,
+                    "children": {
+                        "RLTrainer._checkpoint": {
+                            "total": 0.002658599998540012,
+                            "count": 1,
+                            "self": 0.002658599998540012
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5810503545294692696}
   - component: {fileID: -4070044183248993192}
   - component: {fileID: 7502170242491056639}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 744265113856565810}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: WallCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

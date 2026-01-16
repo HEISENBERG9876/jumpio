@@ -1,0 +1,65 @@
+{
+    "MoveToFinishLine": {
+        "checkpoints": [
+            {
+                "steps": 499987,
+                "file_path": "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-499987.onnx",
+                "reward": 1.590743793407455,
+                "creation_time": 1768546735.8204608,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-499987.pt"
+                ]
+            },
+            {
+                "steps": 999989,
+                "file_path": "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-999989.onnx",
+                "reward": 1.814655314231741,
+                "creation_time": 1768547403.0207982,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-999989.pt"
+                ]
+            },
+            {
+                "steps": 1499993,
+                "file_path": "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-1499993.onnx",
+                "reward": 1.4895098954439163,
+                "creation_time": 1768548068.2380311,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-1499993.pt"
+                ]
+            },
+            {
+                "steps": 1999998,
+                "file_path": "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-1999998.onnx",
+                "reward": 1.8503025607849524,
+                "creation_time": 1768548729.6901147,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-1999998.pt"
+                ]
+            },
+            {
+                "steps": 2000060,
+                "file_path": "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-2000060.onnx",
+                "reward": 1.85302451565381,
+                "creation_time": 1768548729.7504642,
+                "auxillary_file_paths": [
+                    "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-2000060.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2000060,
+            "file_path": "results\\testWithVectors10\\MoveToFinishLine.onnx",
+            "reward": 1.85302451565381,
+            "creation_time": 1768548729.7504642,
+            "auxillary_file_paths": [
+                "results\\testWithVectors10\\MoveToFinishLine\\MoveToFinishLine-2000060.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.1.0",
+        "torch_version": "2.7.0+cu128"
+    }
+}

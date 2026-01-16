@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6884425156622683271}
   - component: {fileID: 4981549109742056088}
   - component: {fileID: 971193365134396956}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -330,11 +330,11 @@ MonoBehaviour:
   shortJumpGravity: 7
   maxFallSpeed: 10
   maxCoyoteTime: 0.1
-  groundCheckPos: {fileID: 5372166959003326448}
-  groundCheckSize: {x: 0.72, y: 0.05}
-  groundLayer:
+  standablePosCheck: {fileID: 5372166959003326448}
+  standableCheckSize: {x: 0.5, y: 0.1}
+  standableMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 9280
 --- !u!114 &4981549109742056088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,7 +378,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5372166959003326448}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}

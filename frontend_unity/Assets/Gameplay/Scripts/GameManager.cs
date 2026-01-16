@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Settings settings;
     [SerializeField] GameplayUI gameplayUI;
     private GameState currentState;
+    public Transform levelRoot;
 
     private async void Start()
     {
@@ -36,18 +37,17 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        FinishFlag.Reached += OnWin;
         timer.TimerEnded += OnLose;
     }
 
     private void OnDisable()
     {
-        FinishFlag.Reached -= OnWin;
         timer.TimerEnded -= OnLose;
 
         if (playerController != null)
         {
             playerController.Died -= OnLose;
+            playerController.Finished -= OnWin;
         }
     }
 
@@ -73,10 +73,11 @@ public class GameManager : MonoBehaviour
 
         List<PlacedPlaceableData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
         timer.StartTimer(runtimeLevelData.timer);
-        levelSpawner.SpawnLevelFromList(layout);
-        player = playerSpawner.SpawnPlayer(settings.playerSpawnPosition, Quaternion.identity);
+        levelSpawner.SpawnLevelFromList(layout, levelRoot ,new(0,0));
+        player = playerSpawner.SpawnPlayer(layout, levelRoot); //needs checks if SpawnMarker exists
         playerController = player.GetComponent<PlayerController>();
         playerController.Died += OnLose;
+        playerController.Finished += OnWin;
         virtualCamera.Follow = player.transform;
 
         currentState= GameState.Playing;
