@@ -22,12 +22,10 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
         if (!IsGroundAhead())
         {
             Flip();
-            Debug.Log("Slime reached edge and flipped");
         }
 
         if (IsWallHit()) { 
             Flip();
-            Debug.Log("Slime hit wall and flipped");
         }
     }
 
@@ -35,7 +33,6 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
     {
         if (collision.contacts[0].normal.y > 0.5f)
         {
-            Debug.Log("Slime stomped!");
             StopCollidingAndMoving();
             animator.SetTrigger("Die");
         }
@@ -57,21 +54,19 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
 
     public void KillPlayer(PlayerController player)
     {
-        Debug.Log("Slime killed player");
         player.Die();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy")){ //todo can be changed to layer
+        if (collision.gameObject.layer != LayerMask.NameToLayer("Ground")) //better to add mask to inspector
+        {
             Flip();
         }
-        return;
     }
 
     public void OnDeathAnimationEnd()
     {
-        Debug.Log("Slime died!");
         Destroy(gameObject);
     }
 

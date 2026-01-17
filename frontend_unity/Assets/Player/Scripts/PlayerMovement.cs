@@ -73,7 +73,6 @@ public class PlayerMovement : MonoBehaviour
         IsGroundedPublic = IsOnStandable();
         rb.linearVelocityX = CalculateDesiredVelocityX();
         Gravity();
-        Debug.Log($"Velocity: {rb.linearVelocity}");
 
     }
 

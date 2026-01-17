@@ -35,12 +35,10 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Died?.Invoke();
-        Debug.Log("Player died!");
     }
 
     public void Finish()
     {
         Finished?.Invoke();
-        Debug.Log("Player finished!");
     }
 }

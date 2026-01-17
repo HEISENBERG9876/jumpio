@@ -29,3 +29,4 @@ jumpio/.venv/
 # venvs
 venv-django/
 venv-mlagents1/
+results/

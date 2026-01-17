@@ -4,7 +4,6 @@ public class BulletController : MonoBehaviour, IKillsPlayer
 {
     public void KillPlayer(PlayerController player)
     {
-        Debug.Log("Bullet killed player");
         player.Die();
         Destroy(gameObject);
     }

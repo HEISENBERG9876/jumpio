@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32949f30161ad7849bba6ef913e0711a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArenaEpisodeController
-  chunkDatabase: {fileID: 11400000, guid: c6225a9a5f1d98744955bb88cd5f5e85, type: 2}
-  chunksToPlace: 5
+  chunkDatabase: {fileID: 11400000, guid: 8c91f7401aee50648bcdf9769dba47cc, type: 2}
+  chunksToPlace: 6
   baseSeed: 1234
   levelRoot: {fileID: 6059678794502622073}
   agentRoot: {fileID: 4024944313915369296}
@@ -235,6 +235,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4024944313915369296}
     m_Modifications:
+    - target: {fileID: -5631739131926841954, guid: bd925bdda028b6346b0f95185b685074, type: 3}
+      propertyPath: arena
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 623170397772086724, guid: bd925bdda028b6346b0f95185b685074, type: 3}
       propertyPath: m_Name
       value: Agent

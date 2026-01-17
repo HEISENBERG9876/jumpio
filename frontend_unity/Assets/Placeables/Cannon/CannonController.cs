@@ -21,7 +21,6 @@ public class CannonController : MonoBehaviour
 
     private void FireBullets()
     {
-        Debug.Log("Bullets fired from cannon");
         GameObject leftBullet = Instantiate(bulletPrefab, leftShootingPoint.position, leftShootingPoint.rotation, transform);
         Rigidbody2D leftRb = leftBullet.GetComponent<Rigidbody2D>();
         if (leftRb != null)

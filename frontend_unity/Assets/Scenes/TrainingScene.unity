@@ -149,8 +149,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ArenaManager
   arenaPrefab: {fileID: 2798217184662086844, guid: f53b36d232a53894faa028ca69dc54e8, type: 3}
-  arenasX: 1
-  arenasY: 1
+  arenasX: 5
+  arenasY: 5
   spacingX: 100
   spacingY: 100
   baseSeed: 1234
