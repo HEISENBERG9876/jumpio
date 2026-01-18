@@ -28,6 +28,11 @@ public class LevelRequest {
     public string level_data;
 }
 
+[Serializable]
+public class RefreshRequest
+{
+    public string refresh;
+}
 public class AuthResult
 {
     public bool Success { get; }
@@ -120,9 +125,9 @@ public class AuthManager : MonoBehaviour
         await UniTask.SwitchToMainThread();
         try
         {
-            var payload = new { refresh = refreshToken };
+            var payload = new RefreshRequest { refresh = refreshToken };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/refresh", payload))
+            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/refresh/", payload))
             {
                 await www.SendWebRequest().ToUniTask();
 

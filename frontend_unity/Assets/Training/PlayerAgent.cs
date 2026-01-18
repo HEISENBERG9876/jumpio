@@ -21,8 +21,8 @@ public class PlayerAgent : Agent
 
     public float frontScanDistance = 10f;
     public float shortScanDistance = 5f;
-    public float frontRayOffsetX = 0f;
-    public float[] frontRayHeights = new float[] { -2f, -1.2f, -0.4f, 0.4f, 1.2f, 2f};
+    public float[] frontRayHeights = new float[] { -2f, -1.2f, -0.4f, 0.4f, 1.2f, 2f };
+    public float[] frontRayAnglesDeg = new float[] { -5f, 0f, 8f };
     public float[] downProbeForwardOffsets = new float[] { 0.5f, 1.4f, 2.3f, 3.2f, 4.1f, 5f };
     public Vector2 rayBehindOffset = new Vector2(-0.4f, 0f);
     public Vector2 rayAboveOffset = new Vector2(0f, 0.4f);
@@ -36,6 +36,19 @@ public class PlayerAgent : Agent
 
     private float prevX;
 
+    //public Transform finishTransform;
+    //public float previousDistance; //=distance to finish on reset
+
+
+    //other
+    private int prevJump;
+
+    [Header("Unnecessary jumps")]
+    public float hazardRayLength = 3.0f;
+    public float gapRayHeight = 2.0f;
+
+    private bool hazardAhead;
+    private bool gapAhead;
 
     protected override void Awake()
     {
@@ -73,6 +86,11 @@ public class PlayerAgent : Agent
         movement.SetJumpHeld(jumpA == 1);
 
         //rewards
+        //float distanceToFinish = GetDistToFinish();
+        //float distanceDiff = previousDistance - distanceToFinish;
+        //AddReward(distanceDiff * progressRewardScale);
+        //previousDistance = distanceToFinish;
+
         float currentX = transform.position.x;
         float differenceX = currentX - prevX;
 
@@ -87,6 +105,28 @@ public class PlayerAgent : Agent
         {
             AddReward(-stepPenalty);
         }
+
+        //if (jumpA == 1 && prevJump == 0)
+        //{
+        //    AddReward(-jumpPenalty);
+        //}
+
+        bool jumpPressed = (jumpA == 1 && prevJump == 0);
+        bool movingForward = (moveA == 1);
+
+        if (jumpPressed)
+        {
+            bool canJump = movement.IsGroundedPublic || movement.CoyoteTime01 > 0f;
+
+            bool hasGoodReasonToJump = canJump && (hazardAhead || gapAhead);
+
+            if (!hasGoodReasonToJump && movingForward && canJump)
+            {
+                AddReward(-unnecesaryJumpPenalty);
+            }
+        }
+
+        prevJump = jumpA;
 
         //timeout penalty
         if (MaxStep > 0 && StepCount >= MaxStep - 1)
@@ -115,6 +155,8 @@ public class PlayerAgent : Agent
         transform.localRotation = Quaternion.identity;
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;
+        //finishTransform = LevelSpawner.FindFinish(arena.levelRoot);
+        //previousDistance = GetDistToFinish();
         prevX = transform.position.x;
     }
 
@@ -140,29 +182,62 @@ public class PlayerAgent : Agent
 
     void AddRayObservations(VectorSensor sensor)
     {
-        Vector2 right = Vector2.right;
+        float facing = (transform.localScale.x >= 0) ? 1f : -1f;
+        Vector2 right = Vector2.right * facing;
         Vector2 origin = transform.position;
+        hazardAhead = false;
+        gapAhead = false;
 
         int envMask = standableMask | enemyMask | spikeMask | bulletMask | finishMask;
 
+        // rays behind
+        AddSingleRayObservation(sensor,
+            origin + new Vector2(rayBehindOffset.x * facing, rayBehindOffset.y),
+            -right,
+            shortScanDistance,
+            envMask);
+
+        // rays above
+        AddSingleRayObservation(sensor,
+            origin + new Vector2(rayAboveOffset.x * facing, rayAboveOffset.y),
+            Vector2.up,
+            shortScanDistance,
+            envMask);
 
         // rays forward
         int hazardMask = enemyMask | spikeMask | bulletMask;
         for (int heightIndex = 0; heightIndex < frontRayHeights.Length; heightIndex++)
         {
             float height = frontRayHeights[heightIndex];
-            Vector2 orig = origin + new Vector2(frontRayOffsetX, height);
-                AddSingleRayObservation(sensor, orig, right, frontScanDistance, envMask);
+            Vector2 orig = origin + new Vector2(0f, height);
 
+            for (int angleIndex = 0; angleIndex < frontRayAnglesDeg.Length; angleIndex++)
+            {
+                float angle = frontRayAnglesDeg[angleIndex] * facing;
+                Vector2 direction = Rotate(right, angle);
+                AddSingleRayObservation(sensor, orig, direction, frontScanDistance, envMask);
+
+
+                RaycastHit2D hit = Physics2D.Raycast(orig, direction, hazardRayLength, hazardMask);
+                if (hit.collider != null)
+                {
+                    hazardAhead = true;
+                }
+            }
         }
-        
 
         //gap detection
         for (int i = 0; i < downProbeForwardOffsets.Length; i++)
         {
-            float fx = downProbeForwardOffsets[i];
-            Vector2 orig = origin + new Vector2(fx, 0f) + new Vector2(rayBelowOffset.x, rayBelowOffset.y);
+            float fx = downProbeForwardOffsets[i] * facing;
+            Vector2 orig = origin + new Vector2(fx, 0f) + new Vector2(rayBelowOffset.x * facing, rayBelowOffset.y);
             AddSingleRayObservation(sensor, orig, Vector2.down, shortScanDistance, envMask);
+
+            RaycastHit2D downHit = Physics2D.Raycast(orig, Vector2.down, gapRayHeight, standableMask);
+            if (downHit.collider == null)
+            {
+                gapAhead = true;
+            }
         }
     }
 
@@ -224,6 +299,14 @@ public class PlayerAgent : Agent
         sensor.AddObservation(Mathf.Clamp(platformVelocity.y / 4f, -1f, 1f));
     }
 
+    static Vector2 Rotate(Vector2 v, float degrees)
+    {
+        float r = degrees * Mathf.Deg2Rad;
+        float c = Mathf.Cos(r);
+        float s = Mathf.Sin(r);
+        return new Vector2(c * v.x - s * v.y, s * v.x + c * v.y);
+    }
+
     void OnDrawGizmosSelected()
     {
         if (!Application.isPlaying && !rb)
@@ -231,24 +314,37 @@ public class PlayerAgent : Agent
             return;
         }
 
+        float facing = transform.localScale.x >= 0 ? 1f : -1f;
+        Vector2 right = Vector2.right * facing;
         Vector2 origin = transform.position;
 
         int envMask = standableMask | enemyMask | spikeMask | bulletMask | finishMask;
+
+        // behind
+        DrawGizmoRay(origin + new Vector2(rayBehindOffset.x * facing, rayBehindOffset.y), -right, shortScanDistance, envMask);
+
+        // above
+        DrawGizmoRay(origin + new Vector2(rayAboveOffset.x * facing, rayAboveOffset.y), Vector2.up, shortScanDistance, envMask);
 
         // forward
         for (int i = 0; i < frontRayHeights.Length; i++)
         {
             float height = frontRayHeights[i];
-            Vector2 orig = origin + new Vector2(frontRayOffsetX, height);
+            Vector2 orig = origin + new Vector2(0f, height);
 
-                DrawGizmoRay(orig, Vector2.right, frontScanDistance, envMask);
+            for (int angleIndex = 0; angleIndex < frontRayAnglesDeg.Length; angleIndex++)
+            {
+                float angle = frontRayAnglesDeg[angleIndex] * facing;
+                Vector2 dir = Rotate(right, angle);
+                DrawGizmoRay(orig, dir, frontScanDistance, envMask);
+            }
         }
 
         // gap detection
         for (int i = 0; i < downProbeForwardOffsets.Length; i++)
         {
-            float offsetX = downProbeForwardOffsets[i];
-            Vector2 orig = origin + new Vector2(offsetX, 0) + new Vector2(rayBelowOffset.x, rayBelowOffset.y);
+            float offsetX = downProbeForwardOffsets[i] * facing;
+            Vector2 orig = origin + new Vector2(offsetX, 0) + new Vector2(rayBelowOffset.x * facing, rayBelowOffset.y);
             DrawGizmoRay(orig, Vector2.down, shortScanDistance, envMask);
         }
     }
@@ -266,5 +362,14 @@ public class PlayerAgent : Agent
             Gizmos.DrawSphere(hit.point, 0.05f);
         }
     }
+
+    //private float GetDistToFinish()
+    //{
+    //    if (finishTransform == null)
+    //    {
+    //        return 0f;
+    //    }
+    //    return Vector2.Distance(transform.position, finishTransform.position);
+    //}
 
 }

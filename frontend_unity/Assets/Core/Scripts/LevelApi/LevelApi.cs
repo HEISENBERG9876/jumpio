@@ -61,33 +61,33 @@ public class LevelApi
     {
         await UniTask.SwitchToMainThread();
 
-        var fields = new List<(string, string)>
+        using (UnityWebRequest www = await NetworkUtils.SendWithAutoRefreshAsync(() =>
         {
-            ("title", title),
-            ("difficulty", difficulty),
-            ("timer", timer.ToString())
-        };
+            var fields = new List<(string, string)>
+            {
+                ("title", title),
+                ("difficulty", difficulty),
+                ("timer", timer.ToString())
+            };
 
-        var wrapper = new LayoutWrapper { layout = layout };
-        string layoutJson = JsonUtility.ToJson(wrapper);
-        byte[] layoutBytes = Encoding.UTF8.GetBytes(layoutJson);
+            var wrapper = new LayoutWrapper { layout = layout };
+            string layoutJson = JsonUtility.ToJson(wrapper);
+            byte[] layoutBytes = Encoding.UTF8.GetBytes(layoutJson);
 
-        var files = new List<(string, byte[], string, string)>
+            var files = new List<(string, byte[], string, string)>
+            {
+                ("layout_file", layoutBytes, "layout.json", "application/json")
+            };
+
+            if (previewImage != null)
+            {
+                byte[] imageBytes = previewImage.EncodeToPNG();
+                files.Add(("preview_image", imageBytes, "preview.png", "image/png"));
+            }
+
+            return NetworkUtils.PostMultipart(settings.baseLevelUrl, AuthManager.Instance.AccessToken, fields, files.ToArray());
+        }))
         {
-            ("layout_file", layoutBytes, "layout.json", "application/json")
-        };
-
-        if (previewImage != null)
-        {
-            byte[] imageBytes = previewImage.EncodeToPNG();
-            files.Add(("preview_image", imageBytes, "preview.png", "image/png"));
-        }
-
-
-        using (UnityWebRequest www = NetworkUtils.PostMultipart(settings.baseLevelUrl, AuthManager.Instance.AccessToken, fields, files.ToArray()))
-        {
-            await www.SendWebRequest().ToUniTask();
-
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("[LevelApi] Level uploaded: " + www.downloadHandler.text);
@@ -129,10 +129,9 @@ public class LevelApi
         await UniTask.SwitchToMainThread();
         Debug.Log("[LevelApi] Token: " + AuthManager.Instance.AccessToken);
 
-        using (var www = NetworkUtils.GetJson(url, AuthManager.Instance.AccessToken))
+        using (var www = await NetworkUtils.SendWithAutoRefreshAsync(() =>
+        NetworkUtils.GetJson(url, AuthManager.Instance.AccessToken)))
         {
-            await www.SendWebRequest().ToUniTask();
-
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("[LevelApi] Levels page downloaded: " + www.downloadHandler.text);
@@ -143,7 +142,7 @@ public class LevelApi
                 Debug.LogError("[LevelApi] Error fetching levels: " + www.downloadHandler.text);
                 return new LevelApiResult<PaginatedLevelsResponse>(false, "Failed to download level page: " + www.downloadHandler.text, www.responseCode);
             }
-        }
+        }          
     }
 
 
