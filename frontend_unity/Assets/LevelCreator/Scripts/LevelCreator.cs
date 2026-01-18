@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 //minimum allowable height to place objects should be -11.5
 //maximum allowable height should be 9.5
@@ -10,6 +11,7 @@ public class LevelCreator : MonoBehaviour
 {
     public PlaceableDatabase placeableDatabase;
     public ToolbarController toolbar;
+    [SerializeField] Transform creatorRoot;
     public float cellSize = 1f;
     public bool deleteMode = false;
     private Vector2Int lastActionCell = new Vector2Int(int.MinValue, int.MinValue);
@@ -23,6 +25,9 @@ public class LevelCreator : MonoBehaviour
     private string exitMarkerId = "ExitMarker";
     private Vector2Int generationOriginCell = Vector2Int.zero; //during generation this will be the position where the next chunk will be placed. Also x + 1
     public ChunkDatabase chunkDatabase;
+    public TestLevelData testLevelData;
+    //testing
+    public TMP_InputField timerInput;
 
     void Update()
     {
@@ -125,7 +130,7 @@ public class LevelCreator : MonoBehaviour
 
         Debug.Log($"Placing object at {worldCellCenterPos}");
 
-        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity);
+        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity, creatorRoot);
 
         foreach (var toggle in go.GetComponentsInChildren<EditorModeToggle>(true))
         {
@@ -151,7 +156,7 @@ public class LevelCreator : MonoBehaviour
 
         Debug.Log($"Placing object at {worldCellCenterPos}");
 
-        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity);
+        var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity, creatorRoot);
 
         foreach (var toggle in go.GetComponentsInChildren<EditorModeToggle>(true))
         {
@@ -400,5 +405,23 @@ public class LevelCreator : MonoBehaviour
     public void SetGenerationOriginCell(Vector2Int cell)
     {
         generationOriginCell = cell;
+    }
+
+    //Testing
+    public void OnTestButtonClicked()
+    {
+        var currentLayout = GetCurrentLayout();
+
+        if (currentLayout == null || currentLayout.Count == 0)
+        {
+            Debug.LogWarning("[LevelCreator] Layout cant be empty");
+            return;
+        }
+
+        int timer = int.Parse(timerInput.text);
+        testLevelData.Set(timer, currentLayout);
+
+        SceneManager.LoadScene("GameplayScene", LoadSceneMode.Additive);
+        CreatorSession.Instance.SetCreatorActive(false);
     }
 }

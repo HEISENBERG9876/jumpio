@@ -79,7 +79,7 @@
     <Compile Include="Assets\LevelCreator\Scripts\UI\SaveLevelUI.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\CreateLevelUI.cs" />
     <Compile Include="Assets\Generation\Scripts\ChunkDatabase.cs" />
-    <Compile Include="Assets\Core\Scripts\RuntimeLevelData.cs" />
+    <Compile Include="Assets\LevelCreator\Scripts\TestLevelData.cs" />
     <Compile Include="Assets\Generation\Scripts\LevelChunk.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\LevelBrowser.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\UI\LevelItemUI.cs" />
@@ -93,6 +93,7 @@
     <Compile Include="Assets\Training\PlayerAgent.cs" />
     <Compile Include="Assets\Placeables\Platform\PlatformController.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\CameraController.cs" />
+    <Compile Include="Assets\Gameplay\Scripts\RuntimeLevelData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_UiFrameRateCounter.cs" />
     <Compile Include="Assets\Placeables\Scripts\PlaceableDatabase.cs" />
     <Compile Include="Assets\Placeables\Scripts\Interfaces\IKnockBacker.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
+    <Compile Include="Assets\LevelCreator\Scripts\CreatorSession.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApiModels.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />

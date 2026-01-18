@@ -5,6 +5,8 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] GameObject pausePanel;
     [SerializeField] GameObject wonPanel;
     [SerializeField] GameObject lostPanel;
+    [SerializeField] GameObject returnToEditorButton;
+    [SerializeField] GameManager gameManager;
 
     public void HideAllPanels()
     {
@@ -30,5 +32,11 @@ public class GameplayUI : MonoBehaviour
         HideAllPanels();
         lostPanel.SetActive(true);
     }
+
+    public void UpdateReturnToCreatorButton(bool isInTestMode)
+    {
+        returnToEditorButton.SetActive(isInTestMode);
+    }
+
 
 }

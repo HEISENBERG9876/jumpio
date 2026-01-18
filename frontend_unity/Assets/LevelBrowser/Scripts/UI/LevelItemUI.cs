@@ -19,7 +19,7 @@ public class LevelItemUI : MonoBehaviour
 
         playButton.onClick.AddListener(() =>
         {
-            runtimeLevelData.title = level.title;
+            runtimeLevelData.title = level.title; //todo add getters/setters
             runtimeLevelData.difficulty = level.difficulty;
             runtimeLevelData.timer = level.timer;
             runtimeLevelData.layoutUrl = level.layout_file;

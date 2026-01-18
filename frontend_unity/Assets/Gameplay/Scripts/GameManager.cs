@@ -16,13 +16,12 @@ public class GameManager : MonoBehaviour
         Lost
     }
 
-    //TODO allow saving custom player spawn position in settings OR make player a placeable
-    [Header("References")]
     public CinemachineCamera virtualCamera;
     public LevelSpawner levelSpawner;
     public PlayerSpawner playerSpawner;
     public Timer timer;
     [SerializeField] RuntimeLevelData runtimeLevelData;
+    [SerializeField] TestLevelData testLevelData;
     private GameObject player;
     private PlayerController playerController;
     [SerializeField] Settings settings;
@@ -32,6 +31,12 @@ public class GameManager : MonoBehaviour
 
     private async void Start()
     {
+        if(testLevelData != null && testLevelData.hasPayload)
+        {
+            StartTestGame();
+            return;
+        }
+
         await StartGame(LevelLoadMode.ForceDownload);
     }
 
@@ -68,12 +73,13 @@ public class GameManager : MonoBehaviour
 
     public async UniTask StartGame(LevelLoadMode levelLoadMode)
     {
+        gameplayUI.UpdateReturnToCreatorButton(false);
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
 
         List<PlacedPlaceableData> layout = await new LevelLoader().GetLayout(runtimeLevelData.layoutUrl, levelLoadMode, runtimeLevelData);
         timer.StartTimer(runtimeLevelData.timer);
-        levelSpawner.SpawnLevelFromList(layout, levelRoot ,new(0,0));
+        levelSpawner.SpawnLevelFromList(layout, levelRoot, new(0,0));
         player = playerSpawner.SpawnPlayer(layout, levelRoot); //needs checks if SpawnMarker exists
         playerController = player.GetComponent<PlayerController>();
         playerController.Died += OnLose;
@@ -81,7 +87,23 @@ public class GameManager : MonoBehaviour
         virtualCamera.Follow = player.transform;
 
         currentState= GameState.Playing;
+    }
 
+    private void StartTestGame()
+    {
+        gameplayUI.UpdateReturnToCreatorButton(true);
+        gameplayUI.HideAllPanels();
+        currentState = GameState.Loading;
+        List<PlacedPlaceableData> layout = testLevelData.layout;
+        timer.StartTimer(testLevelData.timer);
+        levelSpawner.SpawnLevelFromList(layout, levelRoot, new(0, 0));
+        player = playerSpawner.SpawnPlayer(layout, levelRoot);
+        playerController = player.GetComponent<PlayerController>();
+        playerController.Died += OnLose;
+        playerController.Finished += OnWin;
+        virtualCamera.Follow = player.transform;
+
+        currentState = GameState.Playing;
     }
 
     public void OnWin()
@@ -104,7 +126,8 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         MenuReturnState.ReturnToBrowser = true;
-        SceneManager.LoadScene("LoginMenuBrowseScene");
+        testLevelData?.Clear();
+        SceneManager.LoadScene("LoginMenuBrowseScene", LoadSceneMode.Single);
     }
 
     public void Pause()
@@ -121,10 +144,47 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Playing;
     }
 
-    public void Restart()
+    public async void Restart()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        ResetRun();
+
+        if (testLevelData.hasPayload)
+        {
+            StartTestGame();
+        }
+        else
+        {
+            await StartGame(LevelLoadMode.ForceDownload);
+        }
     }
+    public async void ReturnToCreator()
+    {
+        Time.timeScale = 1f;
+        testLevelData?.Clear();
+
+        await SceneManager.UnloadSceneAsync("GameplayScene");
+        CreatorSession.Instance.SetCreatorActive(true);
+    }
+
+    private void ResetRun()
+    {
+        if (playerController != null)
+        {
+            playerController.Died -= OnLose;
+            playerController.Finished -= OnWin;
+            playerController = null;
+        }
+
+        timer.StopTimer();
+        gameplayUI.HideAllPanels();
+
+        if (levelSpawner != null && levelRoot != null)
+            levelSpawner.Clear(levelRoot);
+
+        player = null;
+        virtualCamera.Follow = null;
+    }
+
 
 }
