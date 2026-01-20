@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'django_filters',
     'users',
     'levels',
+    'campaigns',
     'storages',
 ]
 

@@ -10,13 +10,16 @@ public class LevelBrowser : MonoBehaviour
     public Button prevButton;
     public Button nextButton;
 
+    [Header("CampaignCreator")]
+    public CampaignManager campaignManager;
+    public bool selectionMode = false;
+
     [SerializeField] private Settings settings;
     public Settings Settings => settings;
 
     private string prevUrl;
     private string nextUrl;
 
-    //TODO pooling for destroying game objects.
     public async UniTask LoadPageAsync(string url)
     {
         try
@@ -34,7 +37,11 @@ public class LevelBrowser : MonoBehaviour
                 foreach (var level in page.results)
                 {
                     GameObject item = Instantiate(levelItemPrefab, levelListContainer);
-                    item.GetComponent<LevelItemUI>().Initialize(level);
+
+                    if (selectionMode)
+                        item.GetComponent<CampaignLevelAddItemUI>().Initialize(level, campaignManager);
+                    else
+                        item.GetComponent<LevelItemUI>().Initialize(level);
                 }
 
                 prevUrl = page.previous;

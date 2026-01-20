@@ -7,16 +7,24 @@ public class UIManager : MonoBehaviour
 
     public GameObject LoginPanel;
     public GameObject MainMenuPanel;
-    public GameObject BrowseMenuPanel; 
+    public GameObject BrowseMenuPanel;
+    public GameObject BrowseLevelsPanel;
+    public GameObject BrowseCampaignsPanel;
+
 
     private void Awake() => Instance = this;
 
     private async void Start()
     {
-        if(MenuReturnState.ReturnToBrowser)
+        if(MenuReturnState.ReturnToLevelBrowser)
         {
-            MenuReturnState.ReturnToBrowser = false;
-            await ShowBrowsePanel();
+            MenuReturnState.ReturnToLevelBrowser = false;
+            await ShowBrowseLevelsPanel();
+        }
+        if (MenuReturnState.ReturnToCampaignBrowser)
+        {
+            MenuReturnState.ReturnToCampaignBrowser = false;
+            await ShowBrowseCampaignsPanel();
         }
         else if (AuthManager.Instance.IsLoggedIn)
         {
@@ -42,13 +50,38 @@ public class UIManager : MonoBehaviour
         BrowseMenuPanel.SetActive(false);
     }
 
-    public async UniTask ShowBrowsePanel()
-    {
-        LoginPanel.SetActive(false);
-        MainMenuPanel.SetActive(false);
-        BrowseMenuPanel.SetActive(true);
+   public async UniTask ShowBrowseLevelsPanel()
+{
+    LoginPanel.SetActive(false);
+    MainMenuPanel.SetActive(false);
+    BrowseMenuPanel.SetActive(true);
 
-        var browser = BrowseMenuPanel.GetComponentInChildren<LevelBrowser>();
-        await browser.LoadPageAsync(browser.Settings.baseLevelUrl);
+    BrowseLevelsPanel.SetActive(true);
+    BrowseCampaignsPanel.SetActive(false);
+
+    var browser = BrowseLevelsPanel.GetComponentInChildren<LevelBrowser>();
+    await browser.LoadPageAsync(browser.Settings.baseLevelUrl);
+}
+
+public async UniTask ShowBrowseCampaignsPanel()
+{
+    LoginPanel.SetActive(false);
+    MainMenuPanel.SetActive(false);
+    BrowseMenuPanel.SetActive(true);
+
+    BrowseLevelsPanel.SetActive(false);
+    BrowseCampaignsPanel.SetActive(true);
+
+    var browser = BrowseCampaignsPanel.GetComponentInChildren<CampaignBrowser>();
+    await browser.LoadPageAsync(browser.Settings.baseCampaignUrl);
+}
+
+    public async void OnBrowseLevelsClicked()
+    {
+        await ShowBrowseLevelsPanel();
+    }
+    public async void OnBrowseCampaignsClicked()
+    {
+        await ShowBrowseCampaignsPanel();
     }
 }

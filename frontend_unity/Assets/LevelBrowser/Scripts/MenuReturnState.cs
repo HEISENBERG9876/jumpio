@@ -1,4 +1,5 @@
 public static class MenuReturnState
 {
-    public static bool ReturnToBrowser = false;
+    public static bool ReturnToLevelBrowser = false;
+    public static bool ReturnToCampaignBrowser = false;
 }

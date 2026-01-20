@@ -57,6 +57,23 @@ public class NetworkUtils
         return request;
     }
 
+    public static UnityWebRequest PutJson(string url, object payload, string authToken = null)
+    {
+        string json = JsonUtility.ToJson(payload);
+        var request = new UnityWebRequest(url, "PUT");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Accept", "application/json");
+        if (!string.IsNullOrEmpty(authToken))
+        {
+            request.SetRequestHeader("Authorization", "Bearer " + authToken);
+        }
+        return request;
+    }
+
+
     public static async UniTask<UnityWebRequest> SendWithAutoRefreshAsync(Func<UnityWebRequest> requestToBuild)
     {
         await UniTask.SwitchToMainThread();

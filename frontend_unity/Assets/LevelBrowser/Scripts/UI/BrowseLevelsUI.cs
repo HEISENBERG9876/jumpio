@@ -5,8 +5,8 @@ using Cysharp.Threading.Tasks;
 public class BrowseLevelsUI : MonoBehaviour
 {
     public LevelBrowser levelBrowser;
-    public async void OnBrowseLevelsButtonClicked()
+    public void OnBrowseLevelsButtonClicked() // better to delete, belongs to LevelBrowser
     {
-        await UIManager.Instance.ShowBrowsePanel();
+        UIManager.Instance.OnBrowseLevelsClicked();
     }
 }

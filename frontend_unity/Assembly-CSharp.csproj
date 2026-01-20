@@ -77,8 +77,10 @@
     <Compile Include="Assets\Login\Scripts\UI\LogoutUI.cs" />
     <Compile Include="Assets\Login\Scripts\UI\RegisterUI.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\SaveLevelUI.cs" />
+    <Compile Include="Assets\Campaign\Scripts\CampaignManager.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\CreateLevelUI.cs" />
     <Compile Include="Assets\Generation\Scripts\ChunkDatabase.cs" />
+    <Compile Include="Assets\Campaign\Scripts\CampaignApi.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\TestLevelData.cs" />
     <Compile Include="Assets\Generation\Scripts\LevelChunk.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\LevelBrowser.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Training\DemoCameraFollow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
+    <Compile Include="Assets\Campaign\Scripts\UI\CampaignCreatorUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Training\PlayerAgent.cs" />
     <Compile Include="Assets\Placeables\Platform\PlatformController.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApi.cs" />
+    <Compile Include="Assets\CampaignBrowser\CampaignBrowser.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\UI\BrowseLevelsUI.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\NetworkUtils.cs" />
     <Compile Include="Assets\Core\Other\KillPlane\KillPlane.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApiModels.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Campaign\Scripts\UI\SelectedCampaignLevelItemUI.cs" />
     <Compile Include="Assets\Training\ArenaEpisodeController.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelLoader.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
@@ -144,10 +149,13 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventCheck.cs" />
+    <Compile Include="Assets\CampaignBrowser\CampaignItemUI.cs" />
     <Compile Include="Assets\Placeables\Slime\SlimeController.cs" />
+    <Compile Include="Assets\Campaign\RuntimeCampaignData.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\ToolbarController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\Campaign\Scripts\UI\CampaignLevelAddItemUI.cs" />
     <Compile Include="Assets\Core\UI\Scripts\UIManager.cs" />
   </ItemGroup>
   <ItemGroup>
