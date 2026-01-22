@@ -3,7 +3,6 @@ using UnityEngine;
 public class CannonController : MonoBehaviour
 {
     [SerializeField] Transform leftShootingPoint;
-    //[SerializeField] Transform rightShootingPoint;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] float fireInterval = 1f;
     [SerializeField] float bulletSpeed = 4f;
@@ -27,13 +26,6 @@ public class CannonController : MonoBehaviour
         {
             leftRb.linearVelocity = -leftShootingPoint.right * bulletSpeed;
         }
-
-        //GameObject rightBullet = Instantiate(bulletPrefab, rightShootingPoint.position, rightShootingPoint.rotation, transform);
-        //Rigidbody2D rightRb = rightBullet.GetComponent<Rigidbody2D>();
-        //if (rightRb != null)
-        //{
-        //    rightRb.linearVelocity = rightShootingPoint.right * bulletSpeed;
-        //}
     }
 
 }

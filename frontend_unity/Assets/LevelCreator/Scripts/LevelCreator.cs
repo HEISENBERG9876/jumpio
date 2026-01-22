@@ -28,6 +28,7 @@ public class LevelCreator : MonoBehaviour
     public TestLevelData testLevelData;
     //testing
     public TMP_InputField timerInput;
+    public DifficultyTestData difficultyTestData;
 
     void Update()
     {
@@ -408,7 +409,7 @@ public class LevelCreator : MonoBehaviour
     }
 
     //Testing
-    public void OnTestButtonClicked()
+    public void OnTestButtonClicked() //manual testing, needs better name
     {
         var currentLayout = GetCurrentLayout();
 
@@ -423,5 +424,19 @@ public class LevelCreator : MonoBehaviour
 
         SceneManager.LoadScene("GameplayScene", LoadSceneMode.Additive);
         CreatorSession.Instance.SetCreatorActive(false);
+    }
+
+    public async void OnDifficultyTestButtonClicked()
+    {
+        var layout = GetCurrentLayout();
+        if (layout == null || layout.Count == 0)
+        {
+            Debug.LogWarning("[LevelCreator] Layout cant be empty");
+            return;
+        }
+
+        difficultyTestData.Set(layout);
+
+        await SceneManager.LoadSceneAsync("DifficultyTestScene", LoadSceneMode.Additive);
     }
 }

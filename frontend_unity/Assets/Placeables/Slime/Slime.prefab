@@ -302,12 +302,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlimeController
   speed: 1
   groundCheck: {fileID: 8379729786725435755}
-  wallCheck: {fileID: 1748045802324337973}
+  obstacleCheck: {fileID: 1748045802324337973}
   groundMask:
     serializedVersion: 2
     m_Bits: 9280
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 16192
   groundCheckDistance: 0.2
-  wallCheckDistance: 0.03
+  obstacleCheckDistance: 0.1
   rb: {fileID: 349807677994434351}
   animator: {fileID: 173405909956179105}
 --- !u!95 &173405909956179105
@@ -358,7 +361,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1748045802324337973}
   m_Layer: 8
-  m_Name: WallCheck
+  m_Name: ObstacleCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

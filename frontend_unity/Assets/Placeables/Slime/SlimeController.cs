@@ -5,10 +5,11 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
 {
     public float speed = 1f;
     public Transform groundCheck;
-    public Transform wallCheck;
+    public Transform obstacleCheck;
     public LayerMask groundMask;
+    public LayerMask obstacleMask;
     public float groundCheckDistance = 0.2f;
-    public float wallCheckDistance = 0.1f;
+    public float obstacleCheckDistance = 0.1f;
 
     public Rigidbody2D rb;
     private bool movingLeft = true;
@@ -24,7 +25,7 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
             Flip();
         }
 
-        if (IsWallHit()) { 
+        if (IsObstacleHit()) { 
             Flip();
         }
     }
@@ -57,14 +58,6 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
         player.Die();
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.layer != LayerMask.NameToLayer("Ground")) //better to add mask to inspector
-        {
-            Flip();
-        }
-    }
-
     public void OnDeathAnimationEnd()
     {
         Destroy(gameObject);
@@ -75,10 +68,10 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
         return Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckDistance, groundMask);
     }
 
-    private bool IsWallHit()
+    private bool IsObstacleHit()
     {
         Vector2 direction = movingLeft ? Vector2.left : Vector2.right;
-        return Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundMask);
+        return Physics2D.Raycast(obstacleCheck.position, direction, obstacleCheckDistance, obstacleMask);
     }
 
     private void Flip()
@@ -96,6 +89,6 @@ public class SlimeController : MonoBehaviour, IStompable, IKillsPlayer
 
         Gizmos.color = Color.red;
         Vector3 direction = movingLeft ? Vector3.left : Vector3.right;
-        Gizmos.DrawLine(wallCheck.position, wallCheck.position + direction * wallCheckDistance);
+        Gizmos.DrawLine(obstacleCheck.position, obstacleCheck.position + direction * obstacleCheckDistance);
     }
 }

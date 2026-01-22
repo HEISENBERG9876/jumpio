@@ -23,7 +23,9 @@ public class ArenaEpisodeController : MonoBehaviour
     private void Awake()
     {
         if (agent != null)
+        {
             agent.arena = this;
+        }
     }
 
     public void StartEpisode()

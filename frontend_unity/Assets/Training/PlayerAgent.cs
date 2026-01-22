@@ -9,6 +9,7 @@ public class PlayerAgent : Agent
     [Header("Refs")]
     public Rigidbody2D rb;
     public ArenaEpisodeController arena;
+    public ArenaDifficultyTestEpisodeController testArena;
     public PlayerMovement movement;
     public PlayerController player;
 
@@ -39,9 +40,14 @@ public class PlayerAgent : Agent
     //public Transform finishTransform;
     //public float previousDistance; //=distance to finish on reset
 
-
     //other
     private int prevJump;
+
+    //difficulty
+    public enum EpisodeResult { None, Win, Death, Timeout }
+    public EpisodeResult LastResult { get; set; } = EpisodeResult.None;
+
+    public System.Action<EpisodeResult> EpisodeFinished;
 
     [Header("Unnecessary jumps")]
     public float hazardRayLength = 3.0f;
@@ -135,6 +141,7 @@ public class PlayerAgent : Agent
             Academy.Instance.StatsRecorder.Add("TimeoutRate", 1f, StatAggregationMethod.Average);
             Academy.Instance.StatsRecorder.Add("SuccessRate", 0f, StatAggregationMethod.Average);
             Academy.Instance.StatsRecorder.Add("DeathRate", 0f, StatAggregationMethod.Average);
+            FinishEpisode(EpisodeResult.Timeout);
 
         }
     }
@@ -147,7 +154,17 @@ public class PlayerAgent : Agent
         d[1] = (Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.W)) ? 1 : 0;
     }
 
-    public override void OnEpisodeBegin() => arena.StartEpisode();
+    public override void OnEpisodeBegin() {
+        LastResult = EpisodeResult.None;
+        if (arena != null)
+        {
+            arena.StartEpisode();
+        }
+        if(testArena != null)
+        {
+            testArena.StartEpisode();
+        }
+    }
 
     public void ResetForNewEpisode(Vector2 spawnLocal)
     {
@@ -166,7 +183,7 @@ public class PlayerAgent : Agent
         Academy.Instance.StatsRecorder.Add("TimeoutRate", 0f, StatAggregationMethod.Average);
         Academy.Instance.StatsRecorder.Add("DeathRate", 0f, StatAggregationMethod.Average);
         AddReward(1f);
-        EndEpisode();
+        FinishEpisode(EpisodeResult.Win);
     }
 
     private void OnDied()
@@ -175,7 +192,7 @@ public class PlayerAgent : Agent
         Academy.Instance.StatsRecorder.Add("DeathRate", 1f, StatAggregationMethod.Average);
         Academy.Instance.StatsRecorder.Add("TimeoutRate", 0f, StatAggregationMethod.Average);
         AddReward(-1f);
-        EndEpisode();
+        FinishEpisode(EpisodeResult.Death);
     }
 
     // rays
@@ -347,6 +364,13 @@ public class PlayerAgent : Agent
             Vector2 orig = origin + new Vector2(offsetX, 0) + new Vector2(rayBelowOffset.x * facing, rayBelowOffset.y);
             DrawGizmoRay(orig, Vector2.down, shortScanDistance, envMask);
         }
+    }
+
+    private void FinishEpisode(EpisodeResult result)
+    {
+        LastResult = result;
+        EpisodeFinished?.Invoke(result);
+        EndEpisode();
     }
 
     void DrawGizmoRay(Vector2 origin, Vector2 dir, float dist, int mask)

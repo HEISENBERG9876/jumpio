@@ -80,6 +80,7 @@
     <Compile Include="Assets\Campaign\Scripts\CampaignManager.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\UI\CreateLevelUI.cs" />
     <Compile Include="Assets\Generation\Scripts\ChunkDatabase.cs" />
+    <Compile Include="Assets\DifficultyTest\ArenaDifficultyTestEpisodeController.cs" />
     <Compile Include="Assets\Campaign\Scripts\CampaignApi.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\TestLevelData.cs" />
     <Compile Include="Assets\Generation\Scripts\LevelChunk.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="Assets\LevelBrowser\Scripts\UI\LevelItemUI.cs" />
     <Compile Include="Assets\Gameplay\Scripts\UI\GameplayUI.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\MenuReturnState.cs" />
+    <Compile Include="Assets\DifficultyTest\DifficultyReport.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Training\DemoCameraFollow.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="Assets\Core\Scripts\Settings.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_DigitValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_FrameRateCounter.cs" />
+    <Compile Include="Assets\DifficultyTest\DifficultyTestData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\CreatorSession.cs" />
@@ -145,6 +148,7 @@
     <Compile Include="Assets\Player\Scripts\PlayerController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
+    <Compile Include="Assets\DifficultyTest\DifficultyTestManager.cs" />
     <Compile Include="Assets\MainMenu\Scripts\UI\ReturnToMainMenuUI.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
@@ -155,6 +159,7 @@
     <Compile Include="Assets\LevelCreator\Scripts\ToolbarController.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Player\Scripts\PlayerMovement.cs" />
+    <Compile Include="Assets\DifficultyTest\DifficultyTester.cs" />
     <Compile Include="Assets\Campaign\Scripts\UI\CampaignLevelAddItemUI.cs" />
     <Compile Include="Assets\Core\UI\Scripts\UIManager.cs" />
   </ItemGroup>
