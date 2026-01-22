@@ -22,15 +22,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv()
 
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
+
+
 STORAGES = {
     "default": {
         "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        "OPTIONS": {
-            "access_key": os.getenv("AWS_ACCESS_KEY_ID"),
-            "secret_key": os.getenv("AWS_SECRET_ACCESS_KEY"),
-            "bucket_name": os.getenv("AWS_STORAGE_BUCKET_NAME"),
-            "region_name": os.getenv("AWS_S3_REGION_NAME"),
-        },
     },
     "staticfiles": {
         "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
@@ -40,7 +40,9 @@ STORAGES = {
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u(&z8pasdu+xfb*ff_*ddp61_16p0k+8jb_q=b4%qfyj1if+q!'
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise RuntimeError("SECRET_KEY environment variable is not set")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

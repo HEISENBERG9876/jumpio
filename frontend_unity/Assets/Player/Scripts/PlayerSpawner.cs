@@ -19,7 +19,7 @@ public class PlayerSpawner : MonoBehaviour
         {
             if (placeable.id == "SpawnMarker")
             {
-                return new Vector2(placeable.x, placeable.y);
+                return new Vector2(placeable.x + 0.5f, placeable.y + 0.5f);
             }
         }
         return Vector2.zero;
