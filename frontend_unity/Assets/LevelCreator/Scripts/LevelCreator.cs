@@ -28,6 +28,17 @@ public class LevelCreator : MonoBehaviour
     public TestLevelData testLevelData;
     //testing
     public DifficultyTestData difficultyTestData;
+    public TMP_Text difficultyText;
+
+    private void OnEnable()
+    {
+        difficultyTestData.ReportReady += OnDifficultyReportReady;
+    }
+
+    private void OnDisable()
+    {
+        difficultyTestData.ReportReady -= OnDifficultyReportReady;
+    }
 
     void Update()
     {
@@ -438,5 +449,53 @@ public class LevelCreator : MonoBehaviour
         GlobalUIManager.Instance.ShowLoading("Evaluating difficulty using bots...");
 
         await SceneManager.LoadSceneAsync("DifficultyTestScene", LoadSceneMode.Additive);
+    }
+
+    private void OnDifficultyReportReady(DifficultyReport report)
+    {
+        if (difficultyText != null)
+        {
+            difficultyText.text = report.calculatedDifficulty;
+        }
+    }
+
+
+    //validation
+    public bool ValidateLayoutForSave()
+    {
+        var layout = GetCurrentLayout();
+        if (layout == null || layout.Count == 0)
+        {
+            GlobalUIManager.Instance.ShowInfo("Cannot save empty layout");
+            return false;
+        }
+
+        int spawnCount = 0;
+        int finishCount = 0;
+
+        foreach (PlacedPlaceableData p in layout)
+        {
+            if (p.id == "SpawnMarker")
+            {
+                spawnCount++;
+            }
+            if (p.id == "FinishFlag")
+            {
+                finishCount++;
+            }
+        }
+
+        if (spawnCount != 1)
+        {
+            GlobalUIManager.Instance.ShowInfo("Level must contain exactly 1 spawn marker");
+            return false;
+        }
+        if (finishCount < 1)
+        {
+            GlobalUIManager.Instance.ShowInfo("Level must contain at least 1 finish flag");
+            return false;
+        }
+
+        return true;
     }
 }

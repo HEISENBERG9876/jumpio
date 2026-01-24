@@ -111,12 +111,14 @@ public class CampaignManager : MonoBehaviour
 
             if (string.IsNullOrEmpty(title))
             {
+                GlobalUIManager.Instance.ShowInfo("Title is required");
                 Debug.LogWarning("[CampaignCreator] Title required");
                 return;
             }
 
             if (selectedLevels.Count == 0)
             {
+                GlobalUIManager.Instance.ShowInfo("Campaign must contain at least one level");
                 Debug.LogWarning("[CampaignCreator] Campaign must contain at least one level");
                 return;
             }

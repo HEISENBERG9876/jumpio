@@ -24,7 +24,7 @@ public class DifficultyTestManager : MonoBehaviour
             }
 
             GlobalUIManager.Instance.ShowLoading("Evaluating difficulty using bots...");
-            testData.report = await difficultyTester.TestDifficultyAsync(testData.layout);
+            testData.SetReport(await difficultyTester.TestDifficultyAsync(testData.layout));
 
             Debug.Log(
                 $"[DifficultyTestManager] Difficulty Test Complete. " +

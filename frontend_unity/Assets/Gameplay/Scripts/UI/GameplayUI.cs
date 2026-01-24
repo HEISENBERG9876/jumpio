@@ -7,6 +7,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] GameObject lostPanel;
     [SerializeField] GameObject advanceLevelPanel;
     [SerializeField] GameObject testLevelWonPanel;
+    [SerializeField] GameObject testLevelLostPanel;
     [SerializeField] GameObject campaignFinishedPanel;
 
 
@@ -21,6 +22,8 @@ public class GameplayUI : MonoBehaviour
         lostPanel.SetActive(false);
         advanceLevelPanel.SetActive(false);
         campaignFinishedPanel.SetActive(false);
+        testLevelWonPanel.SetActive(false);
+        testLevelLostPanel.SetActive(false);
     }
 
     public void ShowPausePanel()
@@ -39,6 +42,12 @@ public class GameplayUI : MonoBehaviour
     {
         HideAllPanels();
         testLevelWonPanel.SetActive(true);
+    }
+
+    public void ShowTestLevelLostPanel()
+    {
+        HideAllPanels();
+        testLevelLostPanel.SetActive(true);
     }
 
     public void showLevelLostPanel()

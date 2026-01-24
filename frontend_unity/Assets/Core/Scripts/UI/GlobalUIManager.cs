@@ -3,7 +3,7 @@ using UnityEngine;
 public class GlobalUIManager : MonoBehaviour
 {
     [SerializeField] private LoadingUI loadingPanelParent;
-    [SerializeField] private InfoUI infoPanel;
+    [SerializeField] private InfoUI infoPanelParent;
 
     private static GlobalUIManager _instance;
     public static GlobalUIManager Instance
@@ -47,6 +47,6 @@ public class GlobalUIManager : MonoBehaviour
 
     public void ShowInfo(string msg)
     {
-        infoPanel.Show(msg);
+        infoPanelParent.Show(msg);
     }
 }
