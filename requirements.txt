@@ -1,9 +1,0 @@
-django
-djangorestframework
-djangorestframework-simplejwt
-django-filter
-psycopg[binary]
-Pillow
-python-dotenv
-boto3
-django-storages[boto3]
