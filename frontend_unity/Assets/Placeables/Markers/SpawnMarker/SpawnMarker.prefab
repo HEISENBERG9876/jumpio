@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 645786444232715737}
   - component: {fileID: 6722299090776855022}
+  - component: {fileID: -3843196512247775337}
   m_Layer: 0
   m_Name: SpawnMarker
   m_TagString: Untagged
@@ -79,7 +80,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7453933652727564871, guid: 683760083199e3d4987163ecf35258d9, type: 3}
+  m_Sprite: {fileID: -7559240996790636918, guid: 179df5190ad6d6a489bfbe645ee5fcd5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -90,3 +91,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3843196512247775337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4139858858211098329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff3b7e3ce9a6c2142b2a702479d5465e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DisableSpriteAtRuntime

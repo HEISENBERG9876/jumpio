@@ -148,6 +148,12 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        if (testLevelData.hasData)
+        {
+            gameplayUI.ShowTestLevelWonPanel();
+            return;
+        }
+
         gameplayUI.ShowLevelWonPanel();
     }
 

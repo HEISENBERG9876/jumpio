@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class GlobalUIManager : MonoBehaviour
 {
-    [SerializeField] private LoadingUI loadingPanel;
+    [SerializeField] private LoadingUI loadingPanelParent;
     [SerializeField] private InfoUI infoPanel;
 
     private static GlobalUIManager _instance;
@@ -37,12 +37,12 @@ public class GlobalUIManager : MonoBehaviour
 
     public void ShowLoading(string msg = null)
     {
-        loadingPanel.Show(msg);
+        loadingPanelParent.Show(msg);
     }
     
     public void HideLoading()
     {
-        loadingPanel.Hide();
+        loadingPanelParent.Hide();
     }
 
     public void ShowInfo(string msg)

@@ -6,6 +6,7 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] GameObject wonPanel;
     [SerializeField] GameObject lostPanel;
     [SerializeField] GameObject advanceLevelPanel;
+    [SerializeField] GameObject testLevelWonPanel;
     [SerializeField] GameObject campaignFinishedPanel;
 
 
@@ -32,6 +33,12 @@ public class GameplayUI : MonoBehaviour
     {
         HideAllPanels();
         wonPanel.SetActive(true);
+    }
+
+    public void ShowTestLevelWonPanel()
+    {
+        HideAllPanels();
+        testLevelWonPanel.SetActive(true);
     }
 
     public void showLevelLostPanel()

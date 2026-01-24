@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SpawnMarker
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
   id: SpawnMarker
-  icon: {fileID: 7453933652727564871, guid: 683760083199e3d4987163ecf35258d9, type: 3}
+  icon: {fileID: -7559240996790636918, guid: 179df5190ad6d6a489bfbe645ee5fcd5, type: 3}
   prefab: {fileID: 4139858858211098329, guid: ec907f9c77b851241bda59a358021f60, type: 3}
   offsetY: 0
   editorOnly: 0

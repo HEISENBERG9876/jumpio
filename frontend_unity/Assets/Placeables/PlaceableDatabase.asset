@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: PlaceableDatabase
   m_EditorClassIdentifier: Assembly-CSharp::PlaceableDatabase
   placeables:
+  - {fileID: 11400000, guid: 257fd64635b5555488a17847c47b2f6a, type: 2}
+  - {fileID: 11400000, guid: c594e0472d8abb349bfe0b63fa206bc8, type: 2}
   - {fileID: 11400000, guid: 7b48b18b87e96554d98be04dfb5c2956, type: 2}
   - {fileID: 11400000, guid: ee25e3ad762ae8145b07f267febec1ae, type: 2}
   - {fileID: 11400000, guid: 6402f2cac41c0e845adedaeef84e1557, type: 2}
   - {fileID: 11400000, guid: 314fa3d24f056be4c87de5e624000a57, type: 2}
-  - {fileID: 11400000, guid: c594e0472d8abb349bfe0b63fa206bc8, type: 2}
   - {fileID: 11400000, guid: 428202ede6cde724c88cf46609f7f95e, type: 2}
   - {fileID: 11400000, guid: e3907268835551648b920e0a52f679b2, type: 2}
   - {fileID: 11400000, guid: a56574f8450935f49b315aa2b02d4f83, type: 2}
   - {fileID: 11400000, guid: a749ed1ea5d096546bd7eeb619dd7151, type: 2}
-  - {fileID: 11400000, guid: 257fd64635b5555488a17847c47b2f6a, type: 2}

@@ -9,11 +9,6 @@ public class InfoUI : MonoBehaviour
 
     private void Awake()
     {
-        if (infoPanel == null)
-        {
-            infoPanel = gameObject;
-        }
-
         infoPanel.SetActive(false);
     }
 

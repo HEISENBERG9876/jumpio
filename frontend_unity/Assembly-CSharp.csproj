@@ -92,6 +92,7 @@
     <Compile Include="Assets\DifficultyTest\DifficultyReport.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
+    <Compile Include="Assets\Placeables\Scripts\DisableSpriteAtRuntime.cs" />
     <Compile Include="Assets\Training\DemoCameraFollow.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
     <Compile Include="Assets\Campaign\Scripts\UI\CampaignCreatorUI.cs" />

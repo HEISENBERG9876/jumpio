@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Cannon
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
   id: CannonTwoSided
-  icon: {fileID: -5333349321414413341, guid: 3dfc5d3f2d7a50c48acafc2868d8c7d2, type: 3}
+  icon: {fileID: 3912131843573516491, guid: 6db0432fe12119e41adf105e4b2c4e6c, type: 3}
   prefab: {fileID: 1226852778810289786, guid: 31f8180955c50ab418ddc8aba8843a8b, type: 3}
   offsetY: 0
+  editorOnly: 0
