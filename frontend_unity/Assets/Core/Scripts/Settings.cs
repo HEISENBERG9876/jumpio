@@ -4,7 +4,7 @@ using UnityEngine;
 public class Settings : ScriptableObject
 {
     [Header("API")]
-    [SerializeField] private string baseUrl = "http://localhost:8000/api/";
+    [SerializeField] private string baseUrl = "https://jumpiobackend.onrender.com/api/";
     [SerializeField] private string userEndpoint = "users/";
     [SerializeField] private string levelEndpoint = "levels/";
     [SerializeField] private string campaignEndpoint = "campaigns/";
