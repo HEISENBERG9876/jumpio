@@ -13,13 +13,23 @@ public class RegisterUI : MonoBehaviour
         string email = emailInput.text;
         string password = passwordInput.text;
 
-
-        var res = await AuthManager.Instance.RegisterAsync(username, email, password);
-
-        if (res.Success)
+        GlobalUIManager.Instance.ShowLoading("Registering...");
+        try
         {
-            UIManager.Instance.ShowMainMenuPanel();
+            var res = await AuthManager.Instance.RegisterAsync(username, email, password);
+            if (res.Success)
+            {
+                UIManager.Instance.ShowMainMenuPanel();
+            }
+            else
+            {
+                GlobalUIManager.Instance.ShowInfo(res.Message ?? "Registration failed");
+            } 
         }
-        //TODO : Show error message. Also change the logic entirely, so Register and Login are separate.
+        finally
+        {
+                GlobalUIManager.Instance.HideLoading();
+        }
+
     }
 }

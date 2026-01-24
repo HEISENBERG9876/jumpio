@@ -37,7 +37,9 @@ public class CampaignManager : MonoBehaviour
         for (int i = 0; i < selectedLevels.Count; i++)
         {
             if (selectedLevels[i].id == level.id)
+            {
                 return;
+            }
         }
 
         selectedLevels.Add(level);
@@ -46,7 +48,11 @@ public class CampaignManager : MonoBehaviour
 
     public void RemoveLevel(int index)
     {
-        if (index < 0 || index >= selectedLevels.Count) return;
+        if (index < 0 || index >= selectedLevels.Count)
+        {
+            return;
+        }
+
         selectedLevels.RemoveAt(index);
         RenderCampaignList();
     }
@@ -54,8 +60,15 @@ public class CampaignManager : MonoBehaviour
     public void MoveLevel(int index, int delta)
     {
         int newIndex = index + delta;
-        if (index < 0 || index >= selectedLevels.Count) return;
-        if (newIndex < 0 || newIndex >= selectedLevels.Count) return;
+        if (index < 0 || index >= selectedLevels.Count)
+        {
+            return;
+        }
+
+        if (newIndex < 0 || newIndex >= selectedLevels.Count)
+        {
+            return;
+        }
 
         var temp = selectedLevels[index];
         selectedLevels[index] = selectedLevels[newIndex];
@@ -91,43 +104,59 @@ public class CampaignManager : MonoBehaviour
 
     public async void SaveCampaign()
     {
-        string title = titleInput.text?.Trim();
-        string description = descriptionInput.text?.Trim();
-
-        if (string.IsNullOrEmpty(title))
+        try
         {
-            Debug.LogWarning("[CampaignCreator] Title required");
-            return;
-        }
+            string title = titleInput.text?.Trim();
+            string description = descriptionInput.text?.Trim();
 
-        if (selectedLevels.Count == 0)
+            if (string.IsNullOrEmpty(title))
+            {
+                Debug.LogWarning("[CampaignCreator] Title required");
+                return;
+            }
+
+            if (selectedLevels.Count == 0)
+            {
+                Debug.LogWarning("[CampaignCreator] Campaign must contain at least one level");
+                return;
+            }
+
+            GlobalUIManager.Instance.ShowLoading("Saving campaign...");
+
+            var createRes = await CampaignApi.Instance.CreateCampaignAsync(title, description);
+            if (!createRes.Success)
+            {
+                GlobalUIManager.Instance.ShowInfo("Failed to save campaign: " + createRes.Message);
+                Debug.LogError("[CampaignCreator] Failed to create campaign: " + createRes.Message);
+                return;
+            }
+
+            string campaignId = createRes.Data.id;
+
+            var orderedIds = new List<string>(selectedLevels.Count);
+            foreach (var lvl in selectedLevels)
+            {
+                orderedIds.Add(lvl.id.ToString());
+            }
+
+            var setRes = await CampaignApi.Instance.SetCampaignLevelsAsync(campaignId, orderedIds);
+            if (!setRes.Success)
+            {
+                GlobalUIManager.Instance.ShowInfo("Failed to set campaign levels: " + setRes.Message);
+                Debug.LogError("[CampaignCreator] Failed to set campaign levels: " + setRes.Message);
+                return;
+            }
+
+            Debug.Log("[CampaignCreator] Campaign saved. id=" + campaignId);
+        }
+        catch (System.Exception ex)
         {
-            Debug.LogWarning("[CampaignCreator] Campaign must contain at least one level");
-            return;
+            GlobalUIManager.Instance.ShowInfo("Unexpected exception while saving campaign");
+            Debug.LogError("[CampaignCreator] Exception while saving campaign: " + ex);
         }
-
-        // 1) Create campaign
-        var createRes = await CampaignApi.Instance.CreateCampaignAsync(title, description);
-        if (!createRes.Success)
+        finally
         {
-            Debug.LogError("[CampaignCreator] Failed to create campaign: " + createRes.Message);
-            return;
+            GlobalUIManager.Instance.HideLoading();
         }
-
-        string campaignId = createRes.Data.id;
-
-        // 2) Set ordered levels
-        var orderedIds = new List<string>(selectedLevels.Count);
-        foreach (var lvl in selectedLevels)
-            orderedIds.Add(lvl.id.ToString());
-
-        var setRes = await CampaignApi.Instance.SetCampaignLevelsAsync(campaignId, orderedIds);
-        if (!setRes.Success)
-        {
-            Debug.LogError("[CampaignCreator] Failed to set campaign levels: " + setRes.Message);
-            return;
-        }
-
-        Debug.Log("[CampaignCreator] Campaign saved. id=" + campaignId);
     }
 }

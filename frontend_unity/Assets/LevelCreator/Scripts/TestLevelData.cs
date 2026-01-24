@@ -8,7 +8,7 @@ public class TestLevelData : ScriptableObject
     public bool hasData;
     [HideInInspector] public List<PlacedPlaceableData> layout;
 
-    public void Set(int timer, List<PlacedPlaceableData> layout)
+    public void Set(List<PlacedPlaceableData> layout, int timer = 60)
     {
         this.timer = timer;
         this.layout = new List<PlacedPlaceableData>(layout);

@@ -6,8 +6,8 @@ using UnityEngine;
 public class DifficultyTester : MonoBehaviour
 {
     public ArenaDifficultyTestEpisodeController arenaController;
-    public int tries = 5;
-    public float maxSecondsPerTry = 20f;
+    public int tries = 10;
+    public float maxSecondsPerTry = 40f;
 
     public async UniTask<DifficultyReport> TestDifficultyAsync(List<PlacedPlaceableData> layout)
     {

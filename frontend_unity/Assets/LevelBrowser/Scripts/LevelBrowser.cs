@@ -24,9 +24,12 @@ public class LevelBrowser : MonoBehaviour
     {
         try
         {
+            GlobalUIManager.Instance.ShowLoading("Loading level list...");
             var res = await LevelApi.Instance.GetLevelsPageAsync(url);
+
             if (res.Success)
             {
+                GlobalUIManager.Instance.HideLoading();
                 PaginatedLevelsResponse page = res.Data;
 
                 foreach (Transform child in levelListContainer)
@@ -52,13 +55,18 @@ public class LevelBrowser : MonoBehaviour
             }
             else
             {
-                //TODO show error to user
+                GlobalUIManager.Instance.ShowInfo("Failed to load level page: " + res.Message);
                 Debug.LogError("[LevelBrowser] Failed to load level page: " + res.Message);
             }
         }
-        catch (System.Exception ex)
+        catch
         {
-            Debug.Log("[LevelBrowser] Unexpected error loading level page" + ex);
+            GlobalUIManager.Instance.ShowInfo("An unexpected error occurred while loading level page.");
+            Debug.Log("[LevelBrowser] Unexpected error loading level page");
+        }
+        finally
+        {
+            GlobalUIManager.Instance.HideLoading();
         }
     }
 

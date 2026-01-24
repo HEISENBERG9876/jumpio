@@ -27,7 +27,6 @@ public class LevelCreator : MonoBehaviour
     public ChunkDatabase chunkDatabase;
     public TestLevelData testLevelData;
     //testing
-    public TMP_InputField timerInput;
     public DifficultyTestData difficultyTestData;
 
     void Update()
@@ -419,8 +418,7 @@ public class LevelCreator : MonoBehaviour
             return;
         }
 
-        int timer = int.Parse(timerInput.text);
-        testLevelData.Set(timer, currentLayout);
+        testLevelData.Set(currentLayout);
 
         SceneManager.LoadScene("GameplayScene", LoadSceneMode.Additive);
         CreatorSession.Instance.SetCreatorActive(false);
@@ -431,11 +429,13 @@ public class LevelCreator : MonoBehaviour
         var layout = GetCurrentLayout();
         if (layout == null || layout.Count == 0)
         {
+            GlobalUIManager.Instance.ShowInfo("Cannot test difficulty on empty layout");
             Debug.LogWarning("[LevelCreator] Layout cant be empty");
             return;
         }
 
         difficultyTestData.Set(layout);
+        GlobalUIManager.Instance.ShowLoading("Evaluating difficulty using bots...");
 
         await SceneManager.LoadSceneAsync("DifficultyTestScene", LoadSceneMode.Additive);
     }

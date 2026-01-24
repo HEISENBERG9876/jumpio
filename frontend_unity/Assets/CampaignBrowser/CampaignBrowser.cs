@@ -20,12 +20,17 @@ public class CampaignBrowser : MonoBehaviour
     {
         try
         {
+            GlobalUIManager.Instance.ShowLoading("Loading campaign list...");
             var res = await CampaignApi.Instance.GetCampaignsPageAsync(url);
+
             if (!res.Success)
             {
+                GlobalUIManager.Instance.ShowInfo("Failed to load campaigns: " + res.Message);
                 Debug.LogError("[CampaignBrowser] Failed to load campaign page: " + res.Message);
                 return;
             }
+
+            GlobalUIManager.Instance.HideLoading();
 
             var page = res.Data;
 
@@ -46,7 +51,12 @@ public class CampaignBrowser : MonoBehaviour
         }
         catch (System.Exception ex)
         {
+            GlobalUIManager.Instance.ShowInfo("Unexpected error while loading campaigns.");
             Debug.LogError("[CampaignBrowser] Unexpected error: " + ex);
+        }
+        finally
+        {
+            GlobalUIManager.Instance.HideLoading();
         }
     }
 

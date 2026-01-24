@@ -10,11 +10,23 @@ public class LoginUI : MonoBehaviour
         string username = usernameInput.text;
         string password = passwordInput.text;
 
-        var res = await AuthManager.Instance.LoginAsync(username, password);
-
-        if(res.Success)
+        GlobalUIManager.Instance.ShowLoading("Logging in...");
+        try
         {
-            UIManager.Instance.ShowMainMenuPanel();
+            var res = await AuthManager.Instance.LoginAsync(username, password);
+
+            if (res.Success)
+            {
+                UIManager.Instance.ShowMainMenuPanel();
+            }
+            else
+            {
+                GlobalUIManager.Instance.ShowInfo(res.Message ?? "Login failed");
+            }
+        }
+        finally
+        {
+            GlobalUIManager.Instance.HideLoading();
         }
     }
 }
