@@ -437,16 +437,15 @@ public class LevelCreator : MonoBehaviour
 
     public async void OnDifficultyTestButtonClicked()
     {
-        var layout = GetCurrentLayout();
-        if (layout == null || layout.Count == 0)
+        if (!ValidateLayout())
         {
-            GlobalUIManager.Instance.ShowInfo("Cannot test difficulty on empty layout");
-            Debug.LogWarning("[LevelCreator] Layout cant be empty");
             return;
         }
 
+        var layout = GetCurrentLayout();
+
         difficultyTestData.Set(layout);
-        GlobalUIManager.Instance.ShowLoading("Evaluating difficulty using bots...");
+        GlobalUIManager.Instance.ShowLoading("Evaluating difficulty...");
 
         await SceneManager.LoadSceneAsync("DifficultyTestScene", LoadSceneMode.Additive);
     }
@@ -461,12 +460,12 @@ public class LevelCreator : MonoBehaviour
 
 
     //validation
-    public bool ValidateLayoutForSave()
+    public bool ValidateLayout()
     {
         var layout = GetCurrentLayout();
         if (layout == null || layout.Count == 0)
         {
-            GlobalUIManager.Instance.ShowInfo("Cannot save empty layout");
+            GlobalUIManager.Instance.ShowInfo("Layout cannot be empty");
             return false;
         }
 

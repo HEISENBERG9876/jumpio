@@ -163,13 +163,13 @@ public class GameManager : MonoBehaviour
         timer.StopTimer();
         currentState = GameState.Lost;
 
-        if (runtimeCampaignData.hasData)
+        if (testLevelData.hasData)
         {
             gameplayUI.ShowTestLevelLostPanel(); //TODO much cleaner would be to use GameState.Lost in UI script
             return;
         }
 
-        gameplayUI.ShowTestLevelLostPanel();
+        gameplayUI.showLevelLostPanel();
     }
 
     public void ReturnToBrowser() //stopped working and backs to menu. not a big issue

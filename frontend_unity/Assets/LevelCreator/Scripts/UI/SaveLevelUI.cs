@@ -29,7 +29,7 @@ public class SaveLevelUI : MonoBehaviour
         {
             GlobalUIManager.Instance.ShowLoading("Saving level...");
 
-            if (!levelCreator.ValidateLayoutForSave())
+            if (!levelCreator.ValidateLayout())
             {
                 return;
             }
