@@ -9,12 +9,12 @@ NOTE: First log in/register in the app will be very slow, since the server spins
 
 # Controls
 LevelCreator:
-WASD- camera movement
-X- change mode from place to delete. X again to change back.
-Left click- selecting object from toolbar, placing object, deleting object (after pressing X to change mode)
-Z- Undo
-C- Redo
+1. WASD- camera movement
+2. X- change mode from place to delete. X again to change back.
+3. Left click- selecting object from toolbar, placing object, deleting object (after pressing X to change mode)
+4. Z- Undo
+5. C- Redo
 
 Overall:
-ESC- menu
-WASD/Arrows/Space- player movement
+1. ESC- menu
+2. WASD/Arrows/Space- player movement
