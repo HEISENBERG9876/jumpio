@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EntryMarker
   m_EditorClassIdentifier: Assembly-CSharp::Placeable
   id: EntryMarker
-  icon: {fileID: -1314796443118097637, guid: 683760083199e3d4987163ecf35258d9, type: 3}
+  icon: {fileID: 778044960887809033, guid: 9b0b01b81e0e32442acd1e841bc465b2, type: 3}
   prefab: {fileID: 5989028734861935284, guid: 4e9e5defe8c31cd43818e427518a26b8, type: 3}
   offsetY: 0
   editorOnly: 1
