@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
         List<PlacedPlaceableData> layout = testLevelData.layout;
-        timer.StartTimer(testLevelData.timer);
+        //timer.StartTimer(testLevelData.timer);
         levelSpawner.SpawnLevelFromList(layout, levelRoot, new(0, 0));
         player = playerSpawner.SpawnPlayer(layout, levelRoot);
         playerController = player.GetComponent<PlayerController>();

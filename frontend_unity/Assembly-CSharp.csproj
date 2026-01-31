@@ -68,6 +68,7 @@
     <Compile Include="Assets\Gameplay\Scripts\GameManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Placeables\Cannon\CannonController.cs" />
+    <Compile Include="Assets\LevelCreator\Scripts\ModeChanger.cs" />
     <Compile Include="Assets\Login\Scripts\UI\LoginUI.cs" />
     <Compile Include="Assets\Placeables\Spike\SpikeController.cs" />
     <Compile Include="Assets\Placeables\Scripts\Placeable.cs" />
@@ -113,9 +114,11 @@
     <Compile Include="Assets\Core\Scripts\LevelApi\LevelApi.cs" />
     <Compile Include="Assets\CampaignBrowser\CampaignBrowser.cs" />
     <Compile Include="Assets\LevelBrowser\Scripts\UI\BrowseLevelsUI.cs" />
+    <Compile Include="Assets\LevelCreator\Scripts\ControlShower.cs" />
     <Compile Include="Assets\Core\Scripts\LevelApi\NetworkUtils.cs" />
     <Compile Include="Assets\Core\Other\KillPlane\KillPlane.cs" />
     <Compile Include="Assets\Generation\Scripts\LevelGenerator.cs" />
+    <Compile Include="Assets\Core\UI\TabNavigation.cs" />
     <Compile Include="Assets\LevelCreator\Scripts\LevelCreatorCommands.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
     <Compile Include="Assets\Gameplay\Scripts\LevelSpawner.cs" />

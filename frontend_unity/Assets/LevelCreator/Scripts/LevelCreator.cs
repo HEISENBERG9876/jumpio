@@ -29,6 +29,9 @@ public class LevelCreator : MonoBehaviour
     //testing
     public DifficultyTestData difficultyTestData;
     public TMP_Text difficultyText;
+    //ui, not too clean
+    public GameObject changeToDeleteModeButton;
+    public GameObject changeToPlaceModeButton;
 
     private void OnEnable()
     {
@@ -44,7 +47,7 @@ public class LevelCreator : MonoBehaviour
     {
         undoRedoTimer += Time.deltaTime;
 
-        if (Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Z) && !IsTyping())
         {
             if (undoRedoTimer >= undoRedoMaxTimer)
             {
@@ -52,7 +55,7 @@ public class LevelCreator : MonoBehaviour
                 undoRedoTimer = 0f;
             }
         }
-        else if (Input.GetKey(KeyCode.Y))
+        else if (Input.GetKey(KeyCode.Y) && !IsTyping())
         {
             if (undoRedoTimer >= undoRedoMaxTimer)
             {
@@ -66,11 +69,17 @@ public class LevelCreator : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X) && !IsTyping())
         {
-            deleteMode = !deleteMode;
+            ChangeMode();
             Debug.Log($"Delete mode: {deleteMode}");
         }
+
+        if (Input.GetKeyDown(KeyCode.G) && !IsTyping())
+        {
+            PlaceNextChunk();
+        }
+
 
         if (Input.GetMouseButton(0))
         {
@@ -497,4 +506,28 @@ public class LevelCreator : MonoBehaviour
 
         return true;
     }
+
+
+    //for inputs, better in ui script
+    private bool IsTyping()
+    {
+        GameObject current = EventSystem.current.currentSelectedGameObject;
+        if (current == null)
+        {
+            return false;
+        }
+
+        return current.GetComponent<TMP_InputField>() != null;
+    }
+
+
+    //ui
+    public void ChangeMode()
+    {
+        deleteMode = !deleteMode;
+        changeToDeleteModeButton.SetActive(!deleteMode);
+        changeToPlaceModeButton.SetActive(deleteMode);
+    }
+
+
 }

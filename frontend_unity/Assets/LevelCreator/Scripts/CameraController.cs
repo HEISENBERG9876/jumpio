@@ -1,4 +1,6 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraController : MonoBehaviour
 {
@@ -9,6 +11,10 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
+        if (IsTyping())
+        {
+            return;
+        }
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
         transform.position += new Vector3(h, v, 0) * moveSpeed * Time.unscaledDeltaTime; ;
@@ -23,5 +29,16 @@ public class CameraController : MonoBehaviour
             Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize, minZoom, maxZoom);
         }
     }
-    
+
+    private bool IsTyping()
+    {
+        GameObject current = EventSystem.current.currentSelectedGameObject;
+        if (current == null)
+        {
+            return false;
+        }
+
+        return current.GetComponent<TMP_InputField>() != null;
+    }
+
 }
