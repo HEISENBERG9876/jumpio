@@ -76,6 +76,37 @@ public class GameManager : MonoBehaviour
                 Resume();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (currentState == GameState.Won)
+            {
+                if (runtimeCampaignData.hasData)
+                {
+                    bool hasNext = runtimeCampaignData.currentIndex + 1 < runtimeCampaignData.levelLayoutUrls.Count;
+                    if (hasNext)
+                    {
+                        NextLevel();
+                    }
+                    else
+                    {
+                        ReplayCampaign();
+                    }
+                }
+                else
+                {
+                    Restart();
+                }
+            }
+            else if (currentState == GameState.Lost)
+            {
+                Restart();
+            }
+            else if(currentState == GameState.Paused)
+            {
+                Resume();
+            }
+        }
     }
 
     public async UniTask StartGame(LevelLoadMode levelLoadMode)
@@ -185,7 +216,7 @@ public class GameManager : MonoBehaviour
 
         if (testLevelData.hasData)
         {
-                        gameplayUI.ShowTestPausePanel();
+            gameplayUI.ShowTestPausePanel();
             return;
         }
 

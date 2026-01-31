@@ -69,9 +69,9 @@ public class SaveLevelUI : MonoBehaviour
             GlobalUIManager.Instance.ShowInfo("Title cannot be empty");
             return false;
         }
-        if (string.IsNullOrWhiteSpace(difficultyText.text))
+        if (string.IsNullOrWhiteSpace(difficultyText.text) || difficultyText.text.Length > 8)
         {
-            GlobalUIManager.Instance.ShowInfo("Difficulty cannot be empty");
+            GlobalUIManager.Instance.ShowInfo("Please evaluate difficulty before uploading level");
             return false;
         }
         if (!int.TryParse(timerInput.text, out int timer) || timer < 0)
