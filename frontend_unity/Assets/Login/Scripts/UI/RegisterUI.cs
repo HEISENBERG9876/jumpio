@@ -10,13 +10,12 @@ public class RegisterUI : MonoBehaviour
     public async void OnRegisterButtonClicked()
     {
         string username = usernameInput.text;
-        string email = emailInput.text;
         string password = passwordInput.text;
 
         GlobalUIManager.Instance.ShowLoading("Registering...");
         try
         {
-            var res = await AuthManager.Instance.RegisterAsync(username, email, password);
+            var res = await AuthManager.Instance.RegisterAsync(username, password);
             if (res.Success)
             {
                 UIManager.Instance.ShowMainMenuPanel();

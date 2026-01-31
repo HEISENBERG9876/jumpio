@@ -12,7 +12,7 @@ public class PlacedPlaceableData
     //public int width = 1;
     //public int height = 1;
     public int rotation = 0;
-    //public string metadataJson;
+    public string metadataJson;
 
     // TODO metadata, rotation, width and height most likely useless. Might add rotation support.
 }

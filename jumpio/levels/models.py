@@ -27,9 +27,4 @@ class Level(models.Model):
     difficulty = models.CharField(max_length=10)
     preview_image = models.ImageField(upload_to=preview_upload_path, null=True, blank=True)
 
-class LevelAttempt(models.Model):
-    level_id = models.ForeignKey(Level, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    success = models.BooleanField
-    timestamp = models.DateTimeField(auto_now_add=True)
 

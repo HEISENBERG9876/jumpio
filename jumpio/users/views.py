@@ -13,10 +13,9 @@ class RegisterView(APIView):
 
     def post(self, request):
         username = request.data.get("username")
-        email = request.data.get("email")
         password = request.data.get("password")
 
-        if not username or not password or not email:
+        if not username or not password:
             return Response({"error": "Missing fields"}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=username).exists():
@@ -27,5 +26,5 @@ class RegisterView(APIView):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-        User.objects.create_user(username=username, email=email, password=password)
+        User.objects.create_user(username=username, password=password)
         return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)

@@ -19,7 +19,6 @@ public class LoginRequest {
 [Serializable]
 public class RegisterRequest {
     public string username;
-    public string email;
     public string password;
 }
 
@@ -153,12 +152,12 @@ public class AuthManager : MonoBehaviour
         }
     }
 
-    public async UniTask<AuthResult> RegisterAsync(string username, string email, string password)
+    public async UniTask<AuthResult> RegisterAsync(string username, string password)
     {
         await UniTask.SwitchToMainThread();
         try
         {
-            var payload = new RegisterRequest { username = username, email = email, password = password };
+            var payload = new RegisterRequest { username = username, password = password };
 
             using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "register/", payload))
             {
