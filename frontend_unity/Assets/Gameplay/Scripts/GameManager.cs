@@ -80,7 +80,6 @@ public class GameManager : MonoBehaviour
 
     public async UniTask StartGame(LevelLoadMode levelLoadMode)
     {
-        gameplayUI.UpdateReturnToCreatorButton(false);
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
 
@@ -98,7 +97,6 @@ public class GameManager : MonoBehaviour
 
     private void StartTestGame()
     {
-        gameplayUI.UpdateReturnToCreatorButton(true);
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
         List<PlacedPlaceableData> layout = testLevelData.layout;
@@ -115,7 +113,6 @@ public class GameManager : MonoBehaviour
 
     private async UniTask StartCampaignLevel(LevelLoadMode mode)
     {
-        gameplayUI.UpdateReturnToCreatorButton(false);
         gameplayUI.HideAllPanels();
         currentState = GameState.Loading;
 
@@ -184,8 +181,15 @@ public class GameManager : MonoBehaviour
     public void Pause()
     {
         Time.timeScale = 0f;
-        gameplayUI.ShowPausePanel();
         currentState = GameState.Paused;
+
+        if (testLevelData.hasData)
+        {
+                        gameplayUI.ShowTestPausePanel();
+            return;
+        }
+
+        gameplayUI.ShowPausePanel();
     }
 
     public void Resume()

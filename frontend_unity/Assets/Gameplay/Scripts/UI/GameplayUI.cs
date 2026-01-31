@@ -8,10 +8,9 @@ public class GameplayUI : MonoBehaviour
     [SerializeField] GameObject advanceLevelPanel;
     [SerializeField] GameObject testLevelWonPanel;
     [SerializeField] GameObject testLevelLostPanel;
+    [SerializeField] GameObject testPausePanel;
     [SerializeField] GameObject campaignFinishedPanel;
 
-
-    [SerializeField] GameObject returnToEditorButton;
     [SerializeField] GameManager gameManager;
 
     //no need for so many panels, better to add conditionals that slightly change  existing
@@ -24,6 +23,7 @@ public class GameplayUI : MonoBehaviour
         campaignFinishedPanel.SetActive(false);
         testLevelWonPanel.SetActive(false);
         testLevelLostPanel.SetActive(false);
+        testPausePanel.SetActive(false);
     }
 
     public void ShowPausePanel()
@@ -68,10 +68,9 @@ public class GameplayUI : MonoBehaviour
         campaignFinishedPanel.SetActive(true);
     }
 
-    public void UpdateReturnToCreatorButton(bool isInTestMode)
+    public void ShowTestPausePanel()
     {
-        returnToEditorButton.SetActive(isInTestMode);
+        HideAllPanels();
+        testPausePanel.SetActive(true);
     }
-
-
 }
