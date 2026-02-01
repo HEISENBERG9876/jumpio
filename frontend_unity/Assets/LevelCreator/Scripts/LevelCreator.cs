@@ -33,6 +33,9 @@ public class LevelCreator : MonoBehaviour
     //ui, not too clean
     public GameObject changeToDeleteModeButton;
     public GameObject changeToPlaceModeButton;
+    //generation ui
+    [SerializeField] private Transform generationOriginMarker;
+    [SerializeField] private Vector3 markerOffset = new(0f, 0f, -0.5f);
 
     //editing
     public RuntimeLevelData runtimeLevelData;
@@ -53,11 +56,27 @@ public class LevelCreator : MonoBehaviour
         {
             await LoadLevelForEditingAsync();
         }
+
+        SetGenerationOriginCell(generationOriginCell);
     }
 
     void Update()
     {
         undoRedoTimer += Time.deltaTime;
+
+        if (Input.GetMouseButtonDown(1) && !IsTyping())
+        {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2Int cell = WorldToCell(worldPos);
+
+            if (cell != GetGenerationOriginCell())
+                ExecuteCommand(new SetOriginCommand(cell));
+
+            return;
+        }
 
         if (Input.GetKey(KeyCode.Z) && !IsTyping())
         {
@@ -437,6 +456,12 @@ public class LevelCreator : MonoBehaviour
     public void SetGenerationOriginCell(Vector2Int cell)
     {
         generationOriginCell = cell;
+        generationOriginMarker.position = CellToWorldCenter(cell) + markerOffset;
+    }
+
+    public bool IsCellOccupied(Vector2Int cell)
+    {
+        return placedWithCell.ContainsKey(cell);
     }
 
     //Testing

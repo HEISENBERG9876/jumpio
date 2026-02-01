@@ -388,7 +388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CannonTwoSidesController
   leftShootingPoint: {fileID: 8187807477043975086}
   bulletPrefab: {fileID: 744922013245551615, guid: 051d835bb41297047930e237f77d77a6, type: 3}
-  fireInterval: 1.5
+  fireInterval: 2.3
   bulletSpeed: 6
 --- !u!1 &7521496011362100317
 GameObject:

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelChunk
   entranceCell: {x: 0, y: 1}
   exitCell: {x: 11, y: 1}
-  role: 0
+  role: 1
   difficulty: 0
   tags: 
   placedPlaceablesLocal:

@@ -11,7 +11,7 @@ public class BulletController : MonoBehaviour, IKillsPlayer
 
     private void Start()
     {
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 30f);
     }
 
     private void OnTriggerEnter2D(Collider2D other)

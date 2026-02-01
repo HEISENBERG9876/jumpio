@@ -40,7 +40,7 @@ public class PlaceCommand : ICreatorCommand
 
         levelCreator.PlaceAtCell(cell, placeable);
 
-        originAfter = cell + Vector2Int.right + Vector2Int.up;
+        originAfter = cell + Vector2Int.right; //used to be + vector2up
         levelCreator.SetGenerationOriginCell(originAfter);
     }
     public void Undo(LevelCreator levelCreator)
@@ -103,13 +103,20 @@ public class PlaceChunkCommand : ICreatorCommand
     //TODO check for occupied cells before placing
     public void Execute(LevelCreator levelCreator)
     {
+        Debug.Log($"Placing chunk: {levelChunk.name}");
         originCellBefore = levelCreator.GetGenerationOriginCell();
 
         foreach (PlacedPlaceableData placeableToPlace in levelChunk.placedPlaceablesLocal)
         {
-            int worldX = startCell.x + (int)placeableToPlace.x - levelChunk.entranceCell.x; //TODO also remove conversion to int
-            int worldY = startCell.y + (int)placeableToPlace.y - levelChunk.entranceCell.y; //removing entranceCell offset to treat entranceCell as (0, 0)
+            int worldX = startCell.x + (int)placeableToPlace.x - levelChunk.entranceCell.x;
+            int worldY = startCell.y + (int)placeableToPlace.y - levelChunk.entranceCell.y + 1;
+
             Vector2Int worldCell = new(worldX, worldY);
+            if (levelCreator.IsCellOccupied(worldCell))
+            {
+                continue;
+            }
+
             Placeable placeable = levelCreator.GetPlaceableById(placeableToPlace.id);
 
             PlacedPlaceableData worldPlaceableData = new PlacedPlaceableData
@@ -137,3 +144,27 @@ public class PlaceChunkCommand : ICreatorCommand
         levelCreator.SetGenerationOriginCell(originCellBefore);
     }
 }
+
+public class SetOriginCommand : ICreatorCommand
+{
+    private Vector2Int before;
+    private Vector2Int after;
+
+    public SetOriginCommand(Vector2Int newOrigin)
+    {
+        after = newOrigin;
+    }
+
+    public void Execute(LevelCreator levelCreator)
+    {
+        before = levelCreator.GetGenerationOriginCell();
+        levelCreator.SetGenerationOriginCell(after);
+    }
+
+    public void Undo(LevelCreator levelCreator)
+    {
+        levelCreator.SetGenerationOriginCell(before);
+    }
+}
+
+
