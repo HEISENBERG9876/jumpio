@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ public class RuntimeLevelData : ScriptableObject
 
     public void Clear()
     {
+        levelId = -1;
+        mode = RuntimeLevelMode.CreateNew;
         title = "";
         difficulty = "";
         timer = 0;

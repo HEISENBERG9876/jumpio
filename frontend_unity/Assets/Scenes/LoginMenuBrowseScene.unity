@@ -4612,8 +4612,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1230429370}
+  - component: {fileID: 1230429371}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: DataClearer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4634,6 +4635,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1230429371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1230429369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e7539e59262dec459cfbf2d6dce3361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClearData
+  runtimeLevelData: {fileID: 11400000, guid: 3fe3712f36328014fb59acabba57c42d, type: 2}
+  runtimeCampaignData: {fileID: 11400000, guid: ceaf99bc3f8fe7d42abbe2192cdcdc16, type: 2}
+  testLevelData: {fileID: 11400000, guid: 7af4315a0ae1cb84cb441d70bae4d762, type: 2}
 --- !u!1 &1297645176
 GameObject:
   m_ObjectHideFlags: 0
