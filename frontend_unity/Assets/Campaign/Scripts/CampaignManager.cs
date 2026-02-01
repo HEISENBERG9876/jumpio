@@ -148,7 +148,7 @@ public class CampaignManager : MonoBehaviour
                 Debug.LogError("[CampaignCreator] Failed to set campaign levels: " + setRes.Message);
                 return;
             }
-
+            GlobalUIManager.Instance.ShowInfo("Campaign saved successfully!");
             Debug.Log("[CampaignCreator] Campaign saved. id=" + campaignId);
         }
         catch (System.Exception ex)

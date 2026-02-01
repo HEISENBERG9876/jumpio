@@ -167,4 +167,85 @@ public class SetOriginCommand : ICreatorCommand
     }
 }
 
+public class PlaceConnectorAndChunkCommand : ICreatorCommand
+{
+    private Vector2Int startCell;
+    private LevelChunk connectorChunk;
+    private LevelChunk mainChunk;
+
+    private Vector2Int originBefore;
+
+    private PlaceChunkCommand connectorCmd;
+    private PlaceChunkCommand mainCmd;
+
+    public PlaceConnectorAndChunkCommand(Vector2Int startCell, LevelChunk connectorChunk, LevelChunk mainChunk)
+    {
+        this.startCell = startCell;
+        this.connectorChunk = connectorChunk;
+        this.mainChunk = mainChunk;
+    }
+
+    public void Execute(LevelCreator levelCreator)
+    {
+        originBefore = levelCreator.GetGenerationOriginCell();
+
+        connectorCmd = new PlaceChunkCommand(startCell, connectorChunk);
+        connectorCmd.Execute(levelCreator);
+
+        Vector2Int nextStart = ComputeOriginAfterChunk(startCell, connectorChunk);
+
+        mainCmd = new PlaceChunkCommand(nextStart, mainChunk);
+        mainCmd.Execute(levelCreator);
+    }
+
+    public void Undo(LevelCreator levelCreator)
+    {
+        mainCmd?.Undo(levelCreator);
+        connectorCmd?.Undo(levelCreator);
+
+        levelCreator.SetGenerationOriginCell(originBefore);
+    }
+
+    private static Vector2Int ComputeOriginAfterChunk(Vector2Int start, LevelChunk chunk)
+    {
+        return new Vector2Int(
+            start.x + chunk.exitCell.x - chunk.entranceCell.x + 1,
+            start.y + chunk.exitCell.y - chunk.entranceCell.y
+        );
+    }
+}
+
+public class ClearLevelCommand : ICreatorCommand
+{
+    private List<PlacedPlaceableData> snapshot;
+    private Vector2Int originBefore;
+
+    public void Execute(LevelCreator levelCreator)
+    {
+        originBefore = levelCreator.GetGenerationOriginCell();
+        snapshot = levelCreator.GetCurrentLayout();
+
+        levelCreator.ClearAllPlaced();
+        levelCreator.SetOriginToDefault();
+    }
+
+    public void Undo(LevelCreator levelCreator)
+    {
+        if (snapshot == null)
+        {
+            return;
+        }
+
+        foreach (PlacedPlaceableData placedPlaceable in snapshot)
+        {
+            Placeable placeable = levelCreator.GetPlaceableById(placedPlaceable.id);
+
+            Vector2Int cell = new Vector2Int((int)placedPlaceable.x, (int)placedPlaceable.y);
+            levelCreator.PlaceAtCell(cell, placeable, placedPlaceable);
+        }
+
+        levelCreator.SetGenerationOriginCell(originBefore);
+    }
+}
+
 

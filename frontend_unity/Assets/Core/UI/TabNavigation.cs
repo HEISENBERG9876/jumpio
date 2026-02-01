@@ -9,17 +9,17 @@ public class TabNavigation : MonoBehaviour
 
     private void OnEnable()
     {
-        if (EventSystem.current == null)
-        {
-            return;
-        }
+        //if (EventSystem.current == null)
+        //{
+        //    return;
+        //}
 
-        GameObject current = EventSystem.current.currentSelectedGameObject;
+        //GameObject current = EventSystem.current.currentSelectedGameObject;
 
-        if (current == null || !current.activeInHierarchy)
-        {
-            SelectFirstValid();
-        }
+        //if (current == null || !current.activeInHierarchy)
+        //{
+        //    SelectFirstValid();
+        //}
     }
 
     private void Update()

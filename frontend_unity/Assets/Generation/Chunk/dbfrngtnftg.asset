@@ -48,11 +48,6 @@ MonoBehaviour:
     y: 3
     rotation: 0
     metadataJson: 
-  - id: DirtWithGrass
-    x: 3
-    y: 1
-    rotation: 0
-    metadataJson: 
   - id: Saw
     x: 9
     y: 6
@@ -196,10 +191,5 @@ MonoBehaviour:
   - id: Saw
     x: 5
     y: 7
-    rotation: 0
-    metadataJson: 
-  - id: SpawnMarker
-    x: 1
-    y: 1
     rotation: 0
     metadataJson: 

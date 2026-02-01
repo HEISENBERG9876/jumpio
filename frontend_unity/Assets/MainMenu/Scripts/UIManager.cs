@@ -85,4 +85,9 @@ public async UniTask ShowBrowseCampaignsPanel()
     {
         await ShowBrowseCampaignsPanel();
     }
+    public void Exit()
+    {
+        Application.Quit();
+    }
 }
+

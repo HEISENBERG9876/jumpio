@@ -25,7 +25,8 @@ public class LevelCreator : MonoBehaviour
     private string entryMarkerId = "EntryMarker"; //better to not hardcode
     private string exitMarkerId = "ExitMarker";
     private Vector2Int generationOriginCell = Vector2Int.zero; //during generation this will be the position where the next chunk will be placed. Also x + 1
-    public ChunkDatabase chunkDatabase;
+    public ChunkDatabase mainChunkDatabase;
+    public ChunkDatabase connectorChunkDatabase;
     public TestLevelData testLevelData;
     //testing
     public DifficultyTestData difficultyTestData;
@@ -178,8 +179,6 @@ public class LevelCreator : MonoBehaviour
     {
         Vector3 worldCellCenterPos = CellToWorldCenter(cell);
         worldCellCenterPos.y += placeable.offsetY;
-
-        Debug.Log($"Placing object at {worldCellCenterPos}");
 
         var go = Instantiate(placeable.prefab, worldCellCenterPos, Quaternion.identity, creatorRoot);
 
@@ -440,10 +439,11 @@ public class LevelCreator : MonoBehaviour
 
     public void PlaceNextChunk()
     {
-        ExecuteCommand(new PlaceChunkCommand(generationOriginCell, GetRandomChunk()));
+        ExecuteCommand(new PlaceConnectorAndChunkCommand(generationOriginCell, GetRandomChunk(connectorChunkDatabase), GetRandomChunk(mainChunkDatabase)));
+        //ExecuteCommand(new PlaceChunkCommand(generationOriginCell, GetRandomChunk(mainChunkDatabase)));
     }
 
-    public LevelChunk GetRandomChunk()
+    public LevelChunk GetRandomChunk(ChunkDatabase chunkDatabase)
     {
         return chunkDatabase.chunks[Random.Range(0, chunkDatabase.chunks.Count)];
     }
@@ -590,5 +590,25 @@ public class LevelCreator : MonoBehaviour
         //clear url?
     }
 
+    //clear
+    public void ClearAllPlaced()
+    {
+        foreach (PlacedRecord placedRecord in placedWithCell.Values)
+        {
+            if (placedRecord != null && placedRecord.gameObject != null)
+            {
+                Destroy(placedRecord.gameObject);
+            }
+        }
+        placedWithCell.Clear();
+    }
 
+    public void SetOriginToDefault()
+    {
+        SetGenerationOriginCell(Vector2Int.zero);
+    }
+    public void OnClearLevelButtonClicked()
+    {
+        ExecuteCommand(new ClearLevelCommand());
+    }
 }
