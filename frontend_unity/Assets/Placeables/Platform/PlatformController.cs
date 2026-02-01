@@ -24,7 +24,6 @@ public class PlatformController : MonoBehaviour
         return Physics2D.Raycast(wallCheck.position, direction, wallCheckDistance, groundLayer);
     }
 
-    //rotating is a workaround, might need smth better in future
     private void Flip()
     {
         movingLeft = !movingLeft;

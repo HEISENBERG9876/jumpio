@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a7081c6e916a324baf003fab6d1ed3a, type: 3}
+  m_Name: Saw
+  m_EditorClassIdentifier: Assembly-CSharp::Placeable
+  id: Saw
+  icon: {fileID: 2420867765292838666, guid: 639fe12a576d41c4dbe67f8cf8a0033f, type: 3}
+  prefab: {fileID: 7075844841584908162, guid: c2ccb3a417a050f4d96750591a931483, type: 3}
+  offsetY: 0
+  editorOnly: 0

@@ -187,7 +187,7 @@ MonoBehaviour:
   speed: 3
   groundLayer:
     serializedVersion: 2
-    m_Bits: 1088
+    m_Bits: 12096
 --- !u!114 &7502170242491056639
 MonoBehaviour:
   m_ObjectHideFlags: 0
