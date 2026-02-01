@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c24f38d545e114da142eb388bde587, type: 3}
+  m_Name: dfgfdgjnftg
+  m_EditorClassIdentifier: Assembly-CSharp::LevelChunk
+  entranceCell: {x: 0, y: 1}
+  exitCell: {x: 15, y: 2}
+  role: 0
+  difficulty: 0
+  tags: 
+  placedPlaceablesLocal:
+  - id: DirtWithGrass
+    x: 13
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 1
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 3
+    y: 3
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 3
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 4
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 2
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 15
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 0
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 5
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 12
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: Spike
+    x: 4
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 4
+    y: 2
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 8
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 7
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 9
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: Spike
+    x: 9
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: Spike
+    x: 8
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 9
+    y: 3
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 14
+    y: 1
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 10
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 8
+    y: 2
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 6
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 11
+    y: 0
+    rotation: 0
+    metadataJson: 

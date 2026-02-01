@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57c24f38d545e114da142eb388bde587, type: 3}
+  m_Name: 45htjntrytjrymn
+  m_EditorClassIdentifier: Assembly-CSharp::LevelChunk
+  entranceCell: {x: 0, y: 1}
+  exitCell: {x: 15, y: 1}
+  role: 0
+  difficulty: 0
+  tags: 
+  placedPlaceablesLocal:
+  - id: Saw
+    x: 9
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 1
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 2
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 0
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: Saw
+    x: 14
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 6
+    y: 2
+    rotation: 0
+    metadataJson: 
+  - id: Saw
+    x: 3
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: Platform
+    x: 6
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: FlyingSlime
+    x: 12
+    y: 2
+    rotation: 0
+    metadataJson: 
+  - id: Platform
+    x: 10
+    y: 0
+    rotation: 0
+    metadataJson: 
+  - id: DirtWithGrass
+    x: 15
+    y: 0
+    rotation: 0
+    metadataJson: 

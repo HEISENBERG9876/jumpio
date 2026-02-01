@@ -4709,7 +4709,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7057441375420834226, guid: 471c6f356ef43c240b53d0d570039fb4, type: 3}
       propertyPath: m_text
-      value: Generate chunk
+      value: Generate random segment
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -312,7 +312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DifficultyTester
   arenaController: {fileID: 712843532}
   tries: 10
-  maxSecondsPerTry: 40
+  maxSecondsPerTry: 30
 --- !u!4 &903051674
 Transform:
   m_ObjectHideFlags: 0
