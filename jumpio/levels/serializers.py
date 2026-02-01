@@ -5,5 +5,5 @@ class LevelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Level
-        fields = ["id", "title", "user", "layout_file", "date_created", "timer", "difficulty", "preview_image"]
+        fields = ["id", "title", "user", "layout_file", "date_created", "timer", "difficulty"]
         read_only_fields = ["id", "user", "date_created"]

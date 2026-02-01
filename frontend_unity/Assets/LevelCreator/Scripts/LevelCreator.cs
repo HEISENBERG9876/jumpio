@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using Cysharp.Threading.Tasks;
 
 //minimum allowable height to place objects should be -11.5
 //maximum allowable height should be 9.5
@@ -33,6 +34,9 @@ public class LevelCreator : MonoBehaviour
     public GameObject changeToDeleteModeButton;
     public GameObject changeToPlaceModeButton;
 
+    //editing
+    public RuntimeLevelData runtimeLevelData;
+
     private void OnEnable()
     {
         difficultyTestData.ReportReady += OnDifficultyReportReady;
@@ -41,6 +45,14 @@ public class LevelCreator : MonoBehaviour
     private void OnDisable()
     {
         difficultyTestData.ReportReady -= OnDifficultyReportReady;
+    }
+
+    private async void Start()
+    {
+        if (runtimeLevelData != null && runtimeLevelData.mode == RuntimeLevelMode.Edit)
+        {
+            await LoadLevelForEditingAsync();
+        }
     }
 
     void Update()
@@ -527,6 +539,30 @@ public class LevelCreator : MonoBehaviour
         deleteMode = !deleteMode;
         changeToDeleteModeButton.SetActive(!deleteMode);
         changeToPlaceModeButton.SetActive(deleteMode);
+    }
+
+    //editing
+    private async UniTask LoadLevelForEditingAsync()
+    {
+        if (string.IsNullOrEmpty(runtimeLevelData.layoutUrl))
+        {
+            Debug.Log("[LevelCreator] Missing layoutUrl");
+            return;
+        }
+
+        var res = await LevelApi.Instance.DownloadLevelLayoutAsync(runtimeLevelData.layoutUrl);
+        if (!res.Success)
+        {
+            GlobalUIManager.Instance.ShowInfo("Failed to load level layout");
+            return;
+        }
+
+        foreach (PlacedPlaceableData p in res.Data)
+        {
+            Placeable placeable = GetPlaceableById(p.id);
+            PlaceAtCell(new Vector2Int((int)p.x, (int)p.y), placeable, p); // + 0.5f?
+        }
+        //clear url?
     }
 
 

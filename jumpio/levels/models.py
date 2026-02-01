@@ -14,10 +14,6 @@ def layout_upload_path(instance, filename):
     return unique_file_path(instance, filename, "layouts")
 
 
-def preview_upload_path(instance, filename):
-    return unique_file_path(instance, filename, "preview_imgs")
-
-
 class Level(models.Model):
     title = models.CharField(max_length=255)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -25,6 +21,5 @@ class Level(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     timer = models.IntegerField(null=True, blank=True) # in seconds
     difficulty = models.CharField(max_length=10)
-    preview_image = models.ImageField(upload_to=preview_upload_path, null=True, blank=True)
 
 

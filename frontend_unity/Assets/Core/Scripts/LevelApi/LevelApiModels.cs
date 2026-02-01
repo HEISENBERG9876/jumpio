@@ -8,8 +8,8 @@ public class LevelDataResponse
     public string title;
     public string difficulty;
     public int timer;
-    public string layout_file; // URL to the layout file
-    public string preview_image_file;
+    public int user;
+    public string layout_file;
 }
 
 [System.Serializable]

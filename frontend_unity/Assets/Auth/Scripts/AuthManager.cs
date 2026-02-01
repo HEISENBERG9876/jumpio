@@ -45,6 +45,12 @@ public class AuthResult
     }
 }
 
+[System.Serializable]
+public class MeResponse
+{
+    public int id;
+}
+
 public class AuthManager : MonoBehaviour
 {
 
@@ -81,6 +87,9 @@ public class AuthManager : MonoBehaviour
     private string accessToken;
     private string refreshToken;
 
+    private int currentUserId = -1;
+    public int CurrentUserId => currentUserId;
+
     public bool IsLoggedIn => !string.IsNullOrEmpty(accessToken);
     public string AccessToken => accessToken;
 
@@ -103,6 +112,8 @@ public class AuthManager : MonoBehaviour
 
                     accessToken = tokens.access;
                     refreshToken = tokens.refresh;
+
+                    await FetchMeAsync();
 
                     return new AuthResult(true, "Login successful", www.responseCode);
                 }
@@ -193,5 +204,25 @@ public class AuthManager : MonoBehaviour
     {
         accessToken = null;
         refreshToken = null;
+        currentUserId = -1;
     }
+
+    private async UniTask FetchMeAsync()
+    {
+        using (var www = NetworkUtils.GetJson(settings.baseUserUrl + "me/", accessToken))
+        {
+            await www.SendWebRequest().ToUniTask();
+            if (www.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
+            {
+                var me = JsonUtility.FromJson<MeResponse>(www.downloadHandler.text);
+                currentUserId = me.id;
+            }
+            else
+            {
+                currentUserId = -1;
+                Debug.LogWarning("[AuthManager] /me failed: " + www.responseCode + " " + www.downloadHandler.text);
+            }
+        }
+    }
+
 }

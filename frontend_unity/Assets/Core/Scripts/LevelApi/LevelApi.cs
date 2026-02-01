@@ -57,27 +57,32 @@ public class LevelApi
     private Settings settings;
 
     //TODO multipart form data for file uploads
-    public async UniTask<LevelApiResult> UploadLevelAsync(string title, string difficulty, int timer, List<PlacedPlaceableData> layout, Texture2D previewImage = null)
+    public async UniTask<LevelApiResult<LevelDataResponse>> UploadLevelAsync(
+        string title,
+        string difficulty,
+        int timer,
+        List<PlacedPlaceableData> layout,
+        Texture2D previewImage = null)
     {
         await UniTask.SwitchToMainThread();
 
         using (UnityWebRequest www = await NetworkUtils.SendWithAutoRefreshAsync(() =>
         {
             var fields = new List<(string, string)>
-            {
-                ("title", title),
-                ("difficulty", difficulty),
-                ("timer", timer.ToString())
-            };
+        {
+            ("title", title),
+            ("difficulty", difficulty),
+            ("timer", timer.ToString())
+        };
 
             var wrapper = new LayoutWrapper { layout = layout };
             string layoutJson = JsonUtility.ToJson(wrapper);
             byte[] layoutBytes = Encoding.UTF8.GetBytes(layoutJson);
 
             var files = new List<(string, byte[], string, string)>
-            {
-                ("layout_file", layoutBytes, "layout.json", "application/json")
-            };
+        {
+            ("layout_file", layoutBytes, "layout.json", "application/json")
+        };
 
             if (previewImage != null)
             {
@@ -91,15 +96,29 @@ public class LevelApi
             if (www.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("[LevelApi] Level uploaded: " + www.downloadHandler.text);
-                return new LevelApiResult(true, "Level uploaded successfully", www.responseCode);
+
+                var created = JsonUtility.FromJson<LevelDataResponse>(www.downloadHandler.text);
+
+                return new LevelApiResult<LevelDataResponse>(
+                    true,
+                    "Level uploaded successfully",
+                    www.responseCode,
+                    created
+                );
             }
             else
             {
                 Debug.LogError("[LevelApi] Error uploading level:" + www.downloadHandler.text);
-                return new LevelApiResult(false, "Failed to upload level: " + www.downloadHandler.text, www.responseCode);
+                return new LevelApiResult<LevelDataResponse>(
+                    false,
+                    "Failed to upload level: " + www.downloadHandler.text,
+                    www.responseCode,
+                    null
+                );
             }
         }
     }
+
 
 
     public async UniTask<LevelApiResult<List<PlacedPlaceableData>>> DownloadLevelLayoutAsync(string url)
@@ -144,6 +163,47 @@ public class LevelApi
             }
         }          
     }
+
+    public async UniTask<LevelApiResult> UpdateLevelAsync(
+        int id,
+        string title,
+        string difficulty,
+        int timer,
+        List<PlacedPlaceableData> layout)
+    {
+        await UniTask.SwitchToMainThread();
+
+        using (UnityWebRequest www = await NetworkUtils.SendWithAutoRefreshAsync(() =>
+        {
+            var fields = new List<(string, string)>
+        {
+            ("title", title),
+            ("difficulty", difficulty),
+            ("timer", timer.ToString())
+        };
+
+            var wrapper = new LayoutWrapper { layout = layout };
+            string layoutJson = JsonUtility.ToJson(wrapper);
+            byte[] layoutBytes = Encoding.UTF8.GetBytes(layoutJson);
+
+            var files = new List<(string, byte[], string, string)>
+        {
+            ("layout_file", layoutBytes, "layout.json", "application/json")
+        };
+
+            string url = $"{settings.baseLevelUrl}{id}/";
+            return NetworkUtils.PatchMultipart(url, AuthManager.Instance.AccessToken, fields, files.ToArray());
+        }))
+        {
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                return new LevelApiResult(true, "Level updated successfully", www.responseCode);
+            }
+
+            return new LevelApiResult(false, "Failed to update level: " + www.downloadHandler.text, www.responseCode);
+        }
+    }
+
 
 
 }

@@ -57,6 +57,31 @@ public class NetworkUtils
         return request;
     }
 
+    public static UnityWebRequest PatchMultipart(
+    string url,
+    string authToken,
+    IEnumerable<(string key, string value)> formFields,
+    IEnumerable<(string fieldName, byte[] fileData, string fileName, string mimeType)> files)
+    {
+        var form = new WWWForm();
+
+        foreach (var (key, value) in formFields)
+            form.AddField(key, value);
+
+        foreach (var file in files)
+            form.AddBinaryData(file.fieldName, file.fileData, file.fileName, file.mimeType);
+
+        var request = UnityWebRequest.Post(url, form);
+        request.method = "PATCH";
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Accept", "application/json");
+
+        if (!string.IsNullOrEmpty(authToken))
+            request.SetRequestHeader("Authorization", "Bearer " + authToken);
+
+        return request;
+    }
+
     public static UnityWebRequest PutJson(string url, object payload, string authToken = null)
     {
         string json = JsonUtility.ToJson(payload);

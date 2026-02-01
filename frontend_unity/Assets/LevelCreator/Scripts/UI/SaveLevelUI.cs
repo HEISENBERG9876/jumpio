@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,7 +10,21 @@ public class SaveLevelUI : MonoBehaviour
     public TMP_InputField timerInput;
     public LevelCreator levelCreator;
     public GameObject SaveLevelFormPanel;
+    public RuntimeLevelData runtimeLevelData;
+    public TMP_Text saveButtonText;
 
+
+    private void Start()
+    {
+        saveButtonText.text = runtimeLevelData.levelId < 0 ? "Save" : "Update";
+
+        if (runtimeLevelData.levelId >= 0)
+        {
+            titleInput.text = runtimeLevelData.title;
+            difficultyText.text = runtimeLevelData.difficulty;
+            timerInput.text = runtimeLevelData.timer.ToString();
+        }
+    }
 
     public void OnSaveFormOpenClicked()
     {
@@ -22,39 +37,66 @@ public class SaveLevelUI : MonoBehaviour
     }
     public async void OnSaveButtonClicked()
     {
-
         try
         {
-            GlobalUIManager.Instance.ShowLoading("Saving level...");
+            GlobalUIManager.Instance.ShowLoading(
+                runtimeLevelData.levelId < 0 ? "Saving level..." : "Updating level..."
+            );
 
             if (!levelCreator.ValidateLayout())
-            {
                 return;
-            }
+
             if (!ValidateForm())
-            {
                 return;
-            }
 
             string title = titleInput.text;
             string difficulty = difficultyText.text;
             int timer = int.Parse(timerInput.text);
             List<PlacedPlaceableData> layout = levelCreator.GetCurrentLayout();
 
-            var res = await LevelApi.Instance.UploadLevelAsync(title, difficulty, timer, layout);
-
-            if (res.Success)
+            if (runtimeLevelData.levelId < 0)
             {
-                GlobalUIManager.Instance.ShowInfo("Level saved successfully!");
+                // CREATE
+                var res = await LevelApi.Instance.UploadLevelAsync(title, difficulty, timer, layout);
+
+                if (res.Success)
+                {
+                    runtimeLevelData.levelId = res.Data.id;
+                    runtimeLevelData.mode = RuntimeLevelMode.Edit;
+                    saveButtonText.text = "Update";
+
+                    GlobalUIManager.Instance.ShowInfo("Level saved successfully!");
+                }
+                else
+                {
+                    GlobalUIManager.Instance.ShowInfo(res.Message ?? "Failed to save level");
+                }
             }
             else
             {
-                GlobalUIManager.Instance.ShowInfo(res.Message ?? "Failed to save level");
+                // UPDATE
+                var res = await LevelApi.Instance.UpdateLevelAsync(
+                    runtimeLevelData.levelId,
+                    title,
+                    difficulty,
+                    timer,
+                    layout
+                );
+
+                if (res.Success)
+                {
+                    GlobalUIManager.Instance.ShowInfo("Level updated successfully!");
+                }
+                else
+                {
+                    GlobalUIManager.Instance.ShowInfo(res.Message ?? "Failed to update level");
+                }
             }
         }
-        catch
+        catch (Exception e)
         {
-            GlobalUIManager.Instance.ShowInfo("Failed to save level, unexpected error");
+            Debug.LogException(e);
+            GlobalUIManager.Instance.ShowInfo("Unexpected error while saving level");
         }
         finally
         {
