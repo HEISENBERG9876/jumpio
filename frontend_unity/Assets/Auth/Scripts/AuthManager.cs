@@ -100,6 +100,9 @@ public class AuthManager : MonoBehaviour
         await UniTask.SwitchToMainThread();
         try
         {
+            username = username?.Trim();
+            password = password?.Trim();
+
             var payload = new LoginRequest { username = username, password = password };
 
             using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/", payload))
@@ -168,6 +171,8 @@ public class AuthManager : MonoBehaviour
         await UniTask.SwitchToMainThread();
         try
         {
+            username = username?.Trim();
+            password = password?.Trim();
             var payload = new RegisterRequest { username = username, password = password };
 
             using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "register/", payload))
