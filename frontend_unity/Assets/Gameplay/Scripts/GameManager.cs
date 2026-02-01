@@ -200,10 +200,17 @@ public class GameManager : MonoBehaviour
         gameplayUI.showLevelLostPanel();
     }
 
-    public void ReturnToBrowser() //stopped working and backs to menu. not a big issue
+    public void ReturnToBrowser()
     {
         Time.timeScale = 1f;
-        MenuReturnState.ReturnToLevelBrowser = true;
+        if (runtimeCampaignData.hasData)
+        {
+            MenuReturnState.ReturnToCampaignBrowser = true;
+        }
+        else
+        {
+            MenuReturnState.ReturnToLevelBrowser = true;
+        }
         testLevelData?.Clear();
         runtimeCampaignData?.Clear();
         SceneManager.LoadScene("LoginMenuBrowseScene", LoadSceneMode.Single);

@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//script doesnt work for now
 public class PlatformParent : MonoBehaviour
 {
     [SerializeField] private LayerMask passengerMask;

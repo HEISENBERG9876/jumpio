@@ -68,7 +68,6 @@
     <Compile Include="Assets\Gameplay\Scripts\GameManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Placeables\Cannon\CannonController.cs" />
-    <Compile Include="Assets\LevelCreator\Scripts\ModeChanger.cs" />
     <Compile Include="Assets\Login\Scripts\UI\LoginUI.cs" />
     <Compile Include="Assets\Placeables\Spike\SpikeController.cs" />
     <Compile Include="Assets\Placeables\Scripts\Placeable.cs" />

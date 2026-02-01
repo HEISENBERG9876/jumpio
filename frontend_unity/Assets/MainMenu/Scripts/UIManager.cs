@@ -18,10 +18,11 @@ public class UIManager : MonoBehaviour
     {
         if(MenuReturnState.ReturnToLevelBrowser)
         {
+            Debug.Log("Returning to Level Browser");
             MenuReturnState.ReturnToLevelBrowser = false;
             await ShowBrowseLevelsPanel();
         }
-        if (MenuReturnState.ReturnToCampaignBrowser)
+        else if (MenuReturnState.ReturnToCampaignBrowser)
         {
             MenuReturnState.ReturnToCampaignBrowser = false;
             await ShowBrowseCampaignsPanel();
