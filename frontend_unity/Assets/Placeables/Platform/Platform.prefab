@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: -5810503545294692696}
   - component: {fileID: -4070044183248993192}
   - component: {fileID: 7502170242491056639}
+  - component: {fileID: -8874998412987884159}
   m_Layer: 10
   m_Name: Platform
   m_TagString: Untagged
@@ -186,7 +187,7 @@ MonoBehaviour:
   speed: 3
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1088
 --- !u!114 &7502170242491056639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +203,21 @@ MonoBehaviour:
   rb: {fileID: -5810503545294692696}
   animator: {fileID: 0}
   gameplayScripts: []
+--- !u!114 &-8874998412987884159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4548716657968844424}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0fdb71e6ece90f4ca19993693e3f2eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlatformParent
+  passengerMask:
+    serializedVersion: 2
+    m_Bits: 18688
 --- !u!1 &5864794856985499164
 GameObject:
   m_ObjectHideFlags: 0
