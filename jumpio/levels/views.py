@@ -1,5 +1,4 @@
 from rest_framework import viewsets, permissions, parsers
-
 from .models import Level
 from .serializers import LevelSerializer
 
