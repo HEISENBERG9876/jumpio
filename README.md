@@ -13,8 +13,11 @@ LevelCreator:
 2. X- change mode from place to delete. X again to change back.
 3. Left click- selecting object from toolbar, placing object, deleting object (after pressing X to change mode)
 4. Z- Undo
-5. C- Redo
+5. Y- Redo
+6. G- generate
+7. Right click- change generation origin
 
 Overall:
 1. ESC- menu
 2. WASD/Arrows/Space- player movement
+3. Space/Return- exit won/lost/pause panel
