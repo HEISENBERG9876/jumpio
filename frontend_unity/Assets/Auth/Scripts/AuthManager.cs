@@ -2,7 +2,15 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System;
 using Cysharp.Threading.Tasks;
-using System.Net;
+
+[Serializable]
+public class ApiMessageResponse
+{
+    public string message;
+    public string error;
+    public string detail;
+}
+
 
 [Serializable]
 public class TokenResponse {
@@ -122,7 +130,8 @@ public class AuthManager : MonoBehaviour
                 }
                 else
                 {
-                    return new AuthResult(false, "Login failed. Invalid login or password", www.responseCode);
+                    var msg = ExtractErrorMessage(www.downloadHandler?.text) ?? "Login failed.";
+                    return new AuthResult(false, msg, www.responseCode);
                 }
             }
         }
@@ -155,7 +164,8 @@ public class AuthManager : MonoBehaviour
                     accessToken = null;
                     refreshToken = null;
                     Debug.LogWarning("[AuthManager] Refresh token failed: " + www.responseCode + www.downloadHandler?.text + www.error);
-                    return new AuthResult(false, "Obtaining refresh token failed", www.responseCode);
+                    var msg = ExtractErrorMessage(www.downloadHandler?.text) ?? "Refresh token failed.";
+                    return new AuthResult(false, msg, www.responseCode);
                 }
             }
         }
@@ -189,12 +199,13 @@ public class AuthManager : MonoBehaviour
                     }
                     else
                     {
-                        return new AuthResult(false, "Register succeeded, but login failed. " + res.Message, www.responseCode);
+                        return new AuthResult(false, res.Message ?? "Register succeeded, but login failed.", www.responseCode);
                     }
                 }
                 else
                 {
-                    return new AuthResult(false, "Register failed. " + www.downloadHandler.text, www.responseCode);
+                    var msg = ExtractErrorMessage(www.downloadHandler?.text) ?? "Registration failed.";
+                    return new AuthResult(false, msg, www.responseCode);
                 }
             }
         }
@@ -217,7 +228,7 @@ public class AuthManager : MonoBehaviour
         using (var www = NetworkUtils.GetJson(settings.baseUserUrl + "me/", accessToken))
         {
             await www.SendWebRequest().ToUniTask();
-            if (www.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
+            if (www.result == UnityWebRequest.Result.Success)
             {
                 var me = JsonUtility.FromJson<MeResponse>(www.downloadHandler.text);
                 currentUserId = me.id;
@@ -228,6 +239,37 @@ public class AuthManager : MonoBehaviour
                 Debug.LogWarning("[AuthManager] /me failed: " + www.responseCode + " " + www.downloadHandler.text);
             }
         }
+    }
+
+
+    private string ExtractErrorMessage(string body)
+    {
+        if (string.IsNullOrEmpty(body))
+        {
+            return null;
+        }
+
+        try
+        {
+            var parsed = JsonUtility.FromJson<ApiMessageResponse>(body);
+
+            if (!string.IsNullOrEmpty(parsed.message))
+            {
+                return parsed.message;
+            }
+            if (!string.IsNullOrEmpty(parsed.error))
+            {
+                return parsed.error;
+            }
+            if (!string.IsNullOrEmpty(parsed.detail))
+            {
+                return parsed.detail;
+            }
+        }
+        catch
+        {
+        }
+        return body;
     }
 
 }
