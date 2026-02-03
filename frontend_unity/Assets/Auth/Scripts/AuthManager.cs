@@ -106,21 +106,38 @@ public class AuthManager : MonoBehaviour
     public async UniTask<AuthResult> LoginAsync(string username, string password)
     {
         await UniTask.SwitchToMainThread();
-        try
+
+        username = username?.Trim();
+        password = password?.Trim();
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
         {
-            username = username?.Trim();
-            password = password?.Trim();
+            return new AuthResult(false, "Username and password are required.");
+        }
 
-            var payload = new LoginRequest { username = username, password = password };
+        var payload = new LoginRequest { username = username, password = password };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "token/", payload))
+        using (var www = NetworkUtils.PostJson(settings.baseUserUrl + "token/", payload))
+        {
+            try
             {
                 await www.SendWebRequest().ToUniTask();
+            }
+            catch (UnityWebRequestException)
+            {
+                // Non-2xx errors handled below
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("[AuthManager] Login exception (non-http) " + ex);
+                return new AuthResult(false, "Unexpected error, login failed.");
+            }
 
-                if (www.result == UnityWebRequest.Result.Success)
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                try
                 {
-                    TokenResponse tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
-
+                    var tokens = JsonUtility.FromJson<TokenResponse>(www.downloadHandler.text);
                     accessToken = tokens.access;
                     refreshToken = tokens.refresh;
 
@@ -128,17 +145,18 @@ public class AuthManager : MonoBehaviour
 
                     return new AuthResult(true, "Login successful", www.responseCode);
                 }
-                else
+                catch (Exception ex)
                 {
-                    var msg = ExtractErrorMessage(www.downloadHandler?.text) ?? "Login failed.";
-                    return new AuthResult(false, msg, www.responseCode);
+                    Debug.LogError("[AuthManager] Login parse exception " + ex);
+                    accessToken = null;
+                    refreshToken = null;
+                    return new AuthResult(false, "Login failed: invalid server response.", www.responseCode);
                 }
             }
-        }
-        catch(Exception ex)
-        {
-            Debug.LogError("[AuthManager] Login exception" + ex);
-            return new AuthResult(false, "Unexpected error, login failed.");
+
+            var body = www.downloadHandler?.text;
+            var msg = ExtractErrorMessage(body) ?? "Login failed.";
+            return new AuthResult(false, msg, www.responseCode);
         }
     }
 
@@ -179,40 +197,43 @@ public class AuthManager : MonoBehaviour
     public async UniTask<AuthResult> RegisterAsync(string username, string password)
     {
         await UniTask.SwitchToMainThread();
-        try
-        {
-            username = username?.Trim();
-            password = password?.Trim();
-            var payload = new RegisterRequest { username = username, password = password };
 
-            using (UnityWebRequest www = NetworkUtils.PostJson(settings.baseUserUrl + "register/", payload))
+        username = username?.Trim();
+        password = password?.Trim();
+
+        if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            return new AuthResult(false, "Username and password are required.");
+
+        var payload = new RegisterRequest { username = username, password = password };
+
+        using (var www = NetworkUtils.PostJson(settings.baseUserUrl + "register/", payload))
+        {
+            try
             {
                 await www.SendWebRequest().ToUniTask();
-
-                if (www.result == UnityWebRequest.Result.Success)
-                {
-
-                    var res = await LoginAsync(username, password);
-                    if (res.Success)
-                    {
-                        return new AuthResult(true, "Register succesful. Logged in", www.responseCode);
-                    }
-                    else
-                    {
-                        return new AuthResult(false, res.Message ?? "Register succeeded, but login failed.", www.responseCode);
-                    }
-                }
-                else
-                {
-                    var msg = ExtractErrorMessage(www.downloadHandler?.text) ?? "Registration failed.";
-                    return new AuthResult(false, msg, www.responseCode);
-                }
             }
-        }
-        catch(Exception ex)
-        {
-            Debug.LogError("[AuthManager] Register exception" + ex);
-            return new AuthResult(false, "Unexpected error, register failed.");
+            catch (UnityWebRequestException)
+            {
+                // Non-2xx errors handled below
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("[AuthManager] Register exception (non-http) " + ex);
+                return new AuthResult(false, "Unexpected error, register failed.");
+            }
+
+            if (www.result == UnityWebRequest.Result.Success)
+            {
+                var loginRes = await LoginAsync(username, password);
+
+                return loginRes.Success
+                    ? new AuthResult(true, "Register successful. Logged in", www.responseCode)
+                    : new AuthResult(false, loginRes.Message ?? "Register succeeded, but login failed.", www.responseCode);
+            }
+
+            var body = www.downloadHandler?.text;
+            var msg = ExtractErrorMessage(body) ?? "Registration failed.";
+            return new AuthResult(false, msg, www.responseCode);
         }
     }
 
